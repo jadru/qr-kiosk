@@ -1,0 +1,9 @@
+{
+  "name": "qr-kiosk",
+  "workspaces": {
+    "packages": [
+      "apps/**"
+    ]
+  },
+  "packageManager": "yarn@3.4.1"
+}
