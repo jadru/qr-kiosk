@@ -8,9 +8,12 @@
   "scripts": {
     "test": "echo \"todo\"",
     "build:front": "yarn workspace @qr-kiosk/frontend build",
-    "build:back": "yarn workspace @qr-kiosk/backend build",
     "start:front": "yarn workspace @qr-kiosk/frontend start",
-    "start:back": "yarn workspace @qr-kiosk/backend start:dev"
+    "build:back": "yarn workspace @qr-kiosk/backend build",
+    "start:back": "yarn workspace @qr-kiosk/backend start:dev",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
   },
   "packageManager": "yarn@3.4.1"
 }

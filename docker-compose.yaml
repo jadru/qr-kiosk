@@ -1,0 +1,36 @@
+version: '3.6'
+services:
+  postgres:
+    container_name: ${POSTGRES_HOST:-postgres}
+    image: postgres:14.7-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-default}
+      PGDATA: /data/postgres
+    volumes:
+      - psql-data:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    restart: unless-stopped
+    env_file:
+      - .env
+  backend:
+    container_name: ${SERVER_HOST:-qr-backend}
+    build:
+      dockerfile: Dockerfile.backend
+      context: ./
+      target: development
+    volumes:
+      - ./:/usr/src/app
+    command: yarn start:back
+    depends_on:
+      - postgres
+    ports:
+      - ${SERVER_PORT:-8000}:8000
+    env_file:
+      - .env
+  # frontend: #TODO : frontend dockerfile
+
+volumes:
+  psql-data:
