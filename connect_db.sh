@@ -10,6 +10,8 @@ getEnv() {
     done < ${_envLocation_}
 }
 
-getEnv .env
+getEnv ./apps/backend/.env
 
-docker exec -it $(docker ps -q --filter name=${POSTGRES_HOST}) psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+docker exec -it $(docker ps -q --filter name=${POSTGRES_HOST}) psql -U ${POSTGRES_USER} -d ${POSTGRES_DB} ||
+	echo "컨테이너를 실행해주세요"
+
