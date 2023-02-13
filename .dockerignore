@@ -1,0 +1,10 @@
+.idea
+.vscode
+.git
+.yarn
+.gitignore
+.dockerignore
+Dockerfile
+!package.json
+!yarn.lock
+!yarn/cache

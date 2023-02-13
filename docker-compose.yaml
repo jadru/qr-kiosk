@@ -23,7 +23,7 @@ services:
       target: development
     volumes:
       - ./:/usr/src/app
-    command: yarn start:back
+    command: yarn start:dev
     depends_on:
       - postgres
     ports:

@@ -8,10 +8,10 @@ FROM node:18-alpine As development
 WORKDIR /usr/src/app
 
 # Copy application dependency manifests to the container image.
-COPY --chown=node:node package*.json ./
+COPY --chown=node:node package*.json ../../yarn.lock ./
 
 # Install app dependencies using the `npm ci` command instead of `npm install`
-RUN yarn install --immutable --immutable-cache --check-cache
+RUN yarn set version berry && yarn
 
 # Bundle app source
 COPY --chown=node:node . .
@@ -37,7 +37,7 @@ RUN yarn build
 # Set NODE_ENV environment variable
 ENV NODE_ENV production
 
-RUN yarn install --immutable --immutable-cache --check-cache && yarn cache clean
+RUN yarn set version berry && yarn && yarn cache clean
 
 USER node
 
