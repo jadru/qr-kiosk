@@ -6,6 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "docker:up": "docker-compose -f docker-compose-be.yaml up -d",
+    "docker:down": "docker-compose -f docker-compose-be.yaml down",
+    "docker:log": "docker-compose -f docker-compose-be.yaml logs -f",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -51,6 +54,10 @@
     "typescript": "^4.7.4"
   },
   "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "moduleFileExtensions": [
       "js",
       "json",
