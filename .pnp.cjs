@@ -1779,6 +1779,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@prisma/engines", [\
+        ["npm:4.10.1", {\
+          "packageLocation": "./.yarn/unplugged/@prisma-engines-npm-4.10.1-76842e2247/node_modules/@prisma/engines/",\
+          "packageDependencies": [\
+            ["@prisma/engines", "npm:4.10.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@qr-kiosk/backend", [\
         ["workspace:apps/backend", {\
           "packageLocation": "./apps/backend/",\
@@ -1802,6 +1811,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-prettier", "virtual:b6164e0510cb742146699601267f5fd0f8fe6520b06ec6eb3127d493ed5ab4d3e19f90c8c20d8854383281d7fae62cd33c2dc3799e414c47f931a6caf5b5ab84#npm:4.2.1"],\
             ["jest", "virtual:b6164e0510cb742146699601267f5fd0f8fe6520b06ec6eb3127d493ed5ab4d3e19f90c8c20d8854383281d7fae62cd33c2dc3799e414c47f931a6caf5b5ab84#npm:29.3.1"],\
             ["prettier", "npm:2.8.4"],\
+            ["prisma", "npm:4.10.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["rxjs", "npm:7.8.0"],\
             ["source-map-support", "npm:0.5.21"],\
@@ -11039,6 +11049,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@jest/schemas", "npm:29.4.2"],\
             ["ansi-styles", "npm:5.2.0"],\
             ["react-is", "npm:18.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["prisma", [\
+        ["npm:4.10.1", {\
+          "packageLocation": "./.yarn/unplugged/prisma-npm-4.10.1-62cbe9103e/node_modules/prisma/",\
+          "packageDependencies": [\
+            ["prisma", "npm:4.10.1"],\
+            ["@prisma/engines", "npm:4.10.1"]\
           ],\
           "linkType": "HARD"\
         }]\
