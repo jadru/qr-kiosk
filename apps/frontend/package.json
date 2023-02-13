@@ -1,5 +1,5 @@
 {
-  "name": "qrkiosk-frontend",
+  "name": "@qr-kiosk/frontend",
   "packageManager": "yarn@3.4.1",
   "version": "0.0.1",
   "main": "index.tsx",

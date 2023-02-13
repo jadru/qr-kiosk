@@ -1,9 +1,16 @@
 {
-  "name": "qr-kiosk",
+  "name": "@qr-kiosk/root",
   "workspaces": {
     "packages": [
       "apps/**"
     ]
+  },
+  "scripts": {
+    "test": "echo \"todo\"",
+    "build:front": "yarn workspace @qr-kiosk/frontend build",
+    "build:back": "yarn workspace @qr-kiosk/backend build",
+    "start:front": "yarn workspace @qr-kiosk/frontend start",
+    "start:back": "yarn workspace @qr-kiosk/backend start:dev"
   },
   "packageManager": "yarn@3.4.1"
 }
