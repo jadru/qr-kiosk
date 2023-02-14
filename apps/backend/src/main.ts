@@ -1,8 +1,12 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from "@nestjs/common";
 import { AppModule } from './app.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    await app.listen(8000); // TODO 환경변수로 관리
+    const port = process.env.SERVER_PORT
+    await app.listen(port);
+
+    Logger.log(`Application listening on port ${port}`);
 }
 bootstrap();
