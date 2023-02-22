@@ -20,5 +20,8 @@
   "packageManager": "yarn@3.4.1",
   "devDependencies": {
     "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "daisyui": "^2.50.2"
   }
 }
