@@ -14,8 +14,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        //@src로 시작하면 아래 줄의 디렉토리를 의미한다.
+        "src/*" //baseUrl을 기준으로 src/ 하위 디렉토리를 @src로 표현한다.
+      ],
+      "@components/*": ["src/components/*"] //@components로 시작하면 components/ 하위 디렉토리를 의미한다.
+    }
   },
-  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
