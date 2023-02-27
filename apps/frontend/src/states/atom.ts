@@ -10,9 +10,4 @@ const tokenAtom = atom({
   default: 'a',
 });
 
-const tabAtom = atom({
-  key: 'tabAtom',
-  default: 0,
-});
-
-export { loginAtom, tokenAtom, tabAtom };
+export { loginAtom, tokenAtom };

@@ -1,2 +1,2 @@
-import { GlobalLayout } from "./GlobalLayout/index";
-export { GlobalLayout };
+import { NormalLayout } from './NormalLayout/index';
+export { NormalLayout };
