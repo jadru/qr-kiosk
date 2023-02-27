@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 export const StoreManagement = () => {
   return (
