@@ -9,5 +9,16 @@ const tokenAtom = atom({
   key: 'tokenAtom',
   default: 'a',
 });
+const menuDataState = atom({
+  key: 'menuData',
+  default: {
+    menuList: [
+      {
+        menuname: '',
+        menuprice: '',
+      },
+    ],
+  },
+});
 
-export { loginAtom, tokenAtom };
+export { loginAtom, tokenAtom, menuDataState };
