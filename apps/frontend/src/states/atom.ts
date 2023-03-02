@@ -12,10 +12,43 @@ const tokenAtom = atom({
 const menuDataState = atom({
   key: 'menuData',
   default: {
-    menuList: [
+    menuList1: [
       {
-        menuname: '',
-        menuprice: '',
+        name: '',
+        menuItem: [
+          {
+            image: '',
+            menuid: '',
+            menuname: '',
+            menuprice: '',
+          },
+        ],
+      },
+    ],
+    menuList2: [
+      {
+        name: '',
+        menuItem: [
+          {
+            image: '',
+            menuid: '',
+            menuname: '',
+            menuprice: '',
+          },
+        ],
+      },
+    ],
+    menuList3: [
+      {
+        name: '',
+        menuItem: [
+          {
+            image: '',
+            menuid: '',
+            menuname: '',
+            menuprice: '',
+          },
+        ],
       },
     ],
   },

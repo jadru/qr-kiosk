@@ -4,9 +4,17 @@ import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { menuDataState } from '@src/states/atom';
 
+interface MenuItem {
+  id: string;
+  item: string;
+  itemprice: string;
+}
+
 export const StoreManagement = () => {
   const [item, setItem] = useState('');
   const [itemprice, setItemPrice] = useState('');
+  const [menu, setMenu] = useRecoilState(menuDataState);
+
   const [fileImage, setFileImage] = useState('');
   const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     // @ts-ignore
@@ -16,8 +24,20 @@ export const StoreManagement = () => {
     URL.revokeObjectURL(fileImage);
     setFileImage('');
   };
+
+  // const menuname = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setItem(event.target.value);
+  //   menu.menuList1[0].menuItem[0].menuname = item;
+  // };
+  // const menuprice = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setItemPrice(event.target.value);
+  //   menu.menuList1[0].menuItem[0].menuprice = itemprice;
+  // };
+
   const handleSubmit = () => {
     console.log(item + itemprice);
+    menu.menuList1[0].menuItem[0].menuname = item;
+    menu.menuList1[0].menuItem[0].menuprice = itemprice;
   };
   return (
     <>
@@ -65,6 +85,7 @@ export const StoreManagement = () => {
                         className="input input-bordered input-sm"
                         value={item}
                         onChange={(e) => setItem(e.target.value)}
+                        //onChange={menuname}
                       />
                     </label>
                   </div>
@@ -77,17 +98,30 @@ export const StoreManagement = () => {
                         className="input input-bordered input-sm"
                         value={itemprice}
                         onChange={(e) => setItemPrice(e.target.value)}
+                        //onChange={menuprice}
                       />
                     </label>
                   </div>
                 </div>
-                <button className="btn btn-sm mt-4" onClick={handleSubmit}>
-                  확인
-                </button>
+                <div className="modal-action">
+                  <label
+                    htmlFor="my-modal-3"
+                    className="btn btn-sm mt-4"
+                    onClick={handleSubmit}
+                  >
+                    확인
+                  </label>
+                </div>
               </div>
             </div>
           </div>
           <div>{/* <DragDropContext></DragDropContext> */}</div>
+          <div>
+            <img src={fileImage} />
+            <h4>
+              메뉴이름 : {item}, 가격 : {itemprice}
+            </h4>
+          </div>
         </div>
         <div className="divider divider-horizontal">{'>'}</div>
         <div className="grid h-20 flex-grow place-items-center w-2/3">
