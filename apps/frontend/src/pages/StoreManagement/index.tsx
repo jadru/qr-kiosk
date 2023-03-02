@@ -6,7 +6,7 @@ export const StoreManagement = () => {
     <>
       <div className="flex w-full min-h-screen">
         <div className="grid h-20 flex-grow place-items-center w-1/3">
-          메뉴 편집 위치
+          <button className="btn btn-sm btn-active btn-ghost">메뉴 추가</button>
         </div>
         <div className="divider divider-horizontal">{'>'}</div>
         <div className="grid h-20 flex-grow place-items-center w-2/3">
