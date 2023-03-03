@@ -1,6 +1,20 @@
 import { NormalLayout } from '@src/components';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type LoginInputType = {
+  username: string;
+  password: string;
+};
 
 export const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<LoginInputType>();
+  const onSubmit: SubmitHandler<LoginInputType> = (data) => console.log(data);
+  // console.log(watch('example'));
   return (
     <NormalLayout>
       <div className="hero">
@@ -13,7 +27,10 @@ export const Login = () => {
               et a id nisi.
             </p>
           </div>
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100"
+          >
             <div className="card-body">
               <div className="form-control">
                 <label className="label">
@@ -21,8 +38,9 @@ export const Login = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="email"
+                  placeholder="username"
                   className="input input-bordered"
+                  // {...register('example')}
                 />
               </div>
               <div className="form-control">
@@ -30,7 +48,7 @@ export const Login = () => {
                   <span className="label-text">Password</span>
                 </label>
                 <input
-                  type="text"
+                  type="password"
                   placeholder="password"
                   className="input input-bordered"
                 />
@@ -41,10 +59,12 @@ export const Login = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary">
+                  Login
+                </button>
               </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </NormalLayout>

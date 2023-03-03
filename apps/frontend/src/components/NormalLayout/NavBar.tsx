@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
 
 export const NavBar = () => {
   return (
@@ -12,13 +11,13 @@ export const NavBar = () => {
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a>로그아웃</a>
+            <Link to="/login">로그인</Link>
           </li>
           <li>
-            <a>계정 관리</a>
+            <Link to="/account">계정 관리</Link>
           </li>
           <li>
-            <a>매장 관리</a>
+            <Link to="/store-management">매장 관리</Link>
           </li>
         </ul>
       </div>

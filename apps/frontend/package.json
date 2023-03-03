@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "start": "vite",
+    "start": "vite --open",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "serve": "serve -s dist -p 3000",
