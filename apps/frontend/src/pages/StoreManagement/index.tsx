@@ -1,20 +1,39 @@
 import { Route, Routes } from 'react-router-dom';
-import { DragDropContext } from 'react-beautiful-dnd';
-import React, { useState } from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { menuDataState } from '@src/states/atom';
 
 interface MenuItem {
-  id: string;
-  item: string;
+  itemid: string;
+  itemname: string;
   itemprice: string;
+}
+interface MenuItemList {
+  menuItems: MenuItem[];
 }
 
 export const StoreManagement = () => {
   const [itemname, setItemName] = useState('');
   const [itemprice, setItemPrice] = useState('');
   const [itemid, SetItemId] = useState('');
-  const [menu, setMenu] = useRecoilState(menuDataState);
+  const [menuItem, setMenuItem] = useState<MenuItem>({
+    itemid: '',
+    itemname: '',
+    itemprice: '',
+  });
+  const [menuList, setMenuList] = useState<MenuItemList>({
+    menuItems: [menuItem],
+  });
+  const onMenuList = useCallback(() => {
+    setMenuList({
+      menuItems: [...menuList.menuItems, menuItem],
+    });
+  }, [menuItem]);
+
+  useEffect(() => {
+    onMenuList();
+  }, [onMenuList]);
 
   const [fileImage, setFileImage] = useState('');
   const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,16 +44,90 @@ export const StoreManagement = () => {
     URL.revokeObjectURL(fileImage);
     setFileImage('');
   };
+  const deletehandle = (itemid: string) => {
+    setMenuList({
+      menuItems: menuList.menuItems.filter((item) => item.itemid !== itemid),
+    });
+  };
 
   const handleSubmit = () => {
-    console.log(itemname + itemprice);
+    setMenuItem({ itemid: itemid, itemname: itemname, itemprice: itemprice });
   };
+
+  const resultData: any = (itemid: string) => {
+    return menuList?.menuItems.map((item, index) => {
+      if (item.itemid === itemid && item.itemname) {
+        return (
+          <Draggable draggableId={item.itemid} index={index} key={item.itemid}>
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                <div className="card w-96 bg-base-100 shadow-xl mt-4">
+                  <div className="card-body">
+                    <div className="card-actions justify-end">
+                      <h4>메뉴 이름 : {item.itemname}</h4>
+                      <h4>가격 : {item.itemprice}</h4>
+                      <button
+                        className="btn btn-square btn-sm"
+                        onClick={() => deletehandle(item.itemid)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Draggable>
+        );
+      }
+    });
+  };
+  const onDragEnd = (result: any) => {
+    if (!result.destination) return;
+    const { source, destination } = result;
+
+    let items = [...menuList.menuItems];
+    let index;
+    if (source.droppableId === destination.droppableId) {
+      index = items.findIndex((item) => item.itemid === source.droppableId);
+      let findObj = items[index];
+      findObj.itemid = destination.droppableId;
+      items.slice(index, 1);
+      items = [...items, findObj];
+      setMenuList({ menuItems: items });
+    } else {
+      if (source.index != destination.index) {
+        let selectItem = items[result.source.index];
+        items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, selectItem);
+        setMenuList({ menuItems: items });
+      }
+    }
+  };
+
   return (
     <>
       <div className="flex w-full min-h-screen">
         <div className="grid h-20 flex-grow place-items-center w-1/3">
           <div>
-            <label htmlFor="my-modal-3" className="btn btn-sm">
+            <label htmlFor="my-modal-3" className="btn btn-sm mt-4">
               메뉴 추가
             </label>
             <input type="checkbox" id="my-modal-3" className="modal-toggle" />
@@ -94,7 +187,7 @@ export const StoreManagement = () => {
                     <label className="input-group input-group-sm">
                       <span>가격</span>
                       <input
-                        type="text"
+                        type="number"
                         placeholder="메뉴 가격"
                         className="input input-bordered input-sm"
                         value={itemprice}
@@ -115,12 +208,21 @@ export const StoreManagement = () => {
               </div>
             </div>
           </div>
-          <div>{/* <DragDropContext></DragDropContext> */}</div>
           <div>
-            <img src={fileImage} />
-            <h4>
-              메뉴이름 : {itemname}, 가격 : {itemprice}
-            </h4>
+            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+              {menuList?.menuItems.map((item) => {
+                return (
+                  <Droppable droppableId={item.itemid} key={item.itemid}>
+                    {(provided) => (
+                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                        {resultData(item.itemid)}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                );
+              })}
+            </DragDropContext>
           </div>
         </div>
         <div className="divider divider-horizontal">{'>'}</div>
