@@ -11,8 +11,9 @@ interface MenuItem {
 }
 
 export const StoreManagement = () => {
-  const [item, setItem] = useState('');
+  const [itemname, setItemName] = useState('');
   const [itemprice, setItemPrice] = useState('');
+  const [itemid, SetItemId] = useState('');
   const [menu, setMenu] = useRecoilState(menuDataState);
 
   const [fileImage, setFileImage] = useState('');
@@ -25,19 +26,8 @@ export const StoreManagement = () => {
     setFileImage('');
   };
 
-  // const menuname = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setItem(event.target.value);
-  //   menu.menuList1[0].menuItem[0].menuname = item;
-  // };
-  // const menuprice = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setItemPrice(event.target.value);
-  //   menu.menuList1[0].menuItem[0].menuprice = itemprice;
-  // };
-
   const handleSubmit = () => {
-    console.log(item + itemprice);
-    menu.menuList1[0].menuItem[0].menuname = item;
-    menu.menuList1[0].menuItem[0].menuprice = itemprice;
+    console.log(itemname + itemprice);
   };
   return (
     <>
@@ -78,14 +68,25 @@ export const StoreManagement = () => {
                   </div>
                   <div className="form-control mt-4">
                     <label className="input-group input-group-sm">
+                      <span>ID</span>
+                      <input
+                        type="text"
+                        placeholder="ID"
+                        className="input input-bordered input-sm"
+                        value={itemid}
+                        onChange={(e) => SetItemId(e.target.value)}
+                      />
+                    </label>
+                  </div>
+                  <div className="form-control mt-4">
+                    <label className="input-group input-group-sm">
                       <span>이름</span>
                       <input
                         type="text"
                         placeholder="메뉴 이름"
                         className="input input-bordered input-sm"
-                        value={item}
-                        onChange={(e) => setItem(e.target.value)}
-                        //onChange={menuname}
+                        value={itemname}
+                        onChange={(e) => setItemName(e.target.value)}
                       />
                     </label>
                   </div>
@@ -98,7 +99,6 @@ export const StoreManagement = () => {
                         className="input input-bordered input-sm"
                         value={itemprice}
                         onChange={(e) => setItemPrice(e.target.value)}
-                        //onChange={menuprice}
                       />
                     </label>
                   </div>
@@ -119,7 +119,7 @@ export const StoreManagement = () => {
           <div>
             <img src={fileImage} />
             <h4>
-              메뉴이름 : {item}, 가격 : {itemprice}
+              메뉴이름 : {itemname}, 가격 : {itemprice}
             </h4>
           </div>
         </div>
