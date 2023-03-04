@@ -1,5 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from 'react-beautiful-dnd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { menuDataState } from '@src/states/atom';
@@ -19,7 +24,6 @@ export const StoreManagement = () => {
   const [itemprice, setItemPrice] = useState('');
   const [itemid, SetItemId] = useState('');
   const [fileImage, setFileImage] = useState<string[]>([]);
-  const [count, setCount] = useState<number>(0);
   const [menuItem, setMenuItem] = useState<MenuItem>({
     image: [],
     itemid: '',
@@ -39,17 +43,6 @@ export const StoreManagement = () => {
     onMenuList();
   }, [onMenuList]);
 
-  // const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   // @ts-ignore
-  //   setFileImage[URL.createObjectURL(event.target.files[0])];
-  // };
-  // const deleteImage = () => {
-  //   //URL.revokeObjectURL(fileImage[0]);
-  //   setFileImage([
-  //     ...fileImage.slice(0, count),
-  //     ...fileImage.slice(count + 1, fileImage.length),
-  //   ]);
-  // };
   const deletehandle = (itemid: string) => {
     setMenuList({
       menuItems: menuList.menuItems.filter((item) => item.itemid !== itemid),
@@ -75,8 +68,6 @@ export const StoreManagement = () => {
       itemname: itemname,
       itemprice: itemprice,
     });
-    setCount(count + 1);
-    console.log(count);
   };
 
   const resultData: any = (itemid: string) => {
@@ -92,11 +83,7 @@ export const StoreManagement = () => {
               >
                 <div className="card w-96 bg-base-100 shadow-xl mt-4">
                   <div className="card-body">
-                    <div className="card-actions justify-end">
-                      <img
-                        src={fileImage[index - 2]}
-                        style={{ margin: 'auto' }}
-                      />
+                    <div className="card-actions justify-between">
                       <h4>메뉴 이름 : {item.itemname}</h4>
                       <h4>가격 : {item.itemprice}</h4>
                       <button
@@ -128,9 +115,9 @@ export const StoreManagement = () => {
       }
     });
   };
-  const onDragEnd = (result: any) => {
-    if (!result.destination) return;
+  const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
+    if (!destination) return;
 
     let items = [...menuList.menuItems];
     let index;
@@ -145,7 +132,7 @@ export const StoreManagement = () => {
       if (source.index != destination.index) {
         let selectItem = items[result.source.index];
         items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, selectItem);
+        items.splice(destination.index, 0, selectItem);
         setMenuList({ menuItems: items });
       }
     }
@@ -226,7 +213,7 @@ export const StoreManagement = () => {
             </div>
           </div>
           <div>
-            <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
+            <DragDropContext onDragEnd={onDragEnd}>
               {menuList?.menuItems.map((item) => {
                 return (
                   <Droppable
@@ -235,7 +222,12 @@ export const StoreManagement = () => {
                     direction={'vertical'}
                   >
                     {(provided) => (
-                      <div ref={provided.innerRef} {...provided.droppableProps}>
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.droppableProps}
+                        key={item.itemid}
+                        className={item.itemid}
+                      >
                         {resultData(item.itemid)}
                         {provided.placeholder}
                       </div>
