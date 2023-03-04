@@ -5,6 +5,7 @@ import { useRecoilState } from 'recoil';
 import { menuDataState } from '@src/states/atom';
 
 interface MenuItem {
+  image: string[];
   itemid: string;
   itemname: string;
   itemprice: string;
@@ -17,7 +18,9 @@ export const StoreManagement = () => {
   const [itemname, setItemName] = useState('');
   const [itemprice, setItemPrice] = useState('');
   const [itemid, SetItemId] = useState('');
+  const [fileImage, setFileImage] = useState<string[]>([]);
   const [menuItem, setMenuItem] = useState<MenuItem>({
+    image: [],
     itemid: '',
     itemname: '',
     itemprice: '',
@@ -35,23 +38,39 @@ export const StoreManagement = () => {
     onMenuList();
   }, [onMenuList]);
 
-  const [fileImage, setFileImage] = useState('');
   const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     // @ts-ignore
-    setFileImage(URL.createObjectURL(event.target.files[0]));
+    setFileImage[URL.createObjectURL(event.target.files[0])];
   };
   const deleteImage = () => {
-    URL.revokeObjectURL(fileImage);
-    setFileImage('');
+    URL.revokeObjectURL(fileImage[0]);
   };
   const deletehandle = (itemid: string) => {
     setMenuList({
       menuItems: menuList.menuItems.filter((item) => item.itemid !== itemid),
     });
   };
+  const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const imageList: any = event.target.files;
+    let imageArray = [...fileImage];
 
+    for (let i = 0; i < imageList?.length; i++) {
+      const image = URL.createObjectURL(imageList[i]);
+      if (!image) {
+        throw new Error('이미지가 없습니다.');
+      }
+      imageArray.push(image);
+    }
+    setFileImage(imageArray);
+  };
   const handleSubmit = () => {
-    setMenuItem({ itemid: itemid, itemname: itemname, itemprice: itemprice });
+    setMenuItem({
+      image: fileImage,
+      itemid: itemid,
+      itemname: itemname,
+      itemprice: itemprice,
+    });
+    console.log(fileImage);
   };
 
   const resultData: any = (itemid: string) => {
@@ -68,6 +87,7 @@ export const StoreManagement = () => {
                 <div className="card w-96 bg-base-100 shadow-xl mt-4">
                   <div className="card-body">
                     <div className="card-actions justify-end">
+                      <img src={fileImage[index]} style={{ margin: 'auto' }} />
                       <h4>메뉴 이름 : {item.itemname}</h4>
                       <h4>가격 : {item.itemprice}</h4>
                       <button
@@ -145,13 +165,13 @@ export const StoreManagement = () => {
                     type="file"
                     className="file-input w-full max-w-xs file-input-sm mt-4"
                     accept="image/*"
-                    onChange={saveFileImage}
+                    onChange={handleAddImages}
                   />
                   <div>
                     {fileImage && (
                       <img
                         alt="sample"
-                        src={fileImage}
+                        src={fileImage[0]}
                         style={{ margin: 'auto' }}
                       />
                     )}
@@ -212,7 +232,11 @@ export const StoreManagement = () => {
             <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
               {menuList?.menuItems.map((item) => {
                 return (
-                  <Droppable droppableId={item.itemid} key={item.itemid}>
+                  <Droppable
+                    droppableId={item.itemid}
+                    key={item.itemid}
+                    direction={'vertical'}
+                  >
                     {(provided) => (
                       <div ref={provided.innerRef} {...provided.droppableProps}>
                         {resultData(item.itemid)}
