@@ -19,6 +19,7 @@ export const StoreManagement = () => {
   const [itemprice, setItemPrice] = useState('');
   const [itemid, SetItemId] = useState('');
   const [fileImage, setFileImage] = useState<string[]>([]);
+  const [count, setCount] = useState<number>(0);
   const [menuItem, setMenuItem] = useState<MenuItem>({
     image: [],
     itemid: '',
@@ -38,13 +39,17 @@ export const StoreManagement = () => {
     onMenuList();
   }, [onMenuList]);
 
-  const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // @ts-ignore
-    setFileImage[URL.createObjectURL(event.target.files[0])];
-  };
-  const deleteImage = () => {
-    URL.revokeObjectURL(fileImage[0]);
-  };
+  // const saveFileImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   // @ts-ignore
+  //   setFileImage[URL.createObjectURL(event.target.files[0])];
+  // };
+  // const deleteImage = () => {
+  //   //URL.revokeObjectURL(fileImage[0]);
+  //   setFileImage([
+  //     ...fileImage.slice(0, count),
+  //     ...fileImage.slice(count + 1, fileImage.length),
+  //   ]);
+  // };
   const deletehandle = (itemid: string) => {
     setMenuList({
       menuItems: menuList.menuItems.filter((item) => item.itemid !== itemid),
@@ -54,7 +59,7 @@ export const StoreManagement = () => {
     const imageList: any = event.target.files;
     let imageArray = [...fileImage];
 
-    for (let i = 0; i < imageList?.length; i++) {
+    for (let i = 0; i < imageList.length; i++) {
       const image = URL.createObjectURL(imageList[i]);
       if (!image) {
         throw new Error('이미지가 없습니다.');
@@ -70,7 +75,8 @@ export const StoreManagement = () => {
       itemname: itemname,
       itemprice: itemprice,
     });
-    console.log(fileImage);
+    setCount(count + 1);
+    console.log(count);
   };
 
   const resultData: any = (itemid: string) => {
@@ -87,7 +93,10 @@ export const StoreManagement = () => {
                 <div className="card w-96 bg-base-100 shadow-xl mt-4">
                   <div className="card-body">
                     <div className="card-actions justify-end">
-                      <img src={fileImage[index]} style={{ margin: 'auto' }} />
+                      <img
+                        src={fileImage[index - 2]}
+                        style={{ margin: 'auto' }}
+                      />
                       <h4>메뉴 이름 : {item.itemname}</h4>
                       <h4>가격 : {item.itemprice}</h4>
                       <button
@@ -167,18 +176,6 @@ export const StoreManagement = () => {
                     accept="image/*"
                     onChange={handleAddImages}
                   />
-                  <div>
-                    {fileImage && (
-                      <img
-                        alt="sample"
-                        src={fileImage[0]}
-                        style={{ margin: 'auto' }}
-                      />
-                    )}
-                    <button className="btn btn-sm mt-2" onClick={deleteImage}>
-                      삭제
-                    </button>
-                  </div>
                   <div className="form-control mt-4">
                     <label className="input-group input-group-sm">
                       <span>ID</span>
