@@ -23,7 +23,7 @@ const MenuList: React.FC<Props> = ({
   return (
     <>
       <div>
-        <h2>MenuList 1</h2>
+        <h1>MenuList 1</h1>
         <Droppable droppableId="menulist1">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -48,7 +48,7 @@ const MenuList: React.FC<Props> = ({
         </Droppable>
       </div>
       <div>
-        <h2>MenuList 2</h2>
+        <h1>MenuList 2</h1>
         <Droppable droppableId="menulist2">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -73,7 +73,7 @@ const MenuList: React.FC<Props> = ({
         </Droppable>
       </div>
       <div>
-        <h2>MenuList 3</h2>
+        <h1>MenuList 3</h1>
         <Droppable droppableId="menulist3">
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>

@@ -22,18 +22,22 @@ const MenuItem: React.FC<Props> = ({ index, item, items, setItems }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div>
-            <h3>{item.itemname}</h3>
-            <h3>{item.itemprice}</h3>
+          <div className="card-title">
+            <div className="ml-4">
+              <h4>{item.itemname}</h4>
+              <h4>{item.itemprice}원</h4>
+            </div>
           </div>
-          <div className="card-actions justify-end">
-            <button
-              className="btn btn-primary ml-2 mb-2"
-              type="button"
-              onClick={() => handleDelte(item.itemid)}
-            >
-              삭제
-            </button>
+          <div className="card-body">
+            <div className="card-actions justify-end">
+              <button
+                className="btn btn-primary ml-2 mb-2"
+                type="button"
+                onClick={() => handleDelte(item.itemid)}
+              >
+                삭제
+              </button>
+            </div>
           </div>
         </li>
       )}
