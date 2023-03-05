@@ -1,53 +1,18 @@
 import { Route, Routes } from 'react-router-dom';
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from 'react-beautiful-dnd';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { menuDataState } from '@src/states/atom';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import React, { useState } from 'react';
+import { Item } from '../../type/Item';
+import MenuList from '../../components/Menu/MenuList';
 
-interface MenuItem {
-  image: string[];
-  itemid: string;
-  itemname: string;
-  itemprice: string;
-}
-interface MenuItemList {
-  menuItems: MenuItem[];
-}
-
-export const StoreManagement = () => {
-  const [itemname, setItemName] = useState('');
-  const [itemprice, setItemPrice] = useState('');
-  const [itemid, SetItemId] = useState('');
+export const StoreManagement: React.FC = () => {
+  const [itemname, setItemName] = useState<string>('');
+  const [itemprice, setItemPrice] = useState<string>('');
+  const [itemid, SetItemId] = useState<string>('');
   const [fileImage, setFileImage] = useState<string[]>([]);
-  const [menuItem, setMenuItem] = useState<MenuItem>({
-    image: [],
-    itemid: '',
-    itemname: '',
-    itemprice: '',
-  });
-  const [menuList, setMenuList] = useState<MenuItemList>({
-    menuItems: [menuItem],
-  });
-  const onMenuList = useCallback(() => {
-    setMenuList({
-      menuItems: [...menuList.menuItems, menuItem],
-    });
-  }, [menuItem]);
+  const [items, setItems] = useState<Item[]>([]);
+  const [MenuList2, setMenuList2] = useState<Item[]>([]);
+  const [MenuList3, setMenuList3] = useState<Item[]>([]);
 
-  useEffect(() => {
-    onMenuList();
-  }, [onMenuList]);
-
-  const deletehandle = (itemid: string) => {
-    setMenuList({
-      menuItems: menuList.menuItems.filter((item) => item.itemid !== itemid),
-    });
-  };
   const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageList: any = event.target.files;
     let imageArray = [...fileImage];
@@ -61,81 +26,57 @@ export const StoreManagement = () => {
     }
     setFileImage(imageArray);
   };
+
   const handleSubmit = () => {
-    setMenuItem({
-      image: fileImage,
-      itemid: itemid,
-      itemname: itemname,
-      itemprice: itemprice,
-    });
+    setItems([
+      ...items,
+      {
+        image: fileImage,
+        itemid: itemid,
+        itemname: itemname,
+        itemprice: itemprice,
+      },
+    ]);
+    setItemName('');
+    setItemPrice('');
   };
 
-  const resultData: any = (itemid: string) => {
-    return menuList?.menuItems.map((item, index) => {
-      if (item.itemid === itemid && item.itemname) {
-        return (
-          <Draggable draggableId={item.itemid} index={index} key={item.itemid}>
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.draggableProps}
-                {...provided.dragHandleProps}
-              >
-                <div className="card w-96 bg-base-100 shadow-xl mt-4">
-                  <div className="card-body">
-                    <div className="card-actions justify-between">
-                      <h4>메뉴 이름 : {item.itemname}</h4>
-                      <h4>가격 : {item.itemprice}</h4>
-                      <button
-                        className="btn btn-square btn-sm"
-                        onClick={() => deletehandle(item.itemid)}
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </Draggable>
-        );
-      }
-    });
-  };
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
 
-    let items = [...menuList.menuItems];
-    let index;
-    if (source.droppableId === destination.droppableId) {
-      index = items.findIndex((item) => item.itemid === source.droppableId);
-      let findObj = items[index];
-      findObj.itemid = destination.droppableId;
-      items.slice(index, 1);
-      items = [...items, findObj];
-      setMenuList({ menuItems: items });
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
+      return;
+
+    let add: Item;
+    let menu2 = MenuList2;
+    let menu3 = MenuList3;
+
+    if (source.droppableId === 'menulist1') {
+      add = items[source.index];
+      items.splice(source.index, 1);
+    } else if (source.droppableId === 'menulist2') {
+      add = MenuList2[source.index];
+      menu2.splice(source.index, 1);
     } else {
-      if (source.index != destination.index) {
-        let selectItem = items[result.source.index];
-        items.splice(result.source.index, 1);
-        items.splice(destination.index, 0, selectItem);
-        setMenuList({ menuItems: items });
-      }
+      add = MenuList3[source.index];
+      menu3.splice(source.index, 1);
     }
+
+    if (destination.droppableId === 'menulist1') {
+      items.splice(destination.index, 0, { ...add });
+    } else if (destination.droppableId === 'menulist2') {
+      menu2.splice(destination.index, 0, { ...add });
+    } else {
+      menu3.splice(destination.index, 0, { ...add });
+    }
+
+    setItems(items);
+    setMenuList2(menu2);
+    setMenuList3(menu3);
   };
 
   return (
@@ -214,27 +155,16 @@ export const StoreManagement = () => {
           </div>
           <div>
             <DragDropContext onDragEnd={onDragEnd}>
-              {menuList?.menuItems.map((item) => {
-                return (
-                  <Droppable
-                    droppableId={item.itemid}
-                    key={item.itemid}
-                    direction={'vertical'}
-                  >
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        key={item.itemid}
-                        className={item.itemid}
-                      >
-                        {resultData(item.itemid)}
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Droppable>
-                );
-              })}
+              <div>
+                <MenuList
+                  items={items}
+                  setItems={setItems}
+                  MenuList2={MenuList2}
+                  setMenuList2={setMenuList2}
+                  MenuList3={MenuList3}
+                  setMenuList3={setMenuList3}
+                />
+              </div>
             </DragDropContext>
           </div>
         </div>
