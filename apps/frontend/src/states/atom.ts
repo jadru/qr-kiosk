@@ -12,41 +12,66 @@ const tokenAtom = atom({
 const menuDataState = atom({
   key: 'menuData',
   default: {
-    menuList1: [
+    menuList1: {
+      name: '',
+      menuItem: [
+        {
+          image: [],
+          itemid: '',
+          itemname: '',
+          itemprice: '',
+        },
+      ],
+    },
+
+    menuList2: {
+      name: '',
+      menuItem: [
+        {
+          image: [],
+          itemid: '',
+          itemname: '',
+          itemprice: '',
+        },
+      ],
+    },
+
+    menuList3: {
+      name: '',
+      menuItem: [
+        {
+          image: [],
+          itemid: '',
+          itemname: '',
+          itemprice: '',
+        },
+      ],
+    },
+  },
+});
+
+const storeManageState = atom({
+  key: 'storeManage',
+  default: {
+    name: '', // string
+    information: {
+      address: '', // string
+      openTime: '', // string
+      phoneNumber: '', // string
+      facilities: '', // string
+      website: '', // string
+      photos: ['', '', ''], // 사진 url 여러개
+      theme: '', // antic, modren, vintage, simple
+    },
+    menu: [
       {
-        name: '',
-        menuItem: [
+        categoryName: '', // string
+        menus: [
           {
-            image: '',
-            menuid: '',
-            menuname: '',
-            menuprice: '',
-          },
-        ],
-      },
-    ],
-    menuList2: [
-      {
-        name: '',
-        menuItem: [
-          {
-            image: '',
-            menuid: '',
-            menuname: '',
-            menuprice: '',
-          },
-        ],
-      },
-    ],
-    menuList3: [
-      {
-        name: '',
-        menuItem: [
-          {
-            image: '',
-            menuid: '',
-            menuname: '',
-            menuprice: '',
+            id: '', // string
+            name: '', // string
+            photo: '', // string
+            price: '', // number
           },
         ],
       },
@@ -54,4 +79,4 @@ const menuDataState = atom({
   },
 });
 
-export { loginAtom, tokenAtom, menuDataState };
+export { loginAtom, tokenAtom, menuDataState, storeManageState };
