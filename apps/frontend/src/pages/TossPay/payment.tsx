@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import axios from 'axios';
 
-const { VITE_APP_TOSSPAYMENTS_CLIENT_KEY } = import.meta.env;
+const { VITE_APP_TOSS_CLIENT_KEY } = import.meta.env;
 
 export const TossPay = () => {
-  //const tosskey = VITE_APP_TOSSPAYMENTS_CLIENT_KEY;
-  const tosskey = 'test_ck_OyL0qZ4G1VOQwL209Ln8oWb2MQYg';
+  const tosskey = VITE_APP_TOSS_CLIENT_KEY;
+  //const tosskey = 'test_ck_OyL0qZ4G1VOQwL209Ln8oWb2MQYg';
   async function tosspayment() {
+    console.log(tosskey);
     const tossPayments = await loadTossPayments(tosskey);
 
     tossPayments

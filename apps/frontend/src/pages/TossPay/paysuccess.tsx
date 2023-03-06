@@ -1,7 +1,10 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 
+const { VITE_APP_TOSS_SECRET_KEY } = import.meta.env;
+
 export const TossPaySuccess = () => {
+  const secretkey = VITE_APP_TOSS_SECRET_KEY;
   const headerConfig = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -20,7 +23,7 @@ export const TossPaySuccess = () => {
         {
           headers: {
             ...headerConfig,
-            Authorization: 'Basic ' + 'test_sk_jZ61JOxRQVEPKG1y7Wy3W0X9bAqw',
+            Authorization: 'Basic ' + secretkey,
           },
           data: {
             orderId: orderId,
