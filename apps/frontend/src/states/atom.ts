@@ -11,43 +11,19 @@ const tokenAtom = atom({
 });
 const menuDataState = atom({
   key: 'menuData',
-  default: {
-    menuList1: {
-      name: '',
-      menuItem: [
+  default: [
+    {
+      categoryName: 'Category 1',
+      menus: [
         {
-          image: [],
-          itemid: '',
-          itemname: '',
-          itemprice: '',
+          image: '',
+          itemid: 'example1',
+          itemname: 'Example Menu 1',
+          itemprice: '3000',
         },
       ],
     },
-
-    menuList2: {
-      name: '',
-      menuItem: [
-        {
-          image: [],
-          itemid: '',
-          itemname: '',
-          itemprice: '',
-        },
-      ],
-    },
-
-    menuList3: {
-      name: '',
-      menuItem: [
-        {
-          image: [],
-          itemid: '',
-          itemname: '',
-          itemprice: '',
-        },
-      ],
-    },
-  },
+  ],
 });
 
 const storeManageState = atom({

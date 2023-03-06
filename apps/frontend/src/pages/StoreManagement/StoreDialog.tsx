@@ -20,7 +20,7 @@ export const StoreDialog: React.FC<Props> = ({
   handleSubmit,
 }) => (
   <div className="modal">
-    <div className="modal-box relative">
+    <div className="modal-box relative w-full">
       <label
         htmlFor="my-modal-3"
         className="btn btn-sm btn-circle absolute right-2 top-2"
@@ -31,29 +31,29 @@ export const StoreDialog: React.FC<Props> = ({
       <div>
         <input
           type="file"
-          className="file-input w-full max-w-xs file-input-sm mt-4"
+          className="file-input w-full max-w-xs file-input-md mt-4"
           accept="image/*"
           onChange={handleAddImages}
         />
-        <div className="form-control mt-4">
+        <div className="form-control mt-4 w-full">
           <label className="input-group input-group-sm">
             <span>ID</span>
             <input
               type="text"
               placeholder="ID"
-              className="input input-bordered input-sm"
+              className="input input-bordered input-md"
               value={itemid}
               onChange={(e) => SetItemId(e.target.value)}
             />
           </label>
         </div>
-        <div className="form-control mt-4">
+        <div className="form-control mt-4  w-full">
           <label className="input-group input-group-sm">
             <span>이름</span>
             <input
               type="text"
               placeholder="메뉴 이름"
-              className="input input-bordered input-sm"
+              className="input input-bordered input-md"
               value={itemname}
               onChange={(e) => setItemName(e.target.value)}
             />
@@ -65,7 +65,7 @@ export const StoreDialog: React.FC<Props> = ({
             <input
               type="number"
               placeholder="메뉴 가격"
-              className="input input-bordered input-sm"
+              className="input input-bordered input-md"
               value={itemprice}
               onChange={(e) => setItemPrice(e.target.value)}
             />

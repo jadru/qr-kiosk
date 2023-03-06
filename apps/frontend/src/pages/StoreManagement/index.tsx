@@ -1,22 +1,46 @@
 import { Route, Routes } from 'react-router-dom';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Item } from '../../type/Item';
 import { useRecoilState } from 'recoil';
 import MenuList from '../../components/Menu/MenuList';
 import { menuDataState } from '@src/states/atom';
 import { StoreDialog } from './StoreDialog';
+import { NormalLayout } from '@src/components';
+import cloneDeep from 'lodash/cloneDeep';
+
+const usePreventLeave = () => {
+  function listener(e: any) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+
+  function enablePrevent() {
+    window.addEventListener('beforeunload', listener);
+  }
+
+  function disablePrevent() {
+    window.removeEventListener('beforeunload', listener);
+  }
+
+  return [enablePrevent, disablePrevent];
+};
 
 export const StoreManagement: React.FC = () => {
+  const [enablePrevent, disablePrevent] = usePreventLeave();
   const [menuData, setMenuData] = useRecoilState(menuDataState);
   const [itemname, setItemName] = useState<string>('');
   const [itemprice, setItemPrice] = useState<string>('');
   const [itemid, SetItemId] = useState<string>('');
   const [fileImage, setFileImage] = useState<string[]>([]);
+  const [mobile, setMobile] = useState<boolean>(false);
 
-  const [MenuList1, setMenuList1] = useState<Item[]>([]);
-  const [MenuList2, setMenuList2] = useState<Item[]>([]);
-  const [MenuList3, setMenuList3] = useState<Item[]>([]);
+  useEffect(() => {
+    console.log(menuData);
+  }, [menuData]);
+
+  const onMobileToggleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setMobile((prev) => !prev);
 
   const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
     const imageList: any = event.target.files;
@@ -33,25 +57,18 @@ export const StoreManagement: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    setMenuList1([
-      ...MenuList1,
-      {
-        image: fileImage,
-        itemid: itemid,
-        itemname: itemname,
-        itemprice: itemprice,
-      },
-    ]);
+    let tempData = cloneDeep(menuData);
+    tempData[0].menus.push({ itemname, itemprice, itemid, image: '' });
+    setMenuData(tempData);
     setItemName('');
     setItemPrice('');
+    SetItemId('');
+    enablePrevent();
   };
 
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
-
-    console.log(source);
-    console.log(destination);
 
     if (
       source.droppableId === destination.droppableId &&
@@ -60,42 +77,45 @@ export const StoreManagement: React.FC = () => {
       return;
 
     let add: Item;
-    let menu1 = MenuList1;
-    let menu2 = MenuList2;
-    let menu3 = MenuList3;
 
-    if (source.droppableId === 'menulist1') {
-      add = MenuList1[source.index];
-      menu1?.splice(source.index, 1);
-    } else if (source.droppableId === 'menulist2') {
-      add = MenuList2[source.index];
-      menu2?.splice(source.index, 1);
-    } else {
-      add = MenuList3[source.index];
-      menu3?.splice(source.index, 1);
-    }
+    const temp = cloneDeep(menuData);
 
-    if (destination.droppableId === 'menulist1') {
-      menu1?.splice(destination.index, 0, { ...add });
-    } else if (destination.droppableId === 'menulist2') {
-      menu2?.splice(destination.index, 0, { ...add });
-    } else {
-      menu3?.splice(destination.index, 0, { ...add });
-    }
+    Array.apply(null, Array(temp.length)).map((_value, index) => {
+      if (source.droppableId === `menulist${index}`) {
+        add = temp[index].menus[source.index];
+        temp[index].menus.splice(source.index, 1);
+      }
+    });
 
-    setMenuList1(menu1);
-    setMenuList2(menu2);
-    setMenuList3(menu3);
+    Array.apply(null, Array(temp.length)).map((_value, index) => {
+      if (destination.droppableId === `menulist${index}`) {
+        temp[index].menus.splice(destination.index, 0, { ...add });
+      }
+    });
+
+    setMenuData(temp);
+    enablePrevent();
+  };
+
+  const dumyCategoryData = {
+    categoryName: '새 카테고리',
+    menus: [],
   };
 
   return (
-    <>
-      <div className="flex w-full min-h-screen">
+    <NormalLayout>
+      <div className="flex w-full h-full">
         <div className="grid h-20 flex-grow place-items-center w-1/3">
           <div>
-            <label htmlFor="my-modal-3" className="btn btn-sm mt-4">
+            <label htmlFor="my-modal-3" className="btn btn-md mt-4 mx-2">
               메뉴 추가
             </label>
+            <button
+              onClick={() => setMenuData((prev) => [...prev, dumyCategoryData])}
+              className="btn btn-md mt-4"
+            >
+              카테고리 추가
+            </button>
             <input type="checkbox" id="my-modal-3" className="modal-toggle" />
             <StoreDialog
               itemname={itemname}
@@ -108,47 +128,75 @@ export const StoreManagement: React.FC = () => {
               handleSubmit={handleSubmit}
             />
           </div>
-          <div>
+          <div className="card bg-slate-100 mt-5 space-y-0 py-3">
             <DragDropContext onDragEnd={onDragEnd}>
-              <div>
-                <MenuList
-                  title="MenuList 1"
-                  items={MenuList1}
-                  setItems={setMenuList1}
-                  droppableId="menulist1"
-                />
-                <MenuList
-                  title="MenuList 2"
-                  items={MenuList2}
-                  setItems={setMenuList2}
-                  droppableId="menulist2"
-                />
-                <MenuList
-                  title="MenuList 3"
-                  items={MenuList3}
-                  setItems={setMenuList3}
-                  droppableId="menulist3"
-                />
-              </div>
+              {Array.apply(null, Array(menuData.length)).map(
+                (_value, index) => (
+                  <>
+                    <MenuList
+                      key={menuData[index].categoryName + index}
+                      items={menuData}
+                      setItems={setMenuData}
+                      index={index}
+                    />
+                    {index !== menuData.length - 1 && (
+                      <div className="divider"></div>
+                    )}
+                  </>
+                ),
+              )}
             </DragDropContext>
           </div>
         </div>
         <div className="divider divider-horizontal">{'>'}</div>
-        <div className="grid h-20 flex-grow place-items-center w-2/3">
-          <p>MenuList1</p>
-          {MenuList1.map((item, index) => (
-            <p>{item.itemname}</p>
-          ))}
-          <p>MenuList2</p>
-          {MenuList2.map((item, index) => (
-            <p>{item.itemname}</p>
-          ))}
-          <p>MenuList3</p>
-          {MenuList3.map((item, index) => (
-            <p>{item.itemname}</p>
-          ))}
+        <div className="w-2/3 flex flex-col self-center items-center space-y-4">
+          <div
+            className={`${
+              mobile
+                ? 'mockup-phone shadow-2xl'
+                : 'w-full h-[85vh] bg-slate-100 rounded-3xl scroll-mb-10'
+            }`}
+          >
+            <div className={mobile ? 'camera' : ''}></div>
+            <div className={mobile ? 'display' : ''}>
+              <div className={mobile ? 'artboard artboard-demo phone-1' : ''}>
+                {menuData &&
+                  Array.apply(null, Array(menuData.length)).map(
+                    (_value, index) => (
+                      <>
+                        <p className="text-3xl">
+                          {menuData[index].categoryName}
+                        </p>
+                        {menuData[index].menus &&
+                          menuData[index].menus.map((item) => (
+                            <p>
+                              {item.itemname}
+                              {item.itemprice}
+                              {item.itemid}
+                            </p>
+                          ))}
+                      </>
+                    ),
+                  )}
+              </div>
+            </div>
+          </div>
+          <div className="form-control glass p-3 rounded-2xl sticky bottom-12 flex flex-row space-x-3">
+            <label className="label cursor-pointer">
+              <span className="label-text mr-4">
+                {mobile ? '모바일 폰' : '데스크탑'}
+              </span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={mobile}
+                onChange={onMobileToggleChange}
+              />
+            </label>
+            <button className="btn btn-primary">저장</button>
+          </div>
         </div>
       </div>
-    </>
+    </NormalLayout>
   );
 };

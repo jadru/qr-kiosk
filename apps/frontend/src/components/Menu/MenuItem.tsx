@@ -1,23 +1,21 @@
 import React from 'react';
 import { Item } from '../../type/Item';
 import { Draggable } from 'react-beautiful-dnd';
+import { cloneDeep } from 'lodash';
+import { MenuListType } from '@src/type';
 
 interface Props {
   index: number;
   item: Item;
-  items: Item[];
-  setItems: (s: Item[]) => void;
+  onDelete: (id: string) => void;
 }
 
-const MenuItem: React.FC<Props> = ({ index, item, items, setItems }) => {
-  const handleDelte = (id: string) => {
-    setItems(items.filter((item) => item.itemid !== id));
-  };
+const MenuItem: React.FC<Props> = ({ index, item, onDelete }) => {
   return (
     <Draggable draggableId={item.itemid.toString()} index={index}>
       {(provided) => (
         <li
-          className="card card-bordered card-side glass"
+          className="card card-bordered card-side glass bg-white"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -31,9 +29,9 @@ const MenuItem: React.FC<Props> = ({ index, item, items, setItems }) => {
           <div>
             <div className="card-actions justify-end">
               <button
-                className="btn btn-square btn-sm mr-2 mt-2"
+                className="btn btn-circle btn-sm mr-2 mt-2"
                 type="button"
-                onClick={() => handleDelte(item.itemid)}
+                onClick={() => onDelete(item.itemid)}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
