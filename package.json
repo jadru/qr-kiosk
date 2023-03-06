@@ -15,7 +15,8 @@
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
     "db:up": "docker-compose up -d postgres",
-    "db:down": "docker-compose down"
+    "db:down": "docker-compose down -d postgres",
+    "db:exec": "bash connect-to-db.sh"
   },
   "packageManager": "yarn@3.4.1"
 }
