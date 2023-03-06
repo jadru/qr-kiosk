@@ -98,3 +98,9 @@ $RECYCLE.BIN/
 
 # and uncomment the following lines
 # .pnp.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+.env.development
