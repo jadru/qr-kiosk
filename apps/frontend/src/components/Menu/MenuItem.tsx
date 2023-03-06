@@ -17,25 +17,38 @@ const MenuItem: React.FC<Props> = ({ index, item, items, setItems }) => {
     <Draggable draggableId={item.itemid.toString()} index={index}>
       {(provided) => (
         <li
-          className="card card-side bg-base-100 shadow-xl mt-5 w-96"
+          className="card card-bordered card-side glass"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className="card-title">
+          <div className="card-body">
             <div className="ml-4">
-              <h4>{item.itemname}</h4>
+              <h4 className="card-title ">{item.itemname}</h4>
               <h4>{item.itemprice}원</h4>
             </div>
           </div>
-          <div className="card-body">
+          <div>
             <div className="card-actions justify-end">
               <button
-                className="btn btn-primary ml-2 mb-2"
+                className="btn btn-square btn-sm mr-2 mt-2"
                 type="button"
                 onClick={() => handleDelte(item.itemid)}
               >
-                삭제
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
             </div>
           </div>

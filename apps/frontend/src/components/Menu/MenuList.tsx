@@ -6,30 +6,28 @@ import MenuItem from './MenuItem';
 interface Props {
   items: Item[];
   setItems: (s: Item[]) => void;
-  MenuList2: Item[];
-  setMenuList2: (s: Item[]) => void;
-  MenuList3: Item[];
-  setMenuList3: (s: Item[]) => void;
+  droppableId: string;
+  title: string;
 }
 
 const MenuList: React.FC<Props> = ({
   items,
   setItems,
-  MenuList2,
-  setMenuList2,
-  MenuList3,
-  setMenuList3,
+  droppableId,
+  title,
 }: Props) => {
   return (
     <>
-      <div>
-        <h1>MenuList 1</h1>
-        <Droppable droppableId="menulist1">
+      <div className="card bg-base-100 shadow-xl my-5 w-96 px-4 py-3">
+        <h1 className="card-title pl-2">{title}</h1>
+        <Droppable droppableId={droppableId}>
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ul className="list-none">
+              <ul className="card-body px-3 py-4">
                 {items.length === 0 ? (
-                  <p>No Item</p>
+                  <p className="text-info-content text-center py-4">
+                    메뉴가 없습니다
+                  </p>
                 ) : (
                   items.map((item, index) => (
                     <MenuItem
@@ -38,56 +36,6 @@ const MenuList: React.FC<Props> = ({
                       item={item}
                       items={items}
                       setItems={setItems}
-                    />
-                  ))
-                )}
-                {provided.placeholder}
-              </ul>
-            </div>
-          )}
-        </Droppable>
-      </div>
-      <div>
-        <h1>MenuList 2</h1>
-        <Droppable droppableId="menulist2">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ul className="list-none">
-                {MenuList2.length === 0 ? (
-                  <p>No Item</p>
-                ) : (
-                  MenuList2.map((item, index) => (
-                    <MenuItem
-                      key={item.itemid}
-                      index={index}
-                      item={item}
-                      items={MenuList2}
-                      setItems={setMenuList2}
-                    />
-                  ))
-                )}
-                {provided.placeholder}
-              </ul>
-            </div>
-          )}
-        </Droppable>
-      </div>
-      <div>
-        <h1>MenuList 3</h1>
-        <Droppable droppableId="menulist3">
-          {(provided) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ul className="list-none">
-                {MenuList3.length === 0 ? (
-                  <p>No Item</p>
-                ) : (
-                  MenuList3.map((item, index) => (
-                    <MenuItem
-                      key={item.itemid}
-                      index={index}
-                      item={item}
-                      items={MenuList3}
-                      setItems={setMenuList3}
                     />
                   ))
                 )}

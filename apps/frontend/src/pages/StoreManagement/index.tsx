@@ -157,12 +157,22 @@ export const StoreManagement: React.FC = () => {
             <DragDropContext onDragEnd={onDragEnd}>
               <div>
                 <MenuList
+                  title="MenuList 1"
                   items={items}
                   setItems={setItems}
-                  MenuList2={MenuList2}
-                  setMenuList2={setMenuList2}
-                  MenuList3={MenuList3}
-                  setMenuList3={setMenuList3}
+                  droppableId="menulist1"
+                />
+                <MenuList
+                  title="MenuList 2"
+                  items={MenuList2}
+                  setItems={setMenuList2}
+                  droppableId="menulist2"
+                />
+                <MenuList
+                  title="MenuList 3"
+                  items={MenuList3}
+                  setItems={setMenuList3}
+                  droppableId="menulist3"
                 />
               </div>
             </DragDropContext>
