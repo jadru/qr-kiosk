@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,11 +7,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id Int @default(autoincrement()) @id
-  username String
+model Menu{
+  category_id Int @id @default(autoincrement())
+  category_name String?
+  menus Menu_Item[]
+}
+
+model Menu_Item {
+  id Int @id
+  item_id String
+  photo String? 
+  price Int
   name String
+  menu Menu @relation(fields: [menu_id], references: [category_id])
+  menu_id Int
+}
+
+model Owner{
+  owner_id Int @id
+  username String
   password String
+  email String @unique
+  phone String @unique
+  store_name String
+  store_address String
+  store_phone String
+  store_operating_time String?
   createdTime DateTime @default(now())
-  updatedTime DateTime @updatedAt
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  username    String
+  name        String
+  password    String
+  createdTime DateTime @default(now())
+  updatedTime DateTime
 }
