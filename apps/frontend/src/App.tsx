@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login, Main, StoreManagement } from './pages';
+import { Login, Main, StoreManagement, TossPay } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -14,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: '/store-management/*',
     element: <StoreManagement />,
+  },
+  {
+    path: '/toss-pay/*',
+    element: <TossPay />,
   },
 ]);
 
