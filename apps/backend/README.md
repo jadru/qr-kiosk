@@ -45,6 +45,26 @@ $ yarn run start:dev
 $ yarn run start:prod
 ```
 
+## DB 관련 작업
+
+```shell
+
+# 최초 Prisma 세팅
+$ npx prisma init
+
+# 현재 올라간 DB 와 프리즈마 동기화 (선택)
+$ npx prisma db pull
+
+$ npx prisma generate
+
+---
+# 이제 DB 작업 후
+$ npx migrate dev # 계속 schema.prisma 를 가장 최근꺼는 기존 꺼 위에...
+
+...
+
+```
+
 ## Test
 
 ```bash
@@ -64,9 +84,9 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 ## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+-   Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+-   Website - [https://nestjs.com](https://nestjs.com/)
+-   Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
