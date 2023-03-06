@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login, Main, StoreManagement, TossPay } from './pages';
+import { Login, Main, StoreManagement, TossPay, TossPaySuccess } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
@@ -16,8 +16,12 @@ const router = createBrowserRouter([
     element: <StoreManagement />,
   },
   {
-    path: '/toss-pay/*',
+    path: '/toss-pay',
     element: <TossPay />,
+  },
+  {
+    path: '/toss-pay/success',
+    element: <TossPaySuccess />,
   },
 ]);
 
