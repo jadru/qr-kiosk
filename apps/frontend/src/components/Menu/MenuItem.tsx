@@ -20,10 +20,10 @@ const MenuItem: React.FC<Props> = ({ index, item, onDelete }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className="card-body">
+          <div className="card-body p-4">
             <div className="ml-4">
               <h4 className="card-title ">{item.itemname}</h4>
-              <h4>{item.itemprice}원</h4>
+              <h4>{parseFloat(item.itemprice).toLocaleString('en')}원</h4>
             </div>
           </div>
           <div>

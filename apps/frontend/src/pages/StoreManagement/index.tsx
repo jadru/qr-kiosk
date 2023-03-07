@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import { Item } from '../../type/Item';
 import { useRecoilState } from 'recoil';
 import MenuList from '../../components/Menu/MenuList';
@@ -8,6 +8,7 @@ import { menuDataState } from '@src/states/atom';
 import { StoreDialog } from './StoreDialog';
 import { NormalLayout } from '@src/components';
 import cloneDeep from 'lodash/cloneDeep';
+import { v4 as uuidv4 } from 'uuid';
 
 const usePreventLeave = () => {
   function listener(e: any) {
@@ -26,13 +27,20 @@ const usePreventLeave = () => {
   return [enablePrevent, disablePrevent];
 };
 
+let templateOfNewMenu = () => {
+  let itemid = uuidv4();
+  return {
+    itemname: '새 메뉴',
+    itemprice: '1000',
+    image: '',
+    itemid,
+  };
+};
+
 export const StoreManagement: React.FC = () => {
   const [enablePrevent, disablePrevent] = usePreventLeave();
   const [menuData, setMenuData] = useRecoilState(menuDataState);
-  const [itemname, setItemName] = useState<string>('');
-  const [itemprice, setItemPrice] = useState<string>('');
-  const [itemid, SetItemId] = useState<string>('');
-  const [fileImage, setFileImage] = useState<string[]>([]);
+  const [newMenu, setNewMenu] = useState<Item>(templateOfNewMenu);
   const [mobile, setMobile] = useState<boolean>(false);
 
   useEffect(() => {
@@ -42,27 +50,25 @@ export const StoreManagement: React.FC = () => {
   const onMobileToggleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setMobile((prev) => !prev);
 
-  const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const imageList: any = event.target.files;
-    let imageArray = [...fileImage];
+  // const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const imageList: any = event.target.files;
+  //   let imageArray = [...fileImage];
 
-    for (let i = 0; i < imageList.length; i++) {
-      const image = URL.createObjectURL(imageList[i]);
-      if (!image) {
-        throw new Error('이미지가 없습니다.');
-      }
-      imageArray.push(image);
-    }
-    setFileImage(imageArray);
-  };
+  //   for (let i = 0; i < imageList.length; i++) {
+  //     const image = URL.createObjectURL(imageList[i]);
+  //     if (!image) {
+  //       throw new Error('이미지가 없습니다.');
+  //     }
+  //     imageArray.push(image);
+  //   }
+  //   setFileImage(imageArray);
+  // };
 
   const handleSubmit = () => {
     let tempData = cloneDeep(menuData);
-    tempData[0].menus.push({ itemname, itemprice, itemid, image: '' });
+    tempData[0].menus.push({ ...newMenu });
     setMenuData(tempData);
-    setItemName('');
-    setItemPrice('');
-    SetItemId('');
+    setNewMenu(templateOfNewMenu);
     enablePrevent();
   };
 
@@ -98,7 +104,7 @@ export const StoreManagement: React.FC = () => {
   };
 
   const dumyCategoryData = {
-    categoryName: '새 카테고리',
+    categoryName: '새 카테고리 ' + (menuData.length + 1),
     menus: [],
   };
 
@@ -118,13 +124,8 @@ export const StoreManagement: React.FC = () => {
             </button>
             <input type="checkbox" id="my-modal-3" className="modal-toggle" />
             <StoreDialog
-              itemname={itemname}
-              setItemName={setItemName}
-              itemprice={itemprice}
-              setItemPrice={setItemPrice}
-              itemid={itemid}
-              SetItemId={SetItemId}
-              handleAddImages={handleAddImages}
+              setNewMenuItem={setNewMenu}
+              newMenuItem={newMenu}
               handleSubmit={handleSubmit}
             />
           </div>

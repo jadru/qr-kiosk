@@ -1,86 +1,96 @@
+import { Item } from '@src/type/Item';
+
 interface Props {
-  handleAddImages: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  itemid: string;
-  itemname: string;
-  itemprice: string;
-  SetItemId: (s: string) => void;
-  setItemName: (s: string) => void;
-  setItemPrice: (s: string) => void;
+  newMenuItem: Item;
+  setNewMenuItem: React.Dispatch<React.SetStateAction<Item>>;
   handleSubmit: () => void;
+  handleImageUpload?: () => void;
 }
 
 export const StoreDialog: React.FC<Props> = ({
-  handleAddImages,
-  itemid,
-  itemname,
-  itemprice,
-  SetItemId,
-  setItemName,
-  setItemPrice,
+  setNewMenuItem,
+  newMenuItem,
   handleSubmit,
-}) => (
-  <div className="modal">
-    <div className="modal-box relative w-full">
-      <label
-        htmlFor="my-modal-3"
-        className="btn btn-sm btn-circle absolute right-2 top-2"
-      >
-        ✕
-      </label>
-      <h2 className="text-lg font-bold">메뉴 추가 다이얼로그</h2>
-      <div>
-        <input
-          type="file"
-          className="file-input w-full max-w-xs file-input-md mt-4"
-          accept="image/*"
-          onChange={handleAddImages}
-        />
-        <div className="form-control mt-4 w-full">
-          <label className="input-group input-group-sm">
-            <span>ID</span>
-            <input
-              type="text"
-              placeholder="ID"
-              className="input input-bordered input-md"
-              value={itemid}
-              onChange={(e) => SetItemId(e.target.value)}
-            />
-          </label>
-        </div>
-        <div className="form-control mt-4  w-full">
-          <label className="input-group input-group-sm">
-            <span>이름</span>
-            <input
-              type="text"
-              placeholder="메뉴 이름"
-              className="input input-bordered input-md"
-              value={itemname}
-              onChange={(e) => setItemName(e.target.value)}
-            />
-          </label>
-        </div>
-        <div className="form-control mt-4">
-          <label className="input-group input-group-sm">
-            <span>가격</span>
-            <input
-              type="number"
-              placeholder="메뉴 가격"
-              className="input input-bordered input-md"
-              value={itemprice}
-              onChange={(e) => setItemPrice(e.target.value)}
-            />
-          </label>
-        </div>
-      </div>
-      <div className="modal-action">
+  handleImageUpload,
+}) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewMenuItem((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) =>
+    e.target.select();
+
+  return (
+    <div className="modal">
+      <div className="modal-box relative w-full">
         <label
           htmlFor="my-modal-3"
-          className="btn btn-sm mt-4"
-          onClick={handleSubmit}
+          className="btn btn-sm btn-circle absolute right-2 top-2"
         >
-          확인
+          ✕
         </label>
+        <h2 className="text-lg font-bold">메뉴 추가 다이얼로그</h2>
+        <div>
+          <input
+            type="file"
+            className="file-input w-full max-w-xs file-input-md mt-4"
+            accept="image/*"
+            name="image"
+            onChange={handleImageUpload}
+          />
+          <div className="form-control mt-4 w-full">
+            <label className="input-group input-group-sm">
+              <span>메뉴 ID</span>
+              <input
+                type="text"
+                placeholder="pizza 1"
+                className="input input-bordered input-md"
+                name="itemid"
+                onFocus={handleFocus}
+                onChange={handleOnChange}
+              />
+            </label>
+          </div>
+          <div className="form-control mt-4  w-full">
+            <label className="input-group input-group-sm">
+              <span>메뉴 이름</span>
+              <input
+                type="text"
+                placeholder="새 메뉴"
+                className="input input-bordered input-md"
+                name="itemname"
+                onFocus={handleFocus}
+                onChange={handleOnChange}
+              />
+            </label>
+          </div>
+          <div className="form-control mt-4">
+            <label className="input-group input-group-sm">
+              <span>메뉴 가격</span>
+              <input
+                type="number"
+                placeholder="1,000"
+                className="input input-bordered input-md"
+                name="itemprice"
+                onFocus={handleFocus}
+                onChange={handleOnChange}
+              />
+            </label>
+          </div>
+        </div>
+        <div className="modal-action">
+          <label
+            htmlFor="my-modal-3"
+            className="btn btn-sm mt-4"
+            onClick={handleSubmit}
+          >
+            확인
+          </label>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
