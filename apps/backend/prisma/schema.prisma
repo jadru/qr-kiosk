@@ -6,24 +6,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-model Menu{
-  category_id Int @id @default(autoincrement())
-  category_name String?
-  menus Menu_Item[]
-}
-
-model Menu_Item {
-  id Int @id
-  item_id String
-  photo String? 
-  price Int
-  name String
-  menu Menu @relation(fields: [menu_id], references: [category_id])
-  menu_id Int
-}
-
-model Owner{
+model Owner{ 
   owner_id Int @id
   username String
   password String
@@ -33,7 +16,27 @@ model Owner{
   store_address String
   store_phone String
   store_operating_time String?
+  menu Menu?
   createdTime DateTime @default(now())
+}
+
+model Menu{
+  id Int @id  @default(autoincrement())
+  category_id Int 
+  category_name String?
+  menus Menu_Item[]
+  owner Owner @relation(fields: [owner_id],references: [owner_id])
+  owner_id Int @unique
+}
+
+model Menu_Item {
+  id Int @id
+  item_id String
+  photo String? 
+  price Int
+  name String
+  menu Menu @relation(fields: [menu_id], references: [id])
+  menu_id Int @unique
 }
 
 model User {
