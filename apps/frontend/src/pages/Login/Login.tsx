@@ -23,7 +23,7 @@ export const Login = () => {
   });
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<LoginInputType> = (data) => {
-    console.log('check');
+    //console.log('check');
     loginAPI(data, navigate);
   };
   // console.log(watch('example'));

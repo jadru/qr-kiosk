@@ -4,7 +4,7 @@ import { NavigateFunction } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 import axios from 'axios';
 
-const login: string = '/login';
+const login: string = 'auth/login';
 const signup: string = '/user';
 
 type loginType = {
@@ -27,7 +27,7 @@ const handleError = (error: any) => {
 };
 const loginAPI = (data: loginType, navigate: NavigateFunction) => {
   axios
-    .post(API_URL + login, null, {
+    .post(API_URL + login, data, {
       params: data,
       headers: headerConfig,
     })
