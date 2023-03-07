@@ -37,9 +37,6 @@ export const Main = () => {
           </div>
         </div>
       </div>
-      <div className="hero min-h-2/3 w-full">
-        <QRCode value="http://facebook.github.io/react/" size={290} />
-      </div>
     </NormalLayout>
   );
 };
