@@ -71,6 +71,20 @@ export const OrderList = () => {
       });
   };
 
+  const minusItem = (item: Item) => {
+    const tempOrderList = cloneDeep(orderList);
+    const index = tempOrderList.findIndex(
+      (value) => value.itemid === item.itemid,
+    );
+    tempOrderList.splice(index, 1);
+    setOrderList(tempOrderList);
+  };
+  const plusItem = (item: Item) => {
+    const tempOrderList = cloneDeep(orderList);
+    tempOrderList.push(item);
+    setOrderList(tempOrderList);
+  };
+
   return (
     <div className="w-full h-screen p-6 space-y-4 bg-slate-100">
       <h1 className="text-center text-2xl font-medium">주문 목록</h1>
@@ -79,15 +93,35 @@ export const OrderList = () => {
           (value: CountedItem) =>
             value.count && (
               <div
-                className="rounded-2xl bg-white px-6 py-5 flex justify-between items-center"
+                className="rounded-2xl bg-white flex justify-between items-center"
                 key={value.itemid}
               >
-                <p className="text-xl font-normal">{value.itemname}</p>
-                <div>
-                  <p className="text-lg font-semibold">
-                    {parseFloat(value.itemprice).toLocaleString('en')}원
-                  </p>
-                  <p>수량: {value.count}개</p>
+                <p className="text-xl font-normal ml-6">{value.itemname}</p>
+                <div className="flex flex-row items-center space-x-4">
+                  <div>
+                    <p className="text-xl font-semibold">
+                      {value.count}개 X{' '}
+                      {parseFloat(value.itemprice).toLocaleString('en')}원 ={' '}
+                      {(
+                        parseFloat(value.itemprice) * value.count
+                      ).toLocaleString('en')}
+                      원
+                    </p>
+                  </div>
+                  <div className="flex flex-col">
+                    <button
+                      className="btn text-xl  rounded-b-none rounded-l-none btn-outline"
+                      onClick={() => plusItem(value)}
+                    >
+                      +
+                    </button>
+                    <button
+                      className="btn text-xl rounded-t-none rounded-l-none btn-outline"
+                      onClick={() => minusItem(value)}
+                    >
+                      -
+                    </button>
+                  </div>
                 </div>
               </div>
             ),

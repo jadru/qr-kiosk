@@ -16,7 +16,7 @@ const headerConfig = {
   'Access-Control-Allow-Origin': '*',
 };
 export const OrderSuccess = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   let orderId = new URL(window.location.href).searchParams.get('orderId');
   let amount = new URL(window.location.href).searchParams.get('amount');
   let paymentKey = new URL(window.location.href).searchParams.get('paymentKey');
@@ -62,11 +62,15 @@ export const OrderSuccess = () => {
       });
   }, []);
   return loading ? (
-    <div>결제중</div>
+    <div className="w-full h-screen p-6 space-y-4 bg-slate-100 flex items-center justify-center">
+      <p className="text-2xl">결제중...</p>
+    </div>
   ) : (
-    <div>
-      <h1>결제 성공!</h1>
-      <Link to="/order/list">결제 리스트로 가기</Link>
+    <div className="w-full h-screen p-6 space-y-4 bg-slate-100 flex items-center justify-center flex-col">
+      <h1 className="text-3xl font-bold text-center">결제 성공!</h1>
+      <Link to="/order/list" className="btn btn-primary btn-wide">
+        결제 리스트로 가기
+      </Link>
     </div>
   );
 };
