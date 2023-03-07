@@ -5,7 +5,7 @@ import { SetterOrUpdater } from 'recoil';
 import axios from 'axios';
 
 const login: string = '/login';
-const signup: string = '/signup';
+const signup: string = '/user';
 
 type loginType = {
   username: string;
@@ -38,15 +38,16 @@ const loginAPI = (data: loginType, navigate: NavigateFunction) => {
       handleError(error);
     });
 };
-const signupAPI = (data: signupType, navigate: NavigateFunction) => {
+const signupAPI = (data: object, navigate: NavigateFunction) => {
   axios
-    .post(API_URL + signup, null, {
-      params: data,
+    .post(API_URL + signup, data, {
+      data: data,
       headers: headerConfig,
     })
     .then((response) => {
-      window.alert('회원가입이 완료되었습니다. 로그인해주세요.');
-      navigate('/login');
+      if (response.status === 200) {
+        navigate('/login');
+      }
     })
     .catch((error) => {
       handleError(error);

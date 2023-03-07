@@ -13,7 +13,7 @@ export const TossPay = () => {
   const naviate = useNavigate();
   const tosskey = VITE_APP_TOSS_CLIENT_KEY;
   const orderList = useRecoilState(orderListState);
-  let oderName = orderList[0].map((value: Item) => {
+  let orderName = orderList[0].map((value: Item) => {
     value.itemname;
   });
   let totalAmount = orderList
@@ -28,7 +28,7 @@ export const TossPay = () => {
         //amount: totalAmount,
         orderId: uuidv4(),
         orderName: '토스페이먼츠 결제 테스트',
-        //orderName: oderName+'외'+orderList[0].length+'건',
+        //orderName: orderName+'외'+orderList[0].length+'건',
         successUrl: 'http://localhost:3000/order/success',
         failUrl: 'http://localhost:3000',
       })

@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from './LoginSchema';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginAPI } from '@src/apis/auth';
+import { loginAPI } from '@src/apis';
 
 type LoginInputType = {
   username: string;
@@ -22,7 +22,8 @@ export const Login = () => {
     resolver: yupResolver(LoginSchema),
   });
   const navigate = useNavigate();
-  const onSubmit: SubmitHandler<LoginInputType> = async (data) => {
+  const onSubmit: SubmitHandler<LoginInputType> = (data) => {
+    console.log('check');
     loginAPI(data, navigate);
   };
   // console.log(watch('example'));
