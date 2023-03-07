@@ -1,41 +1,59 @@
 import React from 'react';
 import { Item } from '../../type/Item';
 import { Draggable } from 'react-beautiful-dnd';
+import { cloneDeep } from 'lodash';
+import { MenuListType } from '@src/type';
 
 interface Props {
   index: number;
   item: Item;
-  items: Item[];
-  setItems: (s: Item[]) => void;
+  onDelete: (id: string) => void;
 }
 
-const MenuItem: React.FC<Props> = ({ index, item, items, setItems }) => {
-  const handleDelte = (id: string) => {
-    setItems(items.filter((item) => item.itemid !== id));
-  };
+const MenuItem: React.FC<Props> = ({ index, item, onDelete }) => {
   return (
     <Draggable draggableId={item.itemid.toString()} index={index}>
       {(provided) => (
         <li
-          className="card card-side bg-base-100 shadow-xl mt-5 w-96"
+          className="card card-bordered card-side glass bg-white h-20"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className="card-title">
-            <div className="ml-4">
-              <h4>{item.itemname}</h4>
-              <h4>{item.itemprice}원</h4>
+          <div className="card-body flex flex-row p-0">
+            {item.image && item.image !== '' && (
+              <img
+                src={item.image}
+                alt=""
+                className="w-20 h-20 rounded-l-2xl"
+              />
+            )}
+            <div className="ml-4 py-3 px-1">
+              <h4 className="card-title ">{item.itemname}</h4>
+              <h4>{parseFloat(item.itemprice).toLocaleString('en')}원</h4>
             </div>
           </div>
-          <div className="card-body">
+          <div>
             <div className="card-actions justify-end">
               <button
-                className="btn btn-primary ml-2 mb-2"
+                className="btn btn-circle btn-sm mr-2 mt-2"
                 type="button"
-                onClick={() => handleDelte(item.itemid)}
+                onClick={() => onDelete(item.itemid)}
               >
-                삭제
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
             </div>
           </div>

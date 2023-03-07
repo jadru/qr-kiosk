@@ -7,14 +7,21 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans],
+        'cute-font': ['Hi Melody', ...defaultTheme.fontFamily.sans],
+        'nato-font': ['Nato Sans', ...defaultTheme.fontFamily.sans],
+        'vintage-font': ['Song Myung', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         'primary-blue': '#015EFF',
       },
+      backgroundImage: {
+        cute: "url('/background/cute_bg.jpg')",
+        vintage: 'url(/background/vintage_bg.jpeg)',
+      },
     },
   },
-  plugins: [require('daisyui')],
+  plugins: [require('@tailwindcss/typography'), require('daisyui')],
   daisyui: {
-    darkTheme: 'corporate',
+    darkTheme: 'winter',
   },
 };

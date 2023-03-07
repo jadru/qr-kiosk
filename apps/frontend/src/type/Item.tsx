@@ -1,5 +1,5 @@
 export interface Item {
-  image: string[];
+  image: any;
   itemid: string;
   itemname: string;
   itemprice: string;

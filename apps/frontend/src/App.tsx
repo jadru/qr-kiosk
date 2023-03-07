@@ -1,11 +1,13 @@
 import React from 'react';
-import { Login, Main, StoreManagement, TossPay, TossPaySuccess } from './pages';
+import { Login, Main, Order, OrderList, StoreManagement, TossPay, TossPaySuccess } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ErrorScreen } from './components';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Main />,
+    errorElement: <ErrorScreen />,
   },
   {
     path: '/login',
@@ -16,6 +18,10 @@ const router = createBrowserRouter([
     element: <StoreManagement />,
   },
   {
+    path: '/order',
+    element: <Order />,
+  },
+  { path: '/order/confirm', element: <OrderList /> },
     path: '/toss-pay',
     element: <TossPay />,
   },

@@ -1,3 +1,4 @@
+import { StoreManageType } from '@src/type';
 import { atom } from 'recoil';
 
 const loginAtom = atom({
@@ -11,42 +12,43 @@ const tokenAtom = atom({
 });
 const menuDataState = atom({
   key: 'menuData',
+  default: [
+    {
+      categoryName: 'Category 1',
+      menus: [
+        {
+          image: '',
+          itemid: 'example1',
+          itemname: 'Example Menu 1',
+          itemprice: '3000',
+        },
+      ],
+    },
+  ],
+});
+
+const storeManageState = atom<StoreManageType>({
+  key: 'storeManage',
   default: {
-    menuList1: [
+    name: '가게명', // string
+    information: {
+      address: '주소광역시 무슨구 어떤동 어떤로 70', // string
+      openTime: '연중무휴', // string
+      phoneNumber: '010-3333-4444', // string
+      facilities: '남여 화장실, 장애인 이용 가능', // string
+      website: 'www.instagram.com/helloworld', // string
+      photos: ['/example.jpg', '/example.jpg', 'example.jpg'], // 사진 url 여러개
+      theme: 'simple', // antic, modren, vintage, simple
+    },
+    menu: [
       {
-        name: '',
-        menuItem: [
+        categoryName: '', // string
+        menus: [
           {
-            image: '',
-            menuid: '',
-            menuname: '',
-            menuprice: '',
-          },
-        ],
-      },
-    ],
-    menuList2: [
-      {
-        name: '',
-        menuItem: [
-          {
-            image: '',
-            menuid: '',
-            menuname: '',
-            menuprice: '',
-          },
-        ],
-      },
-    ],
-    menuList3: [
-      {
-        name: '',
-        menuItem: [
-          {
-            image: '',
-            menuid: '',
-            menuname: '',
-            menuprice: '',
+            itemid: '', // string
+            itemname: '', // string
+            image: '', // string
+            itemprice: '1000', // number
           },
         ],
       },
@@ -54,4 +56,15 @@ const menuDataState = atom({
   },
 });
 
-export { loginAtom, tokenAtom, menuDataState };
+const orderListState = atom({
+  key: 'orderList',
+  default: [],
+});
+
+export {
+  loginAtom,
+  tokenAtom,
+  menuDataState,
+  storeManageState,
+  orderListState,
+};

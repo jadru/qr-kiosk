@@ -1,44 +1,86 @@
 import { Route, Routes } from 'react-router-dom';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import React, { useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import { Item } from '../../type/Item';
+import { useRecoilState } from 'recoil';
 import MenuList from '../../components/Menu/MenuList';
+import { menuDataState, storeManageState } from '@src/states/atom';
+import { StoreDialog } from './StoreDialog';
+import {
+  CuteTheme,
+  ModernTheme,
+  NormalLayout,
+  SimpleTheme,
+  VintageTheme,
+} from '@src/components';
+import cloneDeep from 'lodash/cloneDeep';
+import { v4 as uuidv4 } from 'uuid';
+import { StoreInformationForm } from './StoreInformationForm';
+
+const usePreventLeave = () => {
+  function listener(e: any) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+
+  function enablePrevent() {
+    window.addEventListener('beforeunload', listener);
+  }
+
+  function disablePrevent() {
+    window.removeEventListener('beforeunload', listener);
+  }
+
+  return [enablePrevent, disablePrevent];
+};
+
+let templateOfNewMenu = () => {
+  let itemid = uuidv4();
+  return {
+    itemname: '새 메뉴',
+    itemprice: '1000',
+    image: '',
+    itemid,
+  };
+};
 
 export const StoreManagement: React.FC = () => {
-  const [itemname, setItemName] = useState<string>('');
-  const [itemprice, setItemPrice] = useState<string>('');
-  const [itemid, SetItemId] = useState<string>('');
-  const [fileImage, setFileImage] = useState<string[]>([]);
-  const [items, setItems] = useState<Item[]>([]);
-  const [MenuList2, setMenuList2] = useState<Item[]>([]);
-  const [MenuList3, setMenuList3] = useState<Item[]>([]);
+  const [enablePrevent, disablePrevent] = usePreventLeave();
+  const [storeMange, setStoreManage] = useRecoilState(storeManageState);
+  const [menuData, setMenuData] = useRecoilState(menuDataState);
+  const [newMenu, setNewMenu] = useState<Item>(templateOfNewMenu);
+  const [mobile, setMobile] = useState<boolean>(false);
+  const [theme, setTheme] = useState<string>('simple');
 
-  const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const imageList: any = event.target.files;
-    let imageArray = [...fileImage];
+  useEffect(() => {
+    // @ts-ignore
+    setStoreManage((prev) => {
+      return { ...prev, menu: cloneDeep(menuData) };
+    });
+    setTheme(storeMange.information.theme);
+  }, [menuData]);
 
-    for (let i = 0; i < imageList.length; i++) {
-      const image = URL.createObjectURL(imageList[i]);
-      if (!image) {
-        throw new Error('이미지가 없습니다.');
-      }
-      imageArray.push(image);
+  const onMobileToggleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setMobile((prev) => !prev);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let imageUrl = '';
+    if (e.target.files !== null) {
+      imageUrl = URL.createObjectURL(e.target.files[0]);
+    } else {
+      throw new Error('No Image File');
     }
-    setFileImage(imageArray);
+    setNewMenu((prev) => {
+      return { ...prev, image: imageUrl };
+    });
   };
 
   const handleSubmit = () => {
-    setItems([
-      ...items,
-      {
-        image: fileImage,
-        itemid: itemid,
-        itemname: itemname,
-        itemprice: itemprice,
-      },
-    ]);
-    setItemName('');
-    setItemPrice('');
+    let tempData = cloneDeep(menuData);
+    tempData[0].menus.push({ ...newMenu });
+    setMenuData(tempData);
+    setNewMenu(templateOfNewMenu);
+    enablePrevent();
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -52,127 +94,121 @@ export const StoreManagement: React.FC = () => {
       return;
 
     let add: Item;
-    let menu2 = MenuList2;
-    let menu3 = MenuList3;
 
-    if (source.droppableId === 'menulist1') {
-      add = items[source.index];
-      items.splice(source.index, 1);
-    } else if (source.droppableId === 'menulist2') {
-      add = MenuList2[source.index];
-      menu2.splice(source.index, 1);
-    } else {
-      add = MenuList3[source.index];
-      menu3.splice(source.index, 1);
-    }
+    const temp = cloneDeep(menuData);
 
-    if (destination.droppableId === 'menulist1') {
-      items.splice(destination.index, 0, { ...add });
-    } else if (destination.droppableId === 'menulist2') {
-      menu2.splice(destination.index, 0, { ...add });
-    } else {
-      menu3.splice(destination.index, 0, { ...add });
-    }
+    Array.apply(null, Array(temp.length)).map((_value, index) => {
+      if (source.droppableId === `menulist${index}`) {
+        add = temp[index].menus[source.index];
+        temp[index].menus.splice(source.index, 1);
+      }
+    });
 
-    setItems(items);
-    setMenuList2(menu2);
-    setMenuList3(menu3);
+    Array.apply(null, Array(temp.length)).map((_value, index) => {
+      if (destination.droppableId === `menulist${index}`) {
+        temp[index].menus.splice(destination.index, 0, { ...add });
+      }
+    });
+
+    setMenuData(temp);
+    enablePrevent();
+  };
+
+  const dumyCategoryData = {
+    categoryName: '새 카테고리 ' + (menuData.length + 1),
+    menus: [],
   };
 
   return (
-    <>
-      <div className="flex w-full min-h-screen">
-        <div className="grid h-20 flex-grow place-items-center w-1/3">
-          <div>
-            <label htmlFor="my-modal-3" className="btn btn-sm mt-4">
-              메뉴 추가
+    <NormalLayout>
+      <div className="flex w-full h-full space-x-3">
+        <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
+          <StoreInformationForm
+            setTheme={setTheme}
+            theme={theme}
+            storeManage={storeMange}
+            setStoreManage={setStoreManage}
+          />
+        </div>
+
+        <div className="divider divider-horizontal"></div>
+        <div className="w-2/4 flex flex-col self-center items-center space-y-4 z-50">
+          <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-3">
+            <label className="label cursor-pointer">
+              <span className="label-text mr-4">
+                {mobile ? '모바일 폰' : '데스크탑'}
+              </span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={mobile}
+                onChange={onMobileToggleChange}
+              />
             </label>
-            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-            <div className="modal">
-              <div className="modal-box relative">
-                <label
-                  htmlFor="my-modal-3"
-                  className="btn btn-sm btn-circle absolute right-2 top-2"
-                >
-                  ✕
-                </label>
-                <h2 className="text-lg font-bold">메뉴 추가 다이얼로그</h2>
-                <div>
-                  <input
-                    type="file"
-                    className="file-input w-full max-w-xs file-input-sm mt-4"
-                    accept="image/*"
-                    onChange={handleAddImages}
-                  />
-                  <div className="form-control mt-4">
-                    <label className="input-group input-group-sm">
-                      <span>ID</span>
-                      <input
-                        type="text"
-                        placeholder="ID"
-                        className="input input-bordered input-sm"
-                        value={itemid}
-                        onChange={(e) => SetItemId(e.target.value)}
-                      />
-                    </label>
-                  </div>
-                  <div className="form-control mt-4">
-                    <label className="input-group input-group-sm">
-                      <span>이름</span>
-                      <input
-                        type="text"
-                        placeholder="메뉴 이름"
-                        className="input input-bordered input-sm"
-                        value={itemname}
-                        onChange={(e) => setItemName(e.target.value)}
-                      />
-                    </label>
-                  </div>
-                  <div className="form-control mt-4">
-                    <label className="input-group input-group-sm">
-                      <span>가격</span>
-                      <input
-                        type="number"
-                        placeholder="메뉴 가격"
-                        className="input input-bordered input-sm"
-                        value={itemprice}
-                        onChange={(e) => setItemPrice(e.target.value)}
-                      />
-                    </label>
-                  </div>
-                </div>
-                <div className="modal-action">
-                  <label
-                    htmlFor="my-modal-3"
-                    className="btn btn-sm mt-4"
-                    onClick={handleSubmit}
-                  >
-                    확인
-                  </label>
-                </div>
+            <button className="btn btn-primary">저장</button>
+          </div>
+          <div
+            className={`${
+              mobile
+                ? 'mockup-phone shadow-2xl'
+                : 'w-full h-[85vh] bg-slate-100 scroll-mb-10'
+            }`}
+          >
+            <div className={mobile ? 'camera' : ''}></div>
+            <div className={mobile ? 'display' : ''}>
+              <div
+                className={`${mobile ? 'artboard artboard-demo phone-1' : ''}`}
+              >
+                {(theme === 'simple' && <SimpleTheme preview={true} />) ||
+                  (theme === 'modern' && <ModernTheme preview={true} />) ||
+                  (theme === 'vintage' && <VintageTheme preview={true} />) || (
+                    <CuteTheme preview={true} />
+                  )}
               </div>
             </div>
           </div>
+        </div>
+        <div className="divider divider-horizontal"></div>
+        <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
           <div>
+            <label htmlFor="my-modal-3" className="btn btn-md mt-4 mx-2">
+              메뉴 추가
+            </label>
+            <button
+              onClick={() => setMenuData((prev) => [...prev, dumyCategoryData])}
+              className="btn btn-md mt-4"
+            >
+              카테고리 추가
+            </button>
+            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+            <StoreDialog
+              setNewMenuItem={setNewMenu}
+              newMenuItem={newMenu}
+              handleSubmit={handleSubmit}
+              handleImageUpload={handleImageUpload}
+            />
+          </div>
+          <div className="card bg-slate-100 mt-5 space-y-0 py-3">
             <DragDropContext onDragEnd={onDragEnd}>
-              <div>
-                <MenuList
-                  items={items}
-                  setItems={setItems}
-                  MenuList2={MenuList2}
-                  setMenuList2={setMenuList2}
-                  MenuList3={MenuList3}
-                  setMenuList3={setMenuList3}
-                />
-              </div>
+              {Array.apply(null, Array(menuData.length)).map(
+                (_value, index) => (
+                  <>
+                    <MenuList
+                      key={menuData[index].categoryName + index}
+                      items={menuData}
+                      setItems={setMenuData}
+                      index={index}
+                    />
+                    {index !== menuData.length - 1 && (
+                      <div className="divider"></div>
+                    )}
+                  </>
+                ),
+              )}
             </DragDropContext>
           </div>
         </div>
-        <div className="divider divider-horizontal">{'>'}</div>
-        <div className="grid h-20 flex-grow place-items-center w-2/3">
-          미리보기 위치
-        </div>
       </div>
-    </>
+    </NormalLayout>
   );
 };
