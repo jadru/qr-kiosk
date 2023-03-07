@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import * as bcrypt from 'bcrypt';
 
 @Controller('user')
 @ApiTags('user')
@@ -11,11 +12,12 @@ export class UserController {
 
   @Post()
   @ApiOperation({ summary: '유저 생성 API', description: '유저를 생성한다.' })
-  create(@Body() createUserDto: CreateUserDto) {
+  async create(@Body() createUserDto: CreateUserDto) {
     try {
+      createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
       return this.userService.create(createUserDto);
     } catch (error) {
-      return error;
+      throw new HttpException({ message: "이미 등록된 사용자입니다." }, HttpStatus.BAD_REQUEST);
     }
   }
 
