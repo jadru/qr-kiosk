@@ -40,10 +40,10 @@ model Menu_Item {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  username    String
+  id          Int     @id @default(autoincrement())
+  username    String  @unique
   name        String
   password    String
   createdTime DateTime @default(now())
-  updatedTime DateTime
+  updatedTime DateTime @updatedAt
 }
