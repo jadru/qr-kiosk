@@ -33,7 +33,7 @@ const MenuList: React.FC<Props> = ({ items, setItems, index }: Props) => {
 
   return (
     <>
-      <div className=" w-96 px-4">
+      <div className="px-2">
         <div className="flex flex-row">
           <input
             type="text"
@@ -66,7 +66,7 @@ const MenuList: React.FC<Props> = ({ items, setItems, index }: Props) => {
         <Droppable droppableId={`menulist${index}`}>
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
-              <ul className="px-3 py-4 space-y-2">
+              <ul className="px-2 py-3 space-y-2">
                 {items[index].menus?.length === 0 ? (
                   <p className="text-info-content text-center py-4">
                     메뉴가 없습니다

@@ -2,7 +2,10 @@ import { storeManageState } from '@src/states/atom';
 import { StoreManageType } from '@src/type';
 import { useRecoilValue } from 'recoil';
 
-export const ModernTheme = () => {
+interface Props {
+  preview?: boolean;
+}
+export const ModernTheme: React.FC<Props> = ({ preview = false }) => {
   const Menu = useRecoilValue(storeManageState);
   console.log(Menu);
   return (
@@ -42,7 +45,9 @@ export const ModernTheme = () => {
                       </div>
 
                       <img src={menuItem.image} alt="" />
-                      <button className="btn">주문하기</button>
+                      <button className="btn" disabled={preview}>
+                        주문하기
+                      </button>
                     </div>
                   ))}
                 </>

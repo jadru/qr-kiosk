@@ -15,6 +15,7 @@ import {
 } from '@src/components';
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
+import { StoreInformationForm } from './StoreInformationForm';
 
 const usePreventLeave = () => {
   function listener(e: any) {
@@ -118,35 +119,56 @@ export const StoreManagement: React.FC = () => {
     menus: [],
   };
 
-  const onThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTheme(e.target.value);
-    const temp = cloneDeep(storeMange);
-    // @ts-ignore
-    temp.information = { ...temp.information, theme: e.target.value };
-    setStoreManage(temp);
-  };
-
   return (
     <NormalLayout>
-      <div className="flex w-full h-full">
-        <div className="grid h-20 flex-grow place-items-center w-1/3">
-          <select
-            className="select select-primary w-full max-w-xs"
-            onChange={onThemeChange}
+      <div className="flex w-full h-full space-x-3">
+        <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
+          <StoreInformationForm
+            setTheme={setTheme}
+            theme={theme}
+            storeManage={storeMange}
+            setStoreManage={setStoreManage}
+          />
+        </div>
+
+        <div className="divider divider-horizontal"></div>
+        <div className="w-2/4 flex flex-col self-center items-center space-y-4 z-50">
+          <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-3">
+            <label className="label cursor-pointer">
+              <span className="label-text mr-4">
+                {mobile ? '모바일 폰' : '데스크탑'}
+              </span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={mobile}
+                onChange={onMobileToggleChange}
+              />
+            </label>
+            <button className="btn btn-primary">저장</button>
+          </div>
+          <div
+            className={`${
+              mobile
+                ? 'mockup-phone shadow-2xl'
+                : 'w-full h-[85vh] bg-slate-100 scroll-mb-10'
+            }`}
           >
-            <option value="simple" selected={theme === 'simple'}>
-              심플
-            </option>
-            <option value="cute" selected={theme === 'cute'}>
-              큐트
-            </option>
-            <option value="vintage" selected={theme === 'vintage'}>
-              빈티지
-            </option>
-            <option value="modern" selected={theme === 'modern'}>
-              모던
-            </option>
-          </select>
+            <div className={mobile ? 'camera' : ''}></div>
+            <div className={mobile ? 'display' : ''}>
+              <div
+                className={`${mobile ? 'artboard artboard-demo phone-1' : ''}`}
+              >
+                {(theme === 'simple' && <SimpleTheme />) ||
+                  (theme === 'modern' && <ModernTheme />) ||
+                  (theme === 'vintage' && <VintageTheme />) ||
+                  (theme === 'cute' && <CuteTheme />)}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="divider divider-horizontal"></div>
+        <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
           <div>
             <label htmlFor="my-modal-3" className="btn btn-md mt-4 mx-2">
               메뉴 추가
@@ -183,42 +205,6 @@ export const StoreManagement: React.FC = () => {
                 ),
               )}
             </DragDropContext>
-          </div>
-        </div>
-        <div className="divider divider-horizontal">{'>'}</div>
-        <div className="w-2/3 flex flex-col self-center items-center space-y-4 z-50">
-          <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-3">
-            <label className="label cursor-pointer">
-              <span className="label-text mr-4">
-                {mobile ? '모바일 폰' : '데스크탑'}
-              </span>
-              <input
-                type="checkbox"
-                className="toggle"
-                checked={mobile}
-                onChange={onMobileToggleChange}
-              />
-            </label>
-            <button className="btn btn-primary">저장</button>
-          </div>
-          <div
-            className={`${
-              mobile
-                ? 'mockup-phone shadow-2xl'
-                : 'w-full h-[85vh] bg-slate-100 rounded-3xl scroll-mb-10'
-            }`}
-          >
-            <div className={mobile ? 'camera' : ''}></div>
-            <div className={mobile ? 'display' : ''}>
-              <div
-                className={`${mobile ? 'artboard artboard-demo phone-1' : ''}`}
-              >
-                {(theme === 'simple' && <SimpleTheme />) ||
-                  (theme === 'modern' && <ModernTheme />) ||
-                  (theme === 'vintage' && <VintageTheme />) ||
-                  (theme === 'cute' && <CuteTheme />)}
-              </div>
-            </div>
           </div>
         </div>
       </div>
