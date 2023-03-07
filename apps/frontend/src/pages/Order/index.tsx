@@ -7,6 +7,7 @@ import {
 } from '@src/components';
 import { orderListState, storeManageState } from '@src/states/atom';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { Link } from 'react-router-dom';
 
 export const Order = () => {
   const store = useRecoilValue(storeManageState);
@@ -40,7 +41,9 @@ export const Order = () => {
             .toLocaleString('en')}
           원
         </p>
-        <button className="btn-primary">주문 확인하기</button>
+        <Link to="confirm" className="btn-primary">
+          <button>주문 확인하기</button>
+        </Link>
       </div>
     </>
   );
