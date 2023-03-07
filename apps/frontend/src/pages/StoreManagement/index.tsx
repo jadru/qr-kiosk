@@ -32,7 +32,7 @@ let templateOfNewMenu = () => {
   return {
     itemname: '새 메뉴',
     itemprice: '1000',
-    image: '',
+    image: null,
     itemid,
   };
 };
@@ -50,19 +50,17 @@ export const StoreManagement: React.FC = () => {
   const onMobileToggleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setMobile((prev) => !prev);
 
-  // const handleAddImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const imageList: any = event.target.files;
-  //   let imageArray = [...fileImage];
-
-  //   for (let i = 0; i < imageList.length; i++) {
-  //     const image = URL.createObjectURL(imageList[i]);
-  //     if (!image) {
-  //       throw new Error('이미지가 없습니다.');
-  //     }
-  //     imageArray.push(image);
-  //   }
-  //   setFileImage(imageArray);
-  // };
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let imageUrl = '';
+    if (e.target.files !== null) {
+      imageUrl = URL.createObjectURL(e.target.files[0]);
+    } else {
+      throw new Error('No Image File');
+    }
+    setNewMenu((prev) => {
+      return { ...prev, image: imageUrl };
+    });
+  };
 
   const handleSubmit = () => {
     let tempData = cloneDeep(menuData);
@@ -127,6 +125,7 @@ export const StoreManagement: React.FC = () => {
               setNewMenuItem={setNewMenu}
               newMenuItem={newMenu}
               handleSubmit={handleSubmit}
+              handleImageUpload={handleImageUpload}
             />
           </div>
           <div className="card bg-slate-100 mt-5 space-y-0 py-3">

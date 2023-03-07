@@ -15,13 +15,20 @@ const MenuItem: React.FC<Props> = ({ index, item, onDelete }) => {
     <Draggable draggableId={item.itemid.toString()} index={index}>
       {(provided) => (
         <li
-          className="card card-bordered card-side glass bg-white"
+          className="card card-bordered card-side glass bg-white h-20"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className="card-body p-4">
-            <div className="ml-4">
+          <div className="card-body flex flex-row p-0">
+            {item.image && item.image !== '' && (
+              <img
+                src={item.image}
+                alt=""
+                className="w-20 h-20 rounded-l-2xl"
+              />
+            )}
+            <div className="ml-4 py-3 px-1">
               <h4 className="card-title ">{item.itemname}</h4>
               <h4>{parseFloat(item.itemprice).toLocaleString('en')}원</h4>
             </div>

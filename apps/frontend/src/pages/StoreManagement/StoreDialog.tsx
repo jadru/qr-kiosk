@@ -4,7 +4,7 @@ interface Props {
   newMenuItem: Item;
   setNewMenuItem: React.Dispatch<React.SetStateAction<Item>>;
   handleSubmit: () => void;
-  handleImageUpload?: () => void;
+  handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const StoreDialog: React.FC<Props> = ({
