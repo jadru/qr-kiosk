@@ -24,7 +24,6 @@ model Owner{
 
 model Menu{
   id Int @id  @default(autoincrement())
-  category_id Int 
   category_name String?
   menus Menu_Item[]
   owner Owner @relation(fields: [owner_id],references: [owner_id])

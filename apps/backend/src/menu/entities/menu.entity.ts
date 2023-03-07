@@ -6,9 +6,6 @@ export class MenuEntity implements Menu {
     id: number;
 
     @ApiProperty()
-    category_id: number;
-
-    @ApiProperty()
     category_name: string;
 
     @ApiProperty()
@@ -16,7 +13,7 @@ export class MenuEntity implements Menu {
 
     @ApiProperty()
     createdTime: Date;
-    
+
     @ApiProperty()
     updatedTime: Date;
 }
