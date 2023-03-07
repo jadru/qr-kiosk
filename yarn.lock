@@ -1271,6 +1271,7 @@ __metadata:
     "@hookform/resolvers": ^2.9.11
     "@tailwindcss/typography": ^0.5.9
     "@types/lodash": ^4.14.191
+    "@tosspayments/payment-sdk": ^1.5.0
     "@types/node": ^18.14.0
     "@types/react": ^18.0.21
     "@types/react-beautiful-dnd": ^13.1.3
@@ -1281,6 +1282,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.38.0
     "@vitejs/plugin-react": ^2.1.0
     autoprefixer: ^10.4.12
+    axios: ^1.3.4
     daisyui: ^2.51.1
     eslint: ^8.24.0
     eslint-config-airbnb: ^19.0.4
@@ -1374,6 +1376,33 @@ __metadata:
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
   checksum: ad87447820dd3f24825d2d947ebc03072b20a42bfc96cbafec16bff8bbda6c1a81fcb0be56d5b21968560c5359a0af4038a68ba150c3e1694fe4c109a063bed8
+  languageName: node
+  linkType: hard
+
+"@tosspayments/payment-sdk@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@tosspayments/payment-sdk@npm:1.5.0"
+  dependencies:
+    "@tosspayments/payment__types": ^1.58.1
+  checksum: 48c94aa3aadf34a01b2b8251fc183eda88d953cdae456eb42c5ca29a088f366e5fe70abb0e4ac95930ddc0281e1d6311d0700d571c3b497830b06689de726925
+  languageName: node
+  linkType: hard
+
+"@tosspayments/payment__types@npm:^1.58.1":
+  version: 1.58.1
+  resolution: "@tosspayments/payment__types@npm:1.58.1"
+  dependencies:
+    "@tosspayments/sdk-constants": ^0.2.1
+  checksum: 75cc79dd7dc5460d1360b86d124f9cc7e6ef93af319b9174fb9bf631181177d4daf64a6927cdc5596a6e95fb069c165c6ee8cf9633b28aa281dfb4945f840bcd
+  languageName: node
+  linkType: hard
+
+"@tosspayments/sdk-constants@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "@tosspayments/sdk-constants@npm:0.2.1"
+  dependencies:
+    type-fest: ^2.11.2
+  checksum: a035acc2c682135569d3877c460055d6d6d08ef3c895a91701cee7ab5cbc71d2d31cc25190f506546fc115d729b27dd933f46d2cf8d08e474cc15e4392555133
   languageName: node
   linkType: hard
 
@@ -2532,6 +2561,17 @@ __metadata:
   version: 4.6.3
   resolution: "axe-core@npm:4.6.3"
   checksum: d0c46be92b9707c48b88a53cd5f471b155a2bfc8bf6beffb514ecd14e30b4863e340b5fc4f496d82a3c562048088c1f3ff5b93b9b3b026cb9c3bfacfd535da10
+  languageName: node
+  linkType: hard
+
+"axios@npm:^1.3.4":
+  version: 1.3.4
+  resolution: "axios@npm:1.3.4"
+  dependencies:
+    follow-redirects: ^1.15.0
+    form-data: ^4.0.0
+    proxy-from-env: ^1.1.0
+  checksum: 7440edefcf8498bc3cdf39de00443e8101f249972c83b739c6e880d9d669fea9486372dbe8739e88b3bf8bb1ad15f6106693f206f078f4516fe8fd47b1c3093c
   languageName: node
   linkType: hard
 
@@ -4721,6 +4761,16 @@ __metadata:
   version: 3.2.7
   resolution: "flatted@npm:3.2.7"
   checksum: 427633049d55bdb80201c68f7eb1cbd533e03eac541f97d3aecab8c5526f12a20ccecaeede08b57503e772c769e7f8680b37e8d482d1e5f8d7e2194687f9ea35
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.0":
+  version: 1.15.2
+  resolution: "follow-redirects@npm:1.15.2"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: faa66059b66358ba65c234c2f2a37fcec029dc22775f35d9ad6abac56003268baf41e55f9ee645957b32c7d9f62baf1f0b906e68267276f54ec4b4c597c2b190
   languageName: node
   linkType: hard
 
@@ -7642,6 +7692,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
+  languageName: node
+  linkType: hard
+
 "punycode@npm:^1.3.2":
   version: 1.4.1
   resolution: "punycode@npm:1.4.1"
@@ -9262,7 +9319,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.13.0, type-fest@npm:^2.19.0":
+"type-fest@npm:^2.11.2, type-fest@npm:^2.13.0":
   version: 2.19.0
   resolution: "type-fest@npm:2.19.0"
   checksum: a4ef07ece297c9fba78fc1bd6d85dff4472fe043ede98bd4710d2615d15776902b595abf62bd78339ed6278f021235fb28a96361f8be86ed754f778973a0d278

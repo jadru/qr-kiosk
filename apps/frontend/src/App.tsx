@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login, Main, Order, OrderList, StoreManagement } from './pages';
+import { Login, Main, Order, OrderList, StoreManagement, TossPay, TossPaySuccess } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorScreen } from './components';
 
@@ -22,6 +22,13 @@ const router = createBrowserRouter([
     element: <Order />,
   },
   { path: '/order/confirm', element: <OrderList /> },
+    path: '/toss-pay',
+    element: <TossPay />,
+  },
+  {
+    path: '/success',
+    element: <TossPaySuccess />,
+  },
 ]);
 
 function App() {
