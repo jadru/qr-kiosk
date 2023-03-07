@@ -18,7 +18,7 @@ async function bootstrap() {
     .setTitle('QR Kiosk API')
     .setDescription('QR Kiosk API backend api')
     .setVersion('1.0')
-    .addTag('api')
+    .addTag('QR Kiosk API')
     .build();
 
     const document = SwaggerModule.createDocument(app, documentOption);
