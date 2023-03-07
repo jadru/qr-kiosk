@@ -4,9 +4,15 @@ import React, { useEffect, useId, useState } from 'react';
 import { Item } from '../../type/Item';
 import { useRecoilState } from 'recoil';
 import MenuList from '../../components/Menu/MenuList';
-import { menuDataState } from '@src/states/atom';
+import { menuDataState, storeManageState } from '@src/states/atom';
 import { StoreDialog } from './StoreDialog';
-import { NormalLayout } from '@src/components';
+import {
+  CuteTheme,
+  ModernTheme,
+  NormalLayout,
+  SimpleTheme,
+  VintageTheme,
+} from '@src/components';
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -32,19 +38,25 @@ let templateOfNewMenu = () => {
   return {
     itemname: '새 메뉴',
     itemprice: '1000',
-    image: null,
+    image: '',
     itemid,
   };
 };
 
 export const StoreManagement: React.FC = () => {
   const [enablePrevent, disablePrevent] = usePreventLeave();
+  const [storeMange, setStoreManage] = useRecoilState(storeManageState);
   const [menuData, setMenuData] = useRecoilState(menuDataState);
   const [newMenu, setNewMenu] = useState<Item>(templateOfNewMenu);
   const [mobile, setMobile] = useState<boolean>(false);
+  const [theme, setTheme] = useState<string>('simple');
 
   useEffect(() => {
-    console.log(menuData);
+    // @ts-ignore
+    setStoreManage((prev) => {
+      return { ...prev, menu: cloneDeep(menuData) };
+    });
+    setTheme(storeMange.information.theme);
   }, [menuData]);
 
   const onMobileToggleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -106,10 +118,35 @@ export const StoreManagement: React.FC = () => {
     menus: [],
   };
 
+  const onThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTheme(e.target.value);
+    const temp = cloneDeep(storeMange);
+    // @ts-ignore
+    temp.information = { ...temp.information, theme: e.target.value };
+    setStoreManage(temp);
+  };
+
   return (
     <NormalLayout>
       <div className="flex w-full h-full">
         <div className="grid h-20 flex-grow place-items-center w-1/3">
+          <select
+            className="select select-primary w-full max-w-xs"
+            onChange={onThemeChange}
+          >
+            <option value="simple" selected={theme === 'simple'}>
+              심플
+            </option>
+            <option value="cute" selected={theme === 'cute'}>
+              큐트
+            </option>
+            <option value="vintage" selected={theme === 'vintage'}>
+              빈티지
+            </option>
+            <option value="modern" selected={theme === 'modern'}>
+              모던
+            </option>
+          </select>
           <div>
             <label htmlFor="my-modal-3" className="btn btn-md mt-4 mx-2">
               메뉴 추가
@@ -149,39 +186,8 @@ export const StoreManagement: React.FC = () => {
           </div>
         </div>
         <div className="divider divider-horizontal">{'>'}</div>
-        <div className="w-2/3 flex flex-col self-center items-center space-y-4">
-          <div
-            className={`${
-              mobile
-                ? 'mockup-phone shadow-2xl'
-                : 'w-full h-[85vh] bg-slate-100 rounded-3xl scroll-mb-10'
-            }`}
-          >
-            <div className={mobile ? 'camera' : ''}></div>
-            <div className={mobile ? 'display' : ''}>
-              <div className={mobile ? 'artboard artboard-demo phone-1' : ''}>
-                {menuData &&
-                  Array.apply(null, Array(menuData.length)).map(
-                    (_value, index) => (
-                      <>
-                        <p className="text-3xl">
-                          {menuData[index].categoryName}
-                        </p>
-                        {menuData[index].menus &&
-                          menuData[index].menus.map((item) => (
-                            <p>
-                              {item.itemname}
-                              {item.itemprice}
-                              {item.itemid}
-                            </p>
-                          ))}
-                      </>
-                    ),
-                  )}
-              </div>
-            </div>
-          </div>
-          <div className="form-control glass p-3 rounded-2xl sticky bottom-12 flex flex-row space-x-3">
+        <div className="w-2/3 flex flex-col self-center items-center space-y-4 z-50">
+          <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-3">
             <label className="label cursor-pointer">
               <span className="label-text mr-4">
                 {mobile ? '모바일 폰' : '데스크탑'}
@@ -194,6 +200,25 @@ export const StoreManagement: React.FC = () => {
               />
             </label>
             <button className="btn btn-primary">저장</button>
+          </div>
+          <div
+            className={`${
+              mobile
+                ? 'mockup-phone shadow-2xl'
+                : 'w-full h-[85vh] bg-slate-100 rounded-3xl scroll-mb-10'
+            }`}
+          >
+            <div className={mobile ? 'camera' : ''}></div>
+            <div className={mobile ? 'display' : ''}>
+              <div
+                className={`${mobile ? 'artboard artboard-demo phone-1' : ''}`}
+              >
+                {(theme === 'simple' && <SimpleTheme />) ||
+                  (theme === 'modern' && <ModernTheme />) ||
+                  (theme === 'vintage' && <VintageTheme />) ||
+                  (theme === 'cute' && <CuteTheme />)}
+              </div>
+            </div>
           </div>
         </div>
       </div>

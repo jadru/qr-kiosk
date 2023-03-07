@@ -38,7 +38,7 @@ export const StoreDialog: React.FC<Props> = ({
             type="file"
             className="file-input w-full max-w-xs file-input-md mt-4"
             accept="image/*"
-            name="image"
+            name="imageInputDialog"
             onChange={handleImageUpload}
           />
           <div className="form-control mt-4 w-full">
@@ -78,6 +78,7 @@ export const StoreDialog: React.FC<Props> = ({
                 onFocus={handleFocus}
                 onChange={handleOnChange}
               />
+              <span>원</span>
             </label>
           </div>
         </div>
