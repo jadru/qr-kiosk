@@ -3,32 +3,31 @@ import React, { useEffect } from 'react';
 
 const { VITE_APP_TOSS_SECRET_KEY } = import.meta.env;
 
+const headerConfig = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+};
 export const TossPaySuccess = () => {
   const secretkey = VITE_APP_TOSS_SECRET_KEY;
-  const headerConfig = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-  };
 
   let orderId = new URL(window.location.href).searchParams.get('orderId');
   let amount = new URL(window.location.href).searchParams.get('amount');
   let paymentKey = new URL(window.location.href).searchParams.get('paymentKey');
 
   useEffect(() => {
+    console.log('Basic ' + window.btoa(secretkey));
     axios
       .post(
-        // `http://localhost:3000/toss-pay/success?orderId=${orderId}&paymentKey=${paymentKey}&amount=${amount}`,
         'https://api.tosspayments.com/v1/payments/confirm',
-        null,
+        {
+          paymentKey: paymentKey,
+          amount: amount,
+          orderId: orderId,
+        },
         {
           headers: {
             ...headerConfig,
-            Authorization: 'Basic ' + secretkey,
-          },
-          data: {
-            orderId: orderId,
-            paymentKey: paymentKey,
-            amount: amount,
+            Authorization: `Basic ${window.btoa(secretkey)}`,
           },
         },
       )

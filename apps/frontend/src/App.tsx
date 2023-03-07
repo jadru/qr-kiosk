@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     element: <TossPay />,
   },
   {
-    path: '/toss-pay/success',
+    path: '/success',
     element: <TossPaySuccess />,
   },
 ]);

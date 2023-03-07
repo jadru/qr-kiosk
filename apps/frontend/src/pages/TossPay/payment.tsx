@@ -1,27 +1,28 @@
 import React, { useEffect } from 'react';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const { VITE_APP_TOSS_CLIENT_KEY } = import.meta.env;
 
 export const TossPay = () => {
+  const naviate = useNavigate();
   const tosskey = VITE_APP_TOSS_CLIENT_KEY;
-  //const tosskey = 'test_ck_OyL0qZ4G1VOQwL209Ln8oWb2MQYg';
   async function tosspayment() {
-    console.log(tosskey);
     const tossPayments = await loadTossPayments(tosskey);
-
+    console.log(tosskey);
     tossPayments
       .requestPayment('카드', {
         amount: 1000,
-        orderId: '123456789',
+        orderId: 'Rjbb0lCkcw-JmUk',
         orderName: '토스페이먼츠 결제 테스트',
-        successUrl: 'http://localhost:3000/toss-pay/success',
+        successUrl: 'http://localhost:3000/success',
         failUrl: 'http://localhost:3000',
       })
-      .then(function (data) {
+      .then((res) => {
         alert('결제가 완료되었습니다.');
-        console.log(data);
+        console.log(res);
+        naviate('/success');
       })
       .catch(function (error) {
         if (error.code === 'USER_CANCEL') {
