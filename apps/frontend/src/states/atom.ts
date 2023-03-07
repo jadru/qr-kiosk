@@ -61,10 +61,19 @@ const orderListState = atom({
   default: [],
 });
 
+const orderPlaceState = atom({
+  key: 'orderPlace',
+  default: {
+    storeId: 'default',
+    tableId: '2',
+  },
+});
+
 export {
   loginAtom,
   tokenAtom,
   menuDataState,
   storeManageState,
   orderListState,
+  orderPlaceState,
 };

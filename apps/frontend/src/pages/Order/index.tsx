@@ -5,19 +5,25 @@ import {
   SimpleTheme,
   VintageTheme,
 } from '@src/components';
-import { orderListState, storeManageState } from '@src/states/atom';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { Link } from 'react-router-dom';
+import {
+  orderListState,
+  orderPlaceState,
+  storeManageState,
+} from '@src/states/atom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Order = () => {
   const store = useRecoilValue(storeManageState);
+  const setStoreInfo = useSetRecoilState(orderPlaceState);
   const [orderList, setOrderList] = useRecoilState(orderListState);
-
+  const navigate = useNavigate();
   useEffect(() => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
-    let storeId = params.get('store');
+    let storeId = params.get('storeId');
     let tableId = params.get('tableId');
+    setStoreInfo({ storeId, tableId });
   }, [window.location.search]);
 
   return (
@@ -41,9 +47,19 @@ export const Order = () => {
             .toLocaleString('en')}
           원
         </p>
-        <Link to="confirm" className="btn-primary">
-          <button>주문 확인하기</button>
-        </Link>
+        <button
+          onClick={() => {
+            navigate('/order/confirm');
+          }}
+          className="btn-primary"
+          disabled={
+            orderList
+              // @ts-ignore
+              .reduce((prev, curr) => prev + Number(curr.itemprice), 0) === 0
+          }
+        >
+          주문 확인하기
+        </button>
       </div>
     </>
   );

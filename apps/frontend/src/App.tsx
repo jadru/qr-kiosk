@@ -5,8 +5,7 @@ import {
   Order,
   OrderList,
   StoreManagement,
-  TossPay,
-  TossPaySuccess,
+  OrderSuccess,
   Signup,
 } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -35,12 +34,8 @@ const router = createBrowserRouter([
     element: <OrderList />,
   },
   {
-    path: '/order/payment',
-    element: <TossPay />,
-  },
-  {
     path: '/order/success',
-    element: <TossPaySuccess />,
+    element: <OrderSuccess />,
   },
   {
     path: '/signup',
