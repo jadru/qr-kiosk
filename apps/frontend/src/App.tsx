@@ -7,6 +7,7 @@ import {
   StoreManagement,
   TossPay,
   TossPaySuccess,
+  Signup,
 } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorScreen } from './components';
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: '/order/success',
     element: <TossPaySuccess />,
+  },
+  {
+    path: '/signup',
+    element: <Signup />,
   },
 ]);
 
