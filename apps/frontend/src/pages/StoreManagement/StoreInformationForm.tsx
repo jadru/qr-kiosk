@@ -34,6 +34,18 @@ export const StoreInformationForm: React.FC<Props> = ({
     setStoreManage(temp);
   };
 
+  const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const temp = cloneDeep(storeManage);
+    let images = [];
+    if (e.target.files !== null) {
+      for (let i = 0; i < e.target.files.length; i++) {
+        images.push(URL.createObjectURL(e.target.files[i]));
+      }
+    }
+    temp.information = { ...temp.information, photos: [...images] };
+    setStoreManage(temp);
+  };
+
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) =>
     e.target.select();
   return (
@@ -160,6 +172,18 @@ export const StoreInformationForm: React.FC<Props> = ({
             onFocus={handleFocus}
           />
         </label>
+      </div>
+      <div className="form-control">
+        <label className="label">
+          <span className="label-text">이미지 변경</span>
+        </label>
+        <input
+          type="file"
+          className="file-input w-full"
+          aria-label="이미지 변경"
+          multiple
+          onChange={onImageChange}
+        />
       </div>
     </div>
   );
