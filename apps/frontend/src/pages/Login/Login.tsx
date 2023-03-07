@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from './LoginSchema';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginAPI } from '@src/apis';
+import { useEffect } from 'react';
 
 type LoginInputType = {
   username: string;
@@ -21,9 +22,13 @@ export const Login = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(LoginSchema),
   });
+  useEffect(() => {
+    console.log(isSubmitting);
+  }, [isSubmitting]);
   const navigate = useNavigate();
+  const onError = (errors: any, e: any) => console.log(errors, e);
   const onSubmit: SubmitHandler<LoginInputType> = (data) => {
-    //console.log('check');
+    console.log('check');
     loginAPI(data, navigate);
   };
   // console.log(watch('example'));
@@ -71,7 +76,10 @@ export const Login = () => {
               </div>
             </div>
             <div className="form-control mt-3">
-              <button type="submit" className="btn btn-primary">
+              <button
+                onClick={handleSubmit(onSubmit, onError)}
+                className="btn btn-primary"
+              >
                 로그인
               </button>
             </div>

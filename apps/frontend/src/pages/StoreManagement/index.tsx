@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import React, { useEffect, useId, useState } from 'react';
 import { Item } from '../../type/Item';
@@ -16,6 +16,7 @@ import {
 import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
 import { StoreInformationForm } from './StoreInformationForm';
+import { QRcodeDialog } from './QRcodeDialog';
 
 const usePreventLeave = () => {
   function listener(e: any) {
@@ -130,9 +131,14 @@ export const StoreManagement: React.FC = () => {
             setStoreManage={setStoreManage}
           />
         </div>
-
+        <div className="divider divider-horizontal"></div>
         <div className="divider divider-horizontal"></div>
         <div className="w-2/4 flex flex-col self-center items-center space-y-4 z-50">
+          <label htmlFor="my-modal-6" className="btn btn-md mt-4 mx-2">
+            저장
+          </label>
+          <input type="checkbox" id="my-modal-6" className="modal-toggle" />
+          <QRcodeDialog />
           <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-3">
             <label className="label cursor-pointer">
               <span className="label-text mr-4">
@@ -145,7 +151,6 @@ export const StoreManagement: React.FC = () => {
                 onChange={onMobileToggleChange}
               />
             </label>
-            <button className="btn btn-primary">저장</button>
           </div>
           <div
             className={`${
