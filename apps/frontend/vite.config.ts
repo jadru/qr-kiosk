@@ -24,6 +24,12 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/payments': {
+        target: 'https://api.tosspayments.com/v1/payments',
+        changeOrigin: true,
+        secure: true,
+        ws: true,
+      },
     },
     host: '0.0.0.0',
     port: 3000,
