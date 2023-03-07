@@ -2,7 +2,8 @@ import { NormalLayout, ErrorMessage } from '@src/components';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from './LoginSchema';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { loginAPI } from '@src/apis/auth';
 
 type LoginInputType = {
   username: string;
@@ -20,7 +21,10 @@ export const Login = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(LoginSchema),
   });
-  const onSubmit: SubmitHandler<LoginInputType> = (data) => console.log(data);
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<LoginInputType> = async (data) => {
+    loginAPI(data, navigate);
+  };
   // console.log(watch('example'));
   return (
     <NormalLayout>

@@ -3,14 +3,16 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { SignupSchema } from './SignupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { NormalLayout, ErrorMessage } from '@src/components';
+import { signupAPI } from '@src/apis/auth';
+import { useNavigate } from 'react-router-dom';
 
 type SignupInputType = {
   username: string;
   password: string;
   passwordCheck: string;
   name: string;
-  birthday: string;
-  email: string;
+  //birthday: string;
+  //email: string;
 };
 
 export const Signup = () => {
@@ -24,7 +26,10 @@ export const Signup = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(SignupSchema),
   });
-  const onSubmit: SubmitHandler<SignupInputType> = (data) => console.log(data);
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<SignupInputType> = (data) => {
+    signupAPI(data, navigate);
+  };
   return (
     <NormalLayout>
       <div className="flex self-center items-center flex-col space-y-3">
