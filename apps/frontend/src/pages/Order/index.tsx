@@ -60,7 +60,7 @@ export const Order = () => {
             // @ts-ignore
             .reduce((prev, curr) => prev + Number(curr.itemprice), 0)
             .toLocaleString('en')}
-          원 주문 확인
+          원 장바구니
         </button>
       </div>
     </>

@@ -1,5 +1,6 @@
 import { successedOrderState } from '@src/states/atom';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 export const LastOrder = () => {
@@ -25,6 +26,11 @@ export const LastOrder = () => {
             </div>
           ))}
         </div>
+      </div>
+      <div className="btm-nav content-between">
+        <Link className="btn-primary text-xl" to={'/order'}>
+          주문하기
+        </Link>
       </div>
     </div>
   );

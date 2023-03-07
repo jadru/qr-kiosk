@@ -9,7 +9,7 @@ import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const { VITE_APP_TOSS_CLIENT_KEY } = import.meta.env;
 
@@ -72,16 +72,18 @@ export const OrderList = () => {
   };
 
   const minusItem = (item: Item) => {
-    const tempOrderList = cloneDeep(orderList);
+    const tempOrderList: Item[] = cloneDeep(orderList);
     const index = tempOrderList.findIndex(
       (value) => value.itemid === item.itemid,
     );
     tempOrderList.splice(index, 1);
+    // @ts-ignore
     setOrderList(tempOrderList);
   };
   const plusItem = (item: Item) => {
-    const tempOrderList = cloneDeep(orderList);
+    const tempOrderList: Item[] = cloneDeep(orderList);
     tempOrderList.push(item);
+    // @ts-ignore
     setOrderList(tempOrderList);
   };
 
@@ -131,6 +133,9 @@ export const OrderList = () => {
         {storeValue.tableId}번 테이블로 주문합니다
       </p>
       <div className="btm-nav content-between">
+        <Link className="btn-secondary text-xl" to={'/order'}>
+          추가 주문
+        </Link>
         <button
           className="btn-primary text-xl"
           onClick={tosspayment}
