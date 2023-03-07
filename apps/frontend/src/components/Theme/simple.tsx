@@ -15,7 +15,7 @@ export const SimpleTheme: React.FC<Props> = ({
   console.log(Menu);
   return (
     <div className="w-full h-full bg-white py-10 px-5 bg-scroll overflow-scroll -z-0">
-      <h1 className="text-5xl font-bold text-center font-nato-font">
+      <h1 className="text-5xl font-bold text-center font-nato-fon my-5">
         {Menu.name}
       </h1>
       <div className="flex flex-col">
@@ -37,25 +37,29 @@ export const SimpleTheme: React.FC<Props> = ({
       <div className="grid">
         {Menu.menu.map((category) => (
           <div
-            className="flex flex-col space-y-2 flex-wrap my-3 x-2 space-x-2 font-nato-font"
+            className="flex flex-col space-y-2 flex-wrap my-3 font-nato-font"
             key={category.categoryName}
           >
             {category.menus.length > 0 && (
               <>
-                <h3 className="text-2xl">{category.categoryName}</h3>
+                <h3 className="text-2xl mb-4">{category.categoryName}</h3>
                 {category.menus.map((menuItem) => (
                   <div
-                    className="flex flex-row bg-slate-50/75 rounded-2xl px-4 py-2 mx-2 h-32 items-center justify-center"
+                    className="flex flex-row bg-slate-50/75 rounded-2xl h-32 items-center justify-between space-x-6 pr-6"
                     key={menuItem.itemid}
                   >
-                    <div className="w-2/3">
+                    <img
+                      src={menuItem.image}
+                      alt=""
+                      className="w-24 h-full rounded-l-2xl"
+                    />
+                    <div className="w-1/2">
                       <p className="text-2xl font-bold">{menuItem.itemname}</p>
                       <p className="text-lg font-normal">
                         {parseFloat(menuItem.itemprice).toLocaleString('en')}원
                       </p>
                     </div>
 
-                    <img src={menuItem.image} alt="" />
                     <button
                       className="btn btn-outline"
                       id={menuItem.itemid}
@@ -68,7 +72,7 @@ export const SimpleTheme: React.FC<Props> = ({
                         })
                       }
                     >
-                      주문하기
+                      주문
                     </button>
                   </div>
                 ))}

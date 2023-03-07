@@ -41,10 +41,15 @@ export const ModernTheme: React.FC<Props> = ({
                 <>
                   {category.menus.map((menuItem) => (
                     <div
-                      className="flex flex-row px-4 py-2 mx-2 h-32 items-center justify-center bg-white card"
+                      className="flex flex-row h-32 items-center justify-between space-x-6 pr-6 bg-white card"
                       key={menuItem.itemid}
                     >
-                      <div className="w-2/3">
+                      <img
+                        src={menuItem.image}
+                        alt=""
+                        className="w-24 h-full rounded-l-2xl"
+                      />
+                      <div className="w-1/2">
                         <p className="text-2xl font-bold">
                           {menuItem.itemname}
                         </p>
@@ -53,8 +58,6 @@ export const ModernTheme: React.FC<Props> = ({
                           원
                         </p>
                       </div>
-
-                      <img src={menuItem.image} alt="" />
                       <button
                         className="btn"
                         disabled={preview}

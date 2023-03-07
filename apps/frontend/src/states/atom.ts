@@ -17,7 +17,7 @@ const menuDataState = atom({
       categoryName: 'Category 1',
       menus: [
         {
-          image: '',
+          image: '/example.jpg',
           itemid: 'example1',
           itemname: 'Example Menu 1',
           itemprice: '3000',
@@ -42,13 +42,13 @@ const storeManageState = atom<StoreManageType>({
     },
     menu: [
       {
-        categoryName: '', // string
+        categoryName: 'Category 1',
         menus: [
           {
-            itemid: '', // string
-            itemname: '', // string
-            image: '', // string
-            itemprice: '1000', // number
+            image: '/example.jpg',
+            itemid: 'example1',
+            itemname: 'Example Menu 1',
+            itemprice: '3000',
           },
         ],
       },
@@ -69,6 +69,23 @@ const orderPlaceState = atom({
   },
 });
 
+const successedOrderState = atom({
+  key: 'successedOrder',
+  default: [
+    {
+      orderid: 'aaa',
+      itemlist: [],
+      totalprice: 1000,
+      ordertime: '2023-03-08T01:35:03+09:00',
+    },
+  ],
+});
+
+const countedOrderListState = atom({
+  key: 'countedOrderList',
+  default: [],
+});
+
 export {
   loginAtom,
   tokenAtom,
@@ -76,4 +93,6 @@ export {
   storeManageState,
   orderListState,
   orderPlaceState,
+  successedOrderState,
+  countedOrderListState,
 };

@@ -46,10 +46,15 @@ export const VintageTheme: React.FC<Props> = ({
                   <h3 className="text-2xl">{category.categoryName}</h3>
                   {category.menus.map((menuItem) => (
                     <div
-                      className="flex flex-row outline-dotted px-4 py-2 h-32 items-center justify-center"
+                      className="flex flex-row outline-dotted h-32 items-center justify-between space-x-6 pr-6"
                       key={menuItem.itemid}
                     >
-                      <div className="w-2/3">
+                      <img
+                        src={menuItem.image}
+                        alt=""
+                        className="w-24 h-full"
+                      />
+                      <div className="w-1/2">
                         <p className="text-2xl font-bold">
                           {menuItem.itemname}
                         </p>
@@ -58,8 +63,6 @@ export const VintageTheme: React.FC<Props> = ({
                           원
                         </p>
                       </div>
-
-                      <img src={menuItem.image} alt="" />
                       <button
                         className="btn btn-outline"
                         id={menuItem.itemid}

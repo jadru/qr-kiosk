@@ -23,7 +23,9 @@ export const Order = () => {
     let params = new URLSearchParams(search);
     let storeId = params.get('storeId');
     let tableId = params.get('tableId');
-    setStoreInfo({ storeId, tableId });
+    !storeId || !tableId
+      ? setStoreInfo({ storeId: 'default', tableId: '0' })
+      : setStoreInfo({ storeId, tableId });
   }, [window.location.search]);
 
   return (
@@ -37,28 +39,28 @@ export const Order = () => {
         (store.information.theme === 'modern' && (
           <ModernTheme onOrderButtonClick={setOrderList} />
         )) || <CuteTheme onOrderButtonClick={setOrderList} />}
+      <div className="h-16"></div>
       <div className="btm-nav content-between">
-        <p className="text-xl font-bold">담긴 음식 {orderList.length}개</p>
-        <p className="text-xl font-bold">
-          총 가격{' '}
-          {orderList
-            // @ts-ignore
-            .reduce((prev, curr) => prev + Number(curr.itemprice), 0)
-            .toLocaleString('en')}
-          원
-        </p>
+        <Link to={'/order/list'} className="text-xl btn-accent">
+          이전 주문
+        </Link>
         <button
           onClick={() => {
             navigate('/order/confirm');
           }}
-          className="btn-primary"
+          className="text-xl btn-primary"
           disabled={
             orderList
               // @ts-ignore
               .reduce((prev, curr) => prev + Number(curr.itemprice), 0) === 0
           }
         >
-          주문 확인하기
+          {orderList.length}개 {' : '}
+          {orderList
+            // @ts-ignore
+            .reduce((prev, curr) => prev + Number(curr.itemprice), 0)
+            .toLocaleString('en')}
+          원 주문 확인
         </button>
       </div>
     </>

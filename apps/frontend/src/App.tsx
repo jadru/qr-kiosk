@@ -7,6 +7,7 @@ import {
   StoreManagement,
   OrderSuccess,
   Signup,
+  LastOrder,
 } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorScreen } from './components';
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: '/order/success',
     element: <OrderSuccess />,
+  },
+  {
+    path: '/order/list',
+    element: <LastOrder />,
   },
   {
     path: '/signup',
