@@ -1,11 +1,15 @@
 import { storeManageState } from '@src/states/atom';
 import { StoreManageType } from '@src/type';
-import { useRecoilValue } from 'recoil';
+import { SetterOrUpdater, useRecoilValue } from 'recoil';
 
 interface Props {
   preview?: boolean;
+  onOrderButtonClick?: any;
 }
-export const ModernTheme: React.FC<Props> = ({ preview = false }) => {
+export const ModernTheme: React.FC<Props> = ({
+  preview = false,
+  onOrderButtonClick,
+}) => {
   const Menu = useRecoilValue(storeManageState);
   console.log(Menu);
   return (
@@ -19,7 +23,7 @@ export const ModernTheme: React.FC<Props> = ({ preview = false }) => {
       </div>
       <div className="carousel rounded-box">
         {Menu.information.photos.map((photoUrl, index) => (
-          <div className="carousel-item">
+          <div className="carousel-item" key={photoUrl}>
             <img src={photoUrl} alt={'photo' + index} />
           </div>
         ))}
@@ -29,11 +33,17 @@ export const ModernTheme: React.FC<Props> = ({ preview = false }) => {
         {Menu.menu.map((category) => (
           <>
             {category.menus.length > 0 && (
-              <div className="flex flex-col space-y-2 flex-wrap px-4 py-5 space-x-2 font-nato-font card bg-slate-100 shadow-2xl">
+              <div
+                className="flex flex-col space-y-2 flex-wrap px-4 py-5 space-x-2 font-nato-font card bg-slate-100 shadow-2xl"
+                key={category.categoryName}
+              >
                 <h3 className="text-2xl">{category.categoryName}</h3>
                 <>
                   {category.menus.map((menuItem) => (
-                    <div className="flex flex-row px-4 py-2 mx-2 h-32 items-center justify-center bg-white card">
+                    <div
+                      className="flex flex-row px-4 py-2 mx-2 h-32 items-center justify-center bg-white card"
+                      key={menuItem.itemid}
+                    >
                       <div className="w-2/3">
                         <p className="text-2xl font-bold">
                           {menuItem.itemname}
@@ -45,7 +55,18 @@ export const ModernTheme: React.FC<Props> = ({ preview = false }) => {
                       </div>
 
                       <img src={menuItem.image} alt="" />
-                      <button className="btn" disabled={preview}>
+                      <button
+                        className="btn"
+                        disabled={preview}
+                        id={menuItem.itemid}
+                        value={menuItem.itemprice}
+                        name={menuItem.itemname}
+                        onClick={() =>
+                          onOrderButtonClick((prev: any) => {
+                            return [...prev, menuItem];
+                          })
+                        }
+                      >
                         주문하기
                       </button>
                     </div>

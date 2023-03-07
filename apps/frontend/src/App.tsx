@@ -1,5 +1,5 @@
 import React from 'react';
-import { Login, Main, StoreManagement } from './pages';
+import { Login, Main, Order, StoreManagement } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorScreen } from './components';
 
@@ -16,6 +16,10 @@ const router = createBrowserRouter([
   {
     path: '/store-management/*',
     element: <StoreManagement />,
+  },
+  {
+    path: '/order',
+    element: <Order />,
   },
 ]);
 

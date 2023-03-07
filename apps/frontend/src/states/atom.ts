@@ -1,5 +1,5 @@
 import { StoreManageType } from '@src/type';
-import { atom, RecoilState } from 'recoil';
+import { atom } from 'recoil';
 
 const loginAtom = atom({
   key: 'loginAtom',
@@ -48,7 +48,7 @@ const storeManageState = atom<StoreManageType>({
             itemid: '', // string
             itemname: '', // string
             image: '', // string
-            itemprice: '', // number
+            itemprice: '1000', // number
           },
         ],
       },
@@ -56,4 +56,15 @@ const storeManageState = atom<StoreManageType>({
   },
 });
 
-export { loginAtom, tokenAtom, menuDataState, storeManageState };
+const orderListState = atom({
+  key: 'orderList',
+  default: [],
+});
+
+export {
+  loginAtom,
+  tokenAtom,
+  menuDataState,
+  storeManageState,
+  orderListState,
+};

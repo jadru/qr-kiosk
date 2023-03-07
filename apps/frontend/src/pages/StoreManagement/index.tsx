@@ -159,10 +159,11 @@ export const StoreManagement: React.FC = () => {
               <div
                 className={`${mobile ? 'artboard artboard-demo phone-1' : ''}`}
               >
-                {(theme === 'simple' && <SimpleTheme />) ||
-                  (theme === 'modern' && <ModernTheme />) ||
-                  (theme === 'vintage' && <VintageTheme />) ||
-                  (theme === 'cute' && <CuteTheme />)}
+                {(theme === 'simple' && <SimpleTheme preview={true} />) ||
+                  (theme === 'modern' && <ModernTheme preview={true} />) ||
+                  (theme === 'vintage' && <VintageTheme preview={true} />) || (
+                    <CuteTheme preview={true} />
+                  )}
               </div>
             </div>
           </div>
