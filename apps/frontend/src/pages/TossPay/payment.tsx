@@ -14,7 +14,7 @@ export const TossPay = () => {
     tossPayments
       .requestPayment('카드', {
         amount: 1000,
-        orderId: 'Rjbb0lCkcw-JmUk',
+        orderId: 'Rjbb0lCkcw-JmUk1',
         orderName: '토스페이먼츠 결제 테스트',
         successUrl: 'http://localhost:3000/success',
         failUrl: 'http://localhost:3000',

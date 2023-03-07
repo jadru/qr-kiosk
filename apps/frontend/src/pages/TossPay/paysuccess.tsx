@@ -38,6 +38,17 @@ export const TossPaySuccess = () => {
           });
         }
         console.log(res);
+        console.log(
+          JSON.stringify({
+            orderId: res.data.orderId,
+            status: res.data.status,
+            approvedAt: res.data.approvedAt,
+            requestAt: res.data.requestAt,
+            totalAmount: res.data.totalAmount,
+            orderName: res.data.orderName,
+            method: res.data.method,
+          }), // 서버에 전송해야하는것들
+        );
       })
       .catch((err) => {
         console.log(err);
