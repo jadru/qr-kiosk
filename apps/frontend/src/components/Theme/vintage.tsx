@@ -19,15 +19,16 @@ export const VintageTheme: React.FC<Props> = ({
       </h1>
       <div className="flex flex-col outline-1 outline">
         <div className="carousel w-fuill">
-          {Menu.information.photos.map(
-            (photoUrl, index) =>
-              photoUrl &&
-              photoUrl !== '' && (
-                <div className="carousel-item w-2/3" key={photoUrl}>
-                  <img src={photoUrl} alt={'photo' + index} />
-                </div>
-              ),
-          )}
+          {Menu.information.photos && Menu.information.photos.length > 0 &&
+            Menu.information.photos.map(
+              (photoUrl, index) =>
+                photoUrl &&
+                photoUrl !== '' && (
+                  <div className="carousel-item w-2/3" key={photoUrl}>
+                    <img src={photoUrl} alt={'photo' + index} />
+                  </div>
+                ),
+            )}
         </div>
         <div className="text-left mt-5 font-vintage-font text-lg w-full p-2">
           <p>{Menu.information.address}</p>

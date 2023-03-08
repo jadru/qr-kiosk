@@ -40,7 +40,7 @@ const loginAPI = (data: object, navigate: NavigateFunction) => {
     })
     .then((response) => {
       console.log(response.data.accessToken); // accessToken
-      navigate('/store-management');
+      navigate('/owner/manage');
       window.alert('로그인 성공');
     })
     .catch((error) => {
@@ -93,6 +93,7 @@ const parseJson = (json: StoreManageTypeBack): StoreManageType => {
 const OwnerInfoAPI = (
   setStore: SetterOrUpdater<StoreManageType>,
   owner_id?: string,
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   axios
     .get(API_URL + ownerifo + owner_id, {
@@ -100,7 +101,7 @@ const OwnerInfoAPI = (
     })
     .then((response) => {
       setStore(parseJson(response.data[0].information));
-      console.log(parseJson(response.data[0].information));
+      setLoading && setLoading(false);
     })
     .catch((error) => {
       handleError(error);

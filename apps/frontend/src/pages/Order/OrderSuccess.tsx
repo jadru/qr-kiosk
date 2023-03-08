@@ -59,7 +59,7 @@ export const OrderSuccess = () => {
       })
       .catch((err) => {
         alert(err.response.data.message);
-        navigate('/order/confirm');
+        navigate(`/${storeId}/${tableId}/order/confirm`);
       });
   }, []);
   return loading ? (

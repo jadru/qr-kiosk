@@ -7,11 +7,11 @@ import {
 import { CountedItem, CountedItemList, Item } from '@src/type/Item';
 import { cloneDeep } from 'lodash';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { OwnerInfoAPI } from '@src/apis';
+import { OwnerInfoAPI } from '@src/apis/api';
 
 const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
 
@@ -45,12 +45,12 @@ export const OrderList = () => {
         // @ts-ignore
         .reduce((prev, curr) => prev + Number(curr.itemprice), 0) === 0
     ) {
-      navigate('/order');
+      navigate(`/${storeId}/${tableId}/order`);
     }
     console.log(orderList);
   }, [orderList]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log(storeId);
     OwnerInfoAPI(setStore, storeId);
   }, []);
@@ -67,15 +67,15 @@ export const OrderList = () => {
         failUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order`,
       })
       .then((res) => {
-        navigate('/order/success');
+        navigate(`/${storeId}/${tableId}/success`);
       })
       .catch(function (error) {
         if (error.code === 'USER_CANCEL') {
           alert('결제를 취소하셨습니다.');
-          navigate('/order');
+          navigate(`/${storeId}/${tableId}/order`);
         } else {
           alert('결제에 실패하였습니다.');
-          navigate('/order');
+          navigate(`/${storeId}/${tableId}/order`);
         }
       });
   };

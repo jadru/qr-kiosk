@@ -21,15 +21,16 @@ export const ModernTheme: React.FC<Props> = ({
         <p>{Menu.information.phoneNumber}</p>
       </div>
       <div className="carousel rounded-box">
-        {Menu.information.photos.map(
-          (photoUrl, index) =>
-            photoUrl &&
-            photoUrl !== '' && (
-              <div className="carousel-item" key={photoUrl}>
-                <img src={photoUrl} alt={'photo' + index} />
-              </div>
-            ),
-        )}
+        {Menu.information.photos && Menu.information.photos.length > 0 &&
+          Menu.information.photos.map(
+            (photoUrl, index) =>
+              photoUrl &&
+              photoUrl !== '' && (
+                <div className="carousel-item" key={photoUrl}>
+                  <img src={photoUrl} alt={'photo' + index} />
+                </div>
+              ),
+          )}
       </div>
       <div className="divider divide-gray-700"></div>
       <div className="grid space-y-4">

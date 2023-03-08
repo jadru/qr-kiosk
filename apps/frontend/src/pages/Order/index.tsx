@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import {
   CuteTheme,
   ModernTheme,
@@ -12,20 +12,25 @@ import {
 } from '@src/states/atom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { OwnerInfoAPI } from '@src/apis';
+import { OwnerInfoAPI } from '@src/apis/api';
 
 export const Order = () => {
   const { storeId, tableId } = useParams();
+  const [loading, setLoading] = React.useState(true);
   const [store, setStore] = useRecoilState(storeManageState);
   const setStoreInfo = useSetRecoilState(orderPlaceState);
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    OwnerInfoAPI(setStore, storeId);
+  useLayoutEffect(() => {
+    OwnerInfoAPI(setStore, storeId, setLoading);
   }, []);
 
-  return (
+  useEffect(() => {
+    console.log(store);
+  }, [store]);
+
+  return !loading ? (
     <>
       {(store.information.theme === 'simple' && (
         <SimpleTheme onOrderButtonClick={setOrderList} />
@@ -38,12 +43,15 @@ export const Order = () => {
         )) || <CuteTheme onOrderButtonClick={setOrderList} />}
       <div className="h-16"></div>
       <div className="btm-nav content-between">
-        <Link to={'/order/list'} className="text-xl btn-accent">
+        <Link
+          to={`/${storeId}/${tableId}/order/list`}
+          className="text-xl btn-accent"
+        >
           이전 주문
         </Link>
         <button
           onClick={() => {
-            navigate('/order/confirm');
+            navigate(`/${storeId}/${tableId}/order/confirm`);
           }}
           className="text-xl btn-primary"
           disabled={
@@ -61,5 +69,7 @@ export const Order = () => {
         </button>
       </div>
     </>
+  ) : (
+    <></>
   );
 };

@@ -19,15 +19,17 @@ export const SimpleTheme: React.FC<Props> = ({
       </h1>
       <div className="flex flex-col">
         <div className="carousel my-4 w-fuill">
-          {Menu.information.photos.map(
-            (photoUrl, index) =>
-              photoUrl &&
-              photoUrl !== '' && (
-                <div className="carousel-item w-2/3" key={photoUrl}>
-                  <img src={photoUrl} alt={'photo' + index} />
-                </div>
-              ),
-          )}
+          {Menu.information.photos &&
+            Menu.information.photos.length > 0 &&
+            Menu.information.photos.map(
+              (photoUrl, index) =>
+                photoUrl &&
+                photoUrl !== '' && (
+                  <div className="carousel-item w-2/3" key={photoUrl}>
+                    <img src={photoUrl} alt={'photo' + index} />
+                  </div>
+                ),
+            )}
         </div>
         <div className="text-left mt-5 font-nato-font text-xl w-full">
           <p>{Menu.information.address}</p>

@@ -24,15 +24,17 @@ export const CuteTheme: React.FC<Props> = ({
         <p>{Menu.information.phoneNumber}</p>
       </div>
       <div className="carousel rounded-box my-4">
-        {Menu.information.photos.map(
-          (photoUrl, index) =>
-            photoUrl &&
-            photoUrl !== '' && (
-              <div className="carousel-item" key={photoUrl}>
-                <img src={photoUrl} alt={'photo' + index} />
-              </div>
-            ),
-        )}
+        {Menu.information.photos &&
+          Menu.information.photos.length > 0 &&
+          Menu.information.photos.map(
+            (photoUrl, index) =>
+              photoUrl &&
+              photoUrl !== '' && (
+                <div className="carousel-item" key={photoUrl}>
+                  <img src={photoUrl} alt={'photo' + index} />
+                </div>
+              ),
+          )}
       </div>
       <div className="grid">
         {Menu.menu.map((category) => (

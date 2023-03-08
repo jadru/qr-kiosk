@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { SignupSchema } from './SignupSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { NormalLayout, ErrorMessage } from '@src/components';
-import { signupAPI } from '@src/apis';
+import { signupAPI } from '@src/apis/api';
 import { useNavigate } from 'react-router-dom';
 
 type SignupInputType = {
