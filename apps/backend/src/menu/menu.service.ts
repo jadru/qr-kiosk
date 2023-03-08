@@ -11,7 +11,14 @@ export class MenuService {
     create(createMenuDto: CreateMenuDto): Promise<Menu> {
         return this.prisma.menu.create({ data: createMenuDto });
     }
-
+    createAt(category_name: string, owner_id: number): Promise<Menu> {
+        return this.prisma.menu.create({
+            data: {
+                category_name,
+                owner_id,
+            },
+        });
+    }
     findAll() {
         return this.prisma.menu.findMany();
     }

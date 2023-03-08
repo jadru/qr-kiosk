@@ -21,6 +21,7 @@ import { Request } from 'src/auth/utils/request.types';
 import { MenuService } from '../menu/menu.service';
 import { Logger } from '@nestjs/common';
 import { MenuItemService } from '../menu-item/menu-item.service';
+
 @Controller('owner')
 export class OwnerController {
     constructor(
@@ -91,23 +92,27 @@ export class OwnerController {
         Body: {
             name: string;
             information: {
-                address: string;
-                openTime: string;
-                phoneNumber: string;
+                store_address: string;
+                store_operating_time: string;
+                store_phone: string;
                 facilities: string;
-                website: string;
-                photos: string[];
+                name: string;
+                email: string;
+                phone: string;
+                store_name: string;
                 theme: 'cute' | 'modern' | 'vintage' | 'simple';
             };
             menu: [
                 {
-                    categoryName: string;
+                    category_name: string;
+                    owner_id: number;
                     menus: [
                         {
-                            itemid: string;
-                            itemname: string;
-                            image: string;
-                            itemprice: string;
+                            item_id: string;
+                            name: string;
+                            photo: string;
+                            price: number;
+                            menu_id: number;
                         },
                     ];
                 },
@@ -117,13 +122,25 @@ export class OwnerController {
         this.ownerService.update(username, Body.information);
         this.menuService.removeAll();
         this.menuItemService.removeAll();
+        for (let index = 0; index < Body.menu.length; index++) {
+            //this.menuService.createAt(Body.menu.map((item) => item.category_name),Body.menu.map((item) => item.owner_id));
+            this.menuService.createAt(
+                Body.menu[index].category_name,
+                Body.menu[index].owner_id,
+            );
+        }
+        for (let index = 0; index < Body.menu.length; index++) {
+            for (let i = 0; i < Body.menu[index].menus.length; i++) {
+                this.menuItemService.create(Body.menu[index].menus[i]);
+            }
+        }
         return;
     }
     //
 
     @Get(':id')
-    findOne(@Param('store_name') store_name: string) {
-        return this.ownerService.findOneByStorename(store_name);
+    findOne(@Param('owner_id') id: number) {
+        return this.ownerService.findByOwnerId(id);
     }
     @Get()
     @ApiOperation({

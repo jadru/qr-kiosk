@@ -19,7 +19,7 @@ export class MenuController {
 
     @Post()
     @ApiOperation({
-        summary: '메뉴 카테고리 생성 API',
+        summary: '메뉴 카테고리 생성 API',
         description: '메뉴 카테고리를 생성한다.',
     })
     create(@Body() createMenuDto: CreateMenuDto) {
