@@ -2,6 +2,7 @@ import {
   countedOrderListState,
   orderListState,
   orderPlaceState,
+  storeManageState,
 } from '@src/states/atom';
 import { CountedItem, CountedItemList, Item } from '@src/type/Item';
 import { cloneDeep } from 'lodash';
@@ -9,12 +10,15 @@ import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { OwnerInfoAPI } from '@src/apis';
 
-const { VITE_APP_TOSS_CLIENT_KEY } = import.meta.env;
+const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
 
 export const OrderList = () => {
+  const { storeId, tableId } = useParams();
   const [orderList, setOrderList] = useRecoilState(orderListState);
+  const [store, setStore] = useRecoilState(storeManageState);
   const [countedOrderList, setCountedOrderList] = useRecoilState(
     countedOrderListState,
   );
@@ -46,6 +50,11 @@ export const OrderList = () => {
     console.log(orderList);
   }, [orderList]);
 
+  useEffect(() => {
+    console.log(storeId);
+    OwnerInfoAPI(setStore, storeId);
+  }, []);
+
   const tosspayment = async () => {
     const tossPayments = await loadTossPayments(VITE_APP_TOSS_CLIENT_KEY);
     tossPayments
@@ -54,8 +63,8 @@ export const OrderList = () => {
         orderId: uuidv4(),
         // @ts-ignore
         orderName: orderList[0].itemname + ' 외 ' + orderList.length + '건',
-        successUrl: 'http://localhost:3000/order/success',
-        failUrl: 'http://localhost:3000',
+        successUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order/success`,
+        failUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order`,
       })
       .then((res) => {
         navigate('/order/success');
@@ -133,7 +142,10 @@ export const OrderList = () => {
         {storeValue.tableId}번 테이블로 주문합니다
       </p>
       <div className="btm-nav content-between">
-        <Link className="btn-secondary text-xl" to={'/order'}>
+        <Link
+          className="btn-secondary text-xl"
+          to={`/${storeId}/${tableId}/order`}
+        >
           추가 주문
         </Link>
         <button

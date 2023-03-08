@@ -5,24 +5,21 @@ type ContentType = {
   className?: string;
 };
 
+type MenuItemType = {
+  image: string;
+  itemid: string;
+  itemname: string;
+  itemprice: string;
+};
+
 type MenuListType = {
   categoryName: string;
-  menus: {
-    image: string;
-    itemid: string;
-    itemname: string;
-    itemprice: string;
-  }[];
+  menus: MenuItemType[];
 }[];
 
 type MenuListCategoryType = {
   categoryName: string;
-  menus: {
-    image: string;
-    itemid: string;
-    itemname: string;
-    itemprice: string;
-  }[];
+  menus: MenuItemType[];
 };
 
 type StoreManageType = {
@@ -36,18 +33,48 @@ type StoreManageType = {
     photos: string[];
     theme: 'cute' | 'modern' | 'vintage' | 'simple';
   };
-  menu: [
-    {
-      categoryName: string;
-      menus: [
+  menu: MenuListType;
+};
+
+type StoreManageTypeBack = {
+  id: number;
+  username: string;
+  password: string;
+  email: string;
+  phone: string;
+  store_name: string;
+  store_address: string;
+  store_phone: string;
+  store_operating_time: string;
+  name: string;
+  createdTime: string;
+  updatedTime: string;
+  facilities: string;
+  website: string;
+  photos: string[];
+  theme: 'cute' | 'modern' | 'vintage' | 'simple';
+  menu: {
+    0: {
+      push: any;
+      id: number;
+      category_name: string;
+      owner_id: number;
+      createTime: string;
+      updateTime: string;
+      menu: [
         {
+          id: number;
           itemid: string;
-          itemname: string;
-          image: string;
-          itemprice: string;
+          photo: string;
+          price: string;
+          name: string;
+          menu_id: number;
+          createdTime: string;
+          updatedTime: string;
         },
       ];
     },
+  }
   ];
 };
 
@@ -56,4 +83,6 @@ export type {
   MenuListType,
   MenuListCategoryType,
   StoreManageType,
+  StoreManageTypeBack,
+  MenuItemType,
 };

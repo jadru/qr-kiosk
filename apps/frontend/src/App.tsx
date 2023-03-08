@@ -8,6 +8,7 @@ import {
   OrderSuccess,
   Signup,
   LastOrder,
+  Owner,
 } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorScreen } from './components';
@@ -23,23 +24,27 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: '/store-management/*',
+    path: '/owner',
+    element: <Owner />,
+  },
+  {
+    path: '/owner/manage',
     element: <StoreManagement />,
   },
   {
-    path: '/order',
+    path: '/:storeId/:tableId/order',
     element: <Order />,
   },
   {
-    path: '/order/confirm',
+    path: '/:storeId/:tableId/order/confirm',
     element: <OrderList />,
   },
   {
-    path: '/order/success',
+    path: '/:storeId/:tableId/order/success',
     element: <OrderSuccess />,
   },
   {
-    path: '/order/list',
+    path: '/:storeId/:tableId/order/list',
     element: <LastOrder />,
   },
   {
@@ -48,8 +53,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
-  return <RouterProvider router={router} />;
-}
+const App = () => <RouterProvider router={router} />;
 
 export default App;

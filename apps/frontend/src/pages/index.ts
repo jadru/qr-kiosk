@@ -1,3 +1,4 @@
+import { Owner } from './Owner/index';
 import { LastOrder } from './Order/LastOrder';
 import { OrderList } from './Order/OrderList';
 import { Order } from './Order/index';
@@ -15,4 +16,5 @@ export {
   OrderSuccess,
   Signup,
   LastOrder,
+  Owner,
 };

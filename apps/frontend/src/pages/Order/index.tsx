@@ -11,22 +11,19 @@ import {
   storeManageState,
 } from '@src/states/atom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { OwnerInfoAPI } from '@src/apis';
 
 export const Order = () => {
-  const store = useRecoilValue(storeManageState);
+  const { storeId, tableId } = useParams();
+  const [store, setStore] = useRecoilState(storeManageState);
   const setStoreInfo = useSetRecoilState(orderPlaceState);
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const navigate = useNavigate();
+
   useEffect(() => {
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
-    let storeId = params.get('storeId');
-    let tableId = params.get('tableId');
-    !storeId || !tableId
-      ? setStoreInfo({ storeId: 'default', tableId: '0' })
-      : setStoreInfo({ storeId, tableId });
-  }, [window.location.search]);
+    OwnerInfoAPI(setStore, storeId);
+  }, []);
 
   return (
     <>
