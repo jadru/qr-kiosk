@@ -5,13 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { NormalLayout, ErrorMessage } from '@src/components';
 import { signupAPI } from '@src/apis/memberApi';
 import { useNavigate } from 'react-router-dom';
-
-type SignupInputType = {
-  username: string;
-  password: string;
-  passwordCheck: string;
-  name: string;
-};
+import { createOwnerApiType } from '@src/type';
 
 export const Signup = () => {
   const {
@@ -19,7 +13,7 @@ export const Signup = () => {
     handleSubmit,
     watch,
     formState: { isSubmitting, errors },
-  } = useForm<SignupInputType>({
+  } = useForm<createOwnerApiType>({
     mode: 'all',
     reValidateMode: 'onChange',
     resolver: yupResolver(SignupSchema),
@@ -29,8 +23,8 @@ export const Signup = () => {
   }, [isSubmitting]);
   const navigate = useNavigate();
   const onError = (errors: any, e: any) => console.log(errors, e);
-  const onSubmit: SubmitHandler<SignupInputType> = (data) => {
-    console.log('check');
+  const onSubmit: SubmitHandler<createOwnerApiType> = (data) => {
+    delete data['passwordCheck'];
     signupAPI(data, navigate);
   };
   return (
@@ -52,6 +46,18 @@ export const Signup = () => {
                 {...register('username')}
               />
               <ErrorMessage>{errors.username?.message}</ErrorMessage>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">이메일</span>
+              </label>
+              <input
+                type="email"
+                placeholder="이메일 입력"
+                className="input input-bordered"
+                {...register('email')}
+              />
+              <ErrorMessage>{errors.email?.message}</ErrorMessage>
             </div>
             <div className="form-control">
               <label className="label">
@@ -77,21 +83,80 @@ export const Signup = () => {
               />
               <ErrorMessage>{errors.passwordCheck?.message}</ErrorMessage>
             </div>
+            <p>가게 정보 입력</p>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">이름</span>
+                <span className="label-text">가게 이름</span>
               </label>
               <input
                 type="text"
-                placeholder="이름 입력"
+                placeholder="가게 이름 입력"
                 className="input input-bordered"
-                {...register('name')}
+                {...register('store_name')}
               />
-              <ErrorMessage>{errors.name?.message}</ErrorMessage>
+              <ErrorMessage>{errors.store_name?.message}</ErrorMessage>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">가게 전화번호</span>
+              </label>
+              <input
+                type="tel"
+                placeholder="가게 전화번호 입력"
+                className="input input-bordered"
+                {...register('store_phone')}
+              />
+              <ErrorMessage>{errors.store_phone?.message}</ErrorMessage>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">가게 주소</span>
+              </label>
+              <input
+                type="text"
+                placeholder="가게 주소 입력"
+                className="input input-bordered"
+                {...register('store_address')}
+              />
+              <ErrorMessage>{errors.store_address?.message}</ErrorMessage>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">가게 운영 시간 설명</span>
+              </label>
+              <input
+                type="text"
+                placeholder="가게 운영 시간 입력"
+                className="input input-bordered"
+                {...register('store_operating_time')}
+              />
+              <ErrorMessage>
+                {errors.store_operating_time?.message}
+              </ErrorMessage>
+            </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">메뉴판 테마 선택</span>
+              </label>
+              <label>
+                <select
+                  className="select select-bordered w-fit max-w-xs"
+                  {...register('theme')}
+                >
+                  <option value="simple" selected>
+                    심플
+                  </option>
+                  <option value="cute">큐트</option>
+                  <option value="vintage">빈티지</option>
+                  <option value="modern">모던</option>
+                </select>
+              </label>
+              <ErrorMessage>{errors.theme?.message}</ErrorMessage>
             </div>
             <button
               onClick={handleSubmit(onSubmit, onError)}
               className="btn btn-primary w-full"
+              disabled={isSubmitting}
             >
               회원가입
             </button>

@@ -6,7 +6,7 @@ import { generalApihandleError, generalApiHeaderConfig } from '@src/utils';
 import { createOwnerApiType } from '@src/type';
 
 const login: string = '/auth/login';
-const signup: string = '/user';
+const signup: string = '/owner/create';
 
 type loginType = {
   username: string;
@@ -38,14 +38,12 @@ const loginAPI = (data: object, navigate: NavigateFunction) => {
 const signupAPI = (data: createOwnerApiType, navigate: NavigateFunction) => {
   axios
     .post(API_URL + signup, data, {
-      data: data,
+      data: { ...data },
       headers: generalApiHeaderConfig,
     })
     .then((response) => {
-      if (response.status === 200) {
-        alert('회원가입 완료');
-        navigate('/login');
-      }
+      alert('회원가입 완료');
+      navigate('/login');
     })
     .catch((error) => {
       generalApihandleError(error);

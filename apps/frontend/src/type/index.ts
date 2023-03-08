@@ -88,13 +88,13 @@ type StoreManageTypeBack = {
 type createOwnerApiType = {
   username: string;
   password: string;
+  passwordCheck?: string;
   email: string;
-  phone: string;
   store_phone: string;
   store_address: string;
   store_operating_time: string;
   store_name: string;
-  theme: string;
+  theme: 'cute' | 'modern' | 'vintage' | 'simple';
 };
 
 export type {
