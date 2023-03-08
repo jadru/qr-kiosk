@@ -21,9 +21,9 @@ export const ModernTheme: React.FC<Props> = ({
         <p>{Menu.information.phoneNumber}</p>
       </div>
       <div className="carousel rounded-box">
-        {Menu.information.photos &&
-          Menu.information.photos.length > 0 &&
-          Menu.information.photos.map(
+        {Menu.information.photo &&
+          Menu.information.photo.length > 0 &&
+          Menu.information.photo.map(
             (photoUrl, index) =>
               photoUrl &&
               photoUrl !== '' && (

@@ -48,6 +48,7 @@ export const StoreDialog: React.FC<Props> = ({
               <input
                 type="text"
                 placeholder="새 메뉴"
+                value={newMenuItem.name}
                 className="input input-bordered input-md"
                 name="name"
                 onFocus={handleFocus}
@@ -61,6 +62,7 @@ export const StoreDialog: React.FC<Props> = ({
               <input
                 type="number"
                 placeholder="1,000"
+                value={newMenuItem.price}
                 className="input input-bordered input-md"
                 name="price"
                 onFocus={handleFocus}

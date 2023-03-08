@@ -5,21 +5,20 @@ import axios from 'axios';
 import { useRecoilState } from 'recoil';
 import { orderListState } from '@src/states/atom';
 import { useState } from 'react';
-import { OrderType } from '@src/pages/Order/OrderList';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate, useParams } from 'react-router-dom';
-
-type OrderProps = {
-  order: OrderType;
-};
+import { useNavigate, useParams, NavigateFunction } from 'react-router-dom';
+import { MenuItemType } from '@src/type';
 
 const orderdetail: string = '/order-detail';
 const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
 
-export const tosspaymentAPI = async ({ order }: OrderProps) => {
-  const navigate = useNavigate();
-  const { orderList, totalprice } = order;
-  const { storeId, tableId } = useParams();
+export const tosspaymentAPI = async (
+  orderList: MenuItemType[],
+  totalprice: number,
+  navigate: NavigateFunction,
+  storeId?: string,
+  tableId?: string,
+) => {
   const tosspayments = await loadTossPayments(VITE_APP_TOSS_CLIENT_KEY);
   tosspayments
     .requestPayment('카드', {
@@ -42,9 +41,12 @@ export const tosspaymentAPI = async ({ order }: OrderProps) => {
       }
     });
 };
-export const orderdetailAPI = ({ order }: OrderProps) => {
-  const { orderList, totalprice } = order;
-  const storeId = useParams();
+
+export const orderdetailAPI = (
+  orderList: MenuItemType[],
+  totalprice: number,
+  storeId?: string,
+) => {
   axios.post(
     API_URL + orderdetail,
     {

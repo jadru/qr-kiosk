@@ -19,7 +19,7 @@ import { StoreInformationForm } from './StoreInformationForm';
 import { QRcodeDialog } from './QRcodeDialog';
 import { imageUploadApi } from '@src/apis/orderManage';
 import { tokenAccessProtected } from '@src/utils';
-import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
+import { OwnerInfoAPI, patchStoreData } from '@src/apis/storeOwnerApi';
 import { Cookies } from 'react-cookie';
 import { MenuItemType } from '@src/type';
 
@@ -35,7 +35,6 @@ let templateOfNewMenu = () => {
 export const StoreManagement: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [storeMange, setStoreManage] = useRecoilState(storeManageState);
-  const [menuData, setMenuData] = useRecoilState(menuDataState);
   const [saving, setSaving] = useState<boolean>(false);
   const [newMenu, setNewMenu] = useState<MenuItemType>(templateOfNewMenu);
   const [mobile, setMobile] = useState<boolean>(false);
@@ -53,15 +52,8 @@ export const StoreManagement: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // @ts-ignore
-    setStoreManage((prev) => {
-      return { ...prev, menu: cloneDeep(menuData) };
-    });
     setTheme(storeMange.information.theme);
-  }, [menuData]);
-
-  useEffect(() => {
-    console.log(storeMange);
+    console.log('storeMange', storeMange);
   }, [storeMange]);
 
   const onMobileToggleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -72,18 +64,18 @@ export const StoreManagement: React.FC = () => {
       const imageUrls: string[] = [];
       await imageUploadApi([e.target.files[0]], imageUrls);
       await setNewMenu((prev) => {
-        return { ...prev, image: imageUrls };
+        return { ...prev, image_url: imageUrls[0] };
       });
     } else {
       throw new Error('No Image File');
     }
   };
 
-  const handleSubmit = () => {
-    let tempData = cloneDeep(menuData);
-    tempData[0].menus.push({ ...newMenu });
-    setMenuData(tempData);
-    setNewMenu(templateOfNewMenu);
+  const handleSubmit = async () => {
+    let tempData = cloneDeep(storeMange);
+    tempData.menu[0].menus.push({ ...newMenu });
+    await setStoreManage(tempData);
+    await setNewMenu(templateOfNewMenu);
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -98,30 +90,35 @@ export const StoreManagement: React.FC = () => {
 
     let add: MenuItemType;
 
-    const temp = cloneDeep(menuData);
+    const temp = cloneDeep(storeMange);
 
-    Array.apply(null, Array(temp.length)).map((_value, index) => {
+    Array.apply(null, Array(temp.menu.length)).map((_value, index) => {
       if (source.droppableId === `menulist${index}`) {
-        add = temp[index].menus[source.index];
-        temp[index].menus.splice(source.index, 1);
+        add = temp.menu[index].menus[source.index];
+        temp.menu[index].menus.splice(source.index, 1);
       }
     });
 
-    Array.apply(null, Array(temp.length)).map((_value, index) => {
+    Array.apply(null, Array(temp.menu.length)).map((_value, index) => {
       if (destination.droppableId === `menulist${index}`) {
-        temp[index].menus.splice(destination.index, 0, { ...add });
+        temp.menu[index].menus.splice(destination.index, 0, { ...add });
       }
     });
 
-    setMenuData(temp);
+    setStoreManage(temp);
   };
 
   const dumyCategoryData = {
-    categoryName: '새 카테고리 ' + (menuData.length + 1),
+    categoryName: '새 카테고리 ' + (storeMange.menu.length + 1),
     menus: [],
   };
 
-  return (
+  const onSaveButtonClick = async () => {
+    await setSaving(true);
+    await patchStoreData(cookie.get('owner_id'), storeMange, setSaving);
+  };
+
+  return !loading ? (
     storeMange && (
       <NormalLayout>
         <div className="flex w-full h-full space-x-3">
@@ -131,6 +128,7 @@ export const StoreManagement: React.FC = () => {
               theme={theme}
               storeManage={storeMange}
               setStoreManage={setStoreManage}
+              loading={loading}
             />
           </div>
           <div className="divider divider-horizontal"></div>
@@ -153,7 +151,7 @@ export const StoreManagement: React.FC = () => {
               <label
                 htmlFor="my-modal-6"
                 className="btn btn-md btn-outline"
-                onClick={() => setSaving(true)}
+                onClick={onSaveButtonClick}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -162,9 +160,9 @@ export const StoreManagement: React.FC = () => {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="#000000"
-                  stroke-width="3"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="mr-2"
                 >
                   <polyline points="20 6 9 17 4 12"></polyline>
@@ -203,7 +201,9 @@ export const StoreManagement: React.FC = () => {
               </label>
               <button
                 onClick={() =>
-                  setMenuData((prev) => [...prev, dumyCategoryData])
+                  setStoreManage((prev) => {
+                    return { ...prev, menu: [...prev.menu, dumyCategoryData] };
+                  })
                 }
                 className="btn btn-md mt-4"
               >
@@ -219,16 +219,16 @@ export const StoreManagement: React.FC = () => {
             </div>
             <div className="card bg-slate-100 mt-5 space-y-0 py-3">
               <DragDropContext onDragEnd={onDragEnd}>
-                {Array.apply(null, Array(menuData.length)).map(
+                {Array.apply(null, Array(storeMange.menu.length)).map(
                   (_value, index) => (
                     <>
                       <MenuList
-                        key={menuData[index].categoryName + index}
-                        items={menuData}
-                        setItems={setMenuData}
+                        key={storeMange.menu[index].categoryName + index}
+                        items={storeMange}
+                        setItems={setStoreManage}
                         index={index}
                       />
-                      {index !== menuData.length - 1 && (
+                      {index !== storeMange.menu.length - 1 && (
                         <div className="divider"></div>
                       )}
                     </>
@@ -240,5 +240,7 @@ export const StoreManagement: React.FC = () => {
         </div>
       </NormalLayout>
     )
+  ) : (
+    <></>
   );
 };

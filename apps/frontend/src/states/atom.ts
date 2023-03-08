@@ -28,7 +28,7 @@ const storeManageState = atom<StoreManageType>({
       phoneNumber: '010-3333-4444', // string
       facilities: '남여 화장실, 장애인 이용 가능', // string
       website: 'www.instagram.com/helloworld', // string
-      photos: ['/example.jpg', '/example.jpg', '/example.jpg'], // 사진 url 여러개
+      photo: ['/example.jpg', '/example.jpg', '/example.jpg'], // 사진 url 여러개
       theme: 'simple', // antic, modren, vintage, simple
     },
     menu: [

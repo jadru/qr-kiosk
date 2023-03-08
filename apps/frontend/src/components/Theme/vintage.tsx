@@ -19,9 +19,9 @@ export const VintageTheme: React.FC<Props> = ({
       </h1>
       <div className="flex flex-col outline-1 outline">
         <div className="carousel w-fuill">
-          {Menu.information.photos &&
-            Menu.information.photos.length > 0 &&
-            Menu.information.photos.map(
+          {Menu.information.photo &&
+            Menu.information.photo.length > 0 &&
+            Menu.information.photo.map(
               (photoUrl, index) =>
                 photoUrl &&
                 photoUrl !== '' && (

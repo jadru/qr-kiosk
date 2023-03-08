@@ -1,5 +1,6 @@
+import { parseFromFrontJson } from './../utils/index';
 import { API_URL } from '@src/constants';
-import { StoreManageType } from '@src/type';
+import { MenuItemType, StoreManageType, MenuListType } from '@src/type';
 import {
   generalApihandleError,
   generalApiHeaderConfig,
@@ -22,6 +23,64 @@ export const OwnerInfoAPI = (
     .then((response) => {
       setStore(parseJson(response.data));
       setLoading && setLoading(false);
+    })
+    .catch((error) => {
+      generalApihandleError(error);
+    });
+};
+
+export const patchStoreData = async (
+  owner_id: number,
+  storeManageData: StoreManageType,
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+) => {
+  axios
+    .patch(
+      API_URL + ownerifo + '/' + owner_id + '/all',
+      parseFromFrontJson(storeManageData),
+      {
+        headers: generalApiHeaderConfig,
+      },
+    )
+    .then((response) => {
+      storeManageData.menu.map((category) => {
+        menuUpdateApi(
+          owner_id.toString(),
+          category.categoryName,
+          category.menus,
+        );
+      });
+      setLoading(false);
+    })
+    .catch((error) => {
+      generalApihandleError(error);
+    });
+};
+
+export const menuUpdateApi = async (
+  owner_id: string,
+  categoru_name: string,
+  menuItem: MenuItemType[],
+) => {
+  const tempData = menuItem.map((item) => {
+    return {
+      name: item.name,
+      price: item.price,
+      image_url: item.image_url,
+    };
+  });
+  axios
+    .post(
+      API_URL + '/menu-item/' + owner_id + '/' + categoru_name,
+      {
+        menu_items: tempData,
+      },
+      {
+        headers: generalApiHeaderConfig,
+      },
+    )
+    .then((response) => {
+      console.log(response);
     })
     .catch((error) => {
       generalApihandleError(error);

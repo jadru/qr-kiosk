@@ -19,9 +19,9 @@ export const SimpleTheme: React.FC<Props> = ({
       </h1>
       <div className="flex flex-col">
         <div className="carousel my-4 w-fuill">
-          {Menu.information.photos &&
-            Menu.information.photos.length > 0 &&
-            Menu.information.photos.map(
+          {Menu.information.photo &&
+            Menu.information.photo.length > 0 &&
+            Menu.information.photo.map(
               (photoUrl, index) =>
                 photoUrl &&
                 photoUrl !== '' && (

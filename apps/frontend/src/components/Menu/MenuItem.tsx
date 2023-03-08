@@ -30,7 +30,7 @@ const MenuItem: React.FC<Props> = ({ index, item, onDelete }) => {
             )}
             <div className="ml-4 py-3 px-1">
               <h4 className="card-title ">{item.name}</h4>
-              <h4>{parseFloat(item.name).toLocaleString('en')}원</h4>
+              <h4>{item.price.toLocaleString('en')}원</h4>
             </div>
           </div>
           <div>

@@ -14,13 +14,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { calculateTotalPriceFromOrderList } from '@src/utils';
 import { orderdetailAPI, tosspaymentAPI } from '@src/apis/paymentApi';
 
-const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
-
-export type OrderType = {
-  orderList: Item[];
-  totalprice: number;
-};
-
 export const OrderList = () => {
   const { storeId, tableId } = useParams();
   const [orderList, setOrderList] = useRecoilState(orderListState);
@@ -78,8 +71,8 @@ export const OrderList = () => {
   //     });
   // };
   const tosspayment = async () => {
-    await tosspaymentAPI;
-    await orderdetailAPI;
+    await tosspaymentAPI(orderList, totalprice, navigate, storeId, tableId);
+    orderdetailAPI(orderList, totalprice, storeId);
   };
 
   const minusItem = (item: Item) => {

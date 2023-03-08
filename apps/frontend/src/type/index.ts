@@ -16,7 +16,7 @@ type CountedMenuItemListType = {
   image: string;
   item_id: string;
   name: string;
-  price: string;
+  price: number;
   count: number;
 }[];
 
@@ -38,40 +38,38 @@ type StoreManageType = {
     phoneNumber: string;
     facilities: string;
     website: string;
-    photos: string[];
+    photo: string[];
     theme: 'cute' | 'modern' | 'vintage' | 'simple';
   };
   menu: MenuListType;
 };
 
 type StoreManageTypeBack = {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  phone: string;
+  id?: number;
+  username?: string;
+  password?: string;
+  email?: string;
+  phone?: string;
   store_name: string;
   store_address: string;
   store_phone: string;
   store_operating_time: string;
-  name: string;
-  createdTime: string;
-  updatedTime: string;
-  facilities: string;
+  name?: string;
+  createdTime?: string;
+  updatedTime?: string;
+  facility: string;
   website: string;
-  photos: string[];
+  photo: string[];
   theme: 'cute' | 'modern' | 'vintage' | 'simple';
   menu: {
-    push: any;
-    id: number;
+    id?: number;
     category_name: string;
-    owner_id: number;
-    createTime: string;
-    updateTime: string;
-    menu_items: [
+    owner_id?: number;
+    createTime?: string;
+    updateTime?: string;
+    menu_items?: [
       {
         id: number;
-        item_id: string;
         image_url: string;
         price: number;
         name: string;
