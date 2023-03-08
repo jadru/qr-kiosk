@@ -2,7 +2,6 @@ import { NormalLayout } from '@src/components';
 import Lottie from 'react-lottie';
 import QRCodeAnimation from './61155-scan-qr-code.json';
 import { Link } from 'react-router-dom';
-import QRCode from 'react-qr-code';
 
 export const Main = () => {
   return (
@@ -36,9 +35,6 @@ export const Main = () => {
             <Link to="/order">오더</Link>
           </div>
         </div>
-      </div>
-      <div className="hero min-h-2/3 w-full">
-        <QRCode value="http://facebook.github.io/react/" size={290} />
       </div>
     </NormalLayout>
   );

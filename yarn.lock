@@ -1305,6 +1305,7 @@ __metadata:
     react-qr-code: ^2.0.11
     react-query: ^3.39.2
     react-router-dom: ^6.8.1
+    react-to-print: ^2.14.12
     react-toastify: ^9.0.8
     recoil: ^0.7.6
     serve: ^14.1.2
@@ -7967,6 +7968,18 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 8e7cc7a516adeb6060911861af99d9b512893c15ec732cbf8574872919be4f3fe439ffa8c0876d1bcbced880d081bfeda3c01cb505b5a243565d10500ee0ac36
+  languageName: node
+  linkType: hard
+
+"react-to-print@npm:^2.14.12":
+  version: 2.14.12
+  resolution: "react-to-print@npm:2.14.12"
+  dependencies:
+    prop-types: ^15.8.1
+  peerDependencies:
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: d88e93121fc95ae95ca3ad9a8b2bc1b305d6270d1330f0222d4843527a7925182d6f1e96b7a1df0403d2d6820d116c85f4a7c122956fe2dbc81dbbb09970efe2
   languageName: node
   linkType: hard
 

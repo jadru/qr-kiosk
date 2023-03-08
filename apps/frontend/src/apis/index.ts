@@ -4,7 +4,7 @@ import { NavigateFunction } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 import axios from 'axios';
 
-const login: string = '/login';
+const login: string = '/auth/login';
 const signup: string = '/user';
 
 type loginType = {
@@ -25,14 +25,16 @@ const handleError = (error: any) => {
     console.log(error.message);
   }
 };
-const loginAPI = (data: loginType, navigate: NavigateFunction) => {
+const loginAPI = (data: object, navigate: NavigateFunction) => {
   axios
-    .post(API_URL + login, null, {
-      params: data,
+    .post(API_URL + login, data, {
+      data: data,
       headers: headerConfig,
     })
     .then((response) => {
+      console.log(response.data.accessToken); // accessToken
       navigate('/store-management');
+      window.alert('로그인 성공');
     })
     .catch((error) => {
       handleError(error);

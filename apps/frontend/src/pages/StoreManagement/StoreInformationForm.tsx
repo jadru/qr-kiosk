@@ -49,17 +49,16 @@ export const StoreInformationForm: React.FC<Props> = ({
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) =>
     e.target.select();
   return (
-    <div className="flex flex-col flex-wrap">
+    <div className="flex flex-col flex-wrap pr-10">
       <div className="form-control">
         <label className="label">
           <span className="label-text">가게명</span>
         </label>
-        <label className="input-group">
-          <span>가게 명</span>
+        <label>
           <input
             type="text"
             placeholder="Type here"
-            className="input input-bordered"
+            className="input input-bordered input-group-lg"
             defaultValue={storeManage.name}
             onBlur={onStoreNameChange}
             onFocus={handleFocus}
@@ -70,9 +69,11 @@ export const StoreInformationForm: React.FC<Props> = ({
         <label className="label">
           <span className="label-text">테마 선택</span>
         </label>
-        <label className="input-group">
-          <span>태마</span>
-          <select className="select select-bordered" onChange={onThemeChange}>
+        <label>
+          <select
+            className="select select-bordered w-fit max-w-xs"
+            onChange={onThemeChange}
+          >
             <option value="simple" selected={theme === 'simple'}>
               심플
             </option>
@@ -92,12 +93,11 @@ export const StoreInformationForm: React.FC<Props> = ({
         <label className="label">
           <span className="label-text">주소</span>
         </label>
-        <label className="input-group">
-          <span>주소</span>
+        <label>
           <input
             type="text"
             placeholder="주소"
-            className="input input-bordered"
+            className="input input-bordered input-group-lg"
             defaultValue={storeManage.information.address}
             onBlur={onTextChange}
             name="address"
@@ -109,12 +109,11 @@ export const StoreInformationForm: React.FC<Props> = ({
         <label className="label">
           <span className="label-text">영업 정보</span>
         </label>
-        <label className="input-group">
-          <span>영업 정보</span>
+        <label>
           <input
             type="text"
             placeholder="영업 정보"
-            className="input input-bordered"
+            className="input input-bordered input-group-lg"
             defaultValue={storeManage.information.openTime}
             onBlur={onTextChange}
             name="openTime"
@@ -126,12 +125,11 @@ export const StoreInformationForm: React.FC<Props> = ({
         <label className="label">
           <span className="label-text">전화번호</span>
         </label>
-        <label className="input-group">
-          <span>전화번호</span>
+        <label>
           <input
             type="text"
             placeholder="전화번호"
-            className="input input-bordered"
+            className="input input-bordered input-group-lg"
             defaultValue={storeManage.information.phoneNumber}
             onBlur={onTextChange}
             name="phoneNumber"
@@ -143,12 +141,11 @@ export const StoreInformationForm: React.FC<Props> = ({
         <label className="label">
           <span className="label-text">편의시설 정보</span>
         </label>
-        <label className="input-group">
-          <span>편의시설 정보</span>
+        <label>
           <input
             type="text"
             placeholder="편의시설 정보"
-            className="input input-bordered"
+            className="input input-bordered input-group-lg"
             defaultValue={storeManage.information.facilities}
             onBlur={onTextChange}
             name="facilities"
@@ -158,14 +155,13 @@ export const StoreInformationForm: React.FC<Props> = ({
       </div>
       <div className="form-control">
         <label className="label">
-          <span className="label-text">웹사이트 (SNS 계정)</span>
+          <span className="label-text">SNS 계정</span>
         </label>
-        <label className="input-group">
-          <span>웹사이트 (SNS 계정)</span>
+        <label>
           <input
             type="text"
-            placeholder="웹사이트"
-            className="input input-bordered"
+            placeholder="SNS 계정"
+            className="input input-bordered input-group-lg"
             defaultValue={storeManage.information.website}
             onBlur={onTextChange}
             name="website"
