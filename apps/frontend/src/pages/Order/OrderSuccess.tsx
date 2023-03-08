@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
 import React, { Suspense, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
 const { VITE_APP_TOSS_SECRET_KEY } = import.meta.env;
@@ -16,6 +16,7 @@ const headerConfig = {
   'Access-Control-Allow-Origin': '*',
 };
 export const OrderSuccess = () => {
+  const { storeId, tableId } = useParams();
   const [loading, setLoading] = useState(false);
   let orderId = new URL(window.location.href).searchParams.get('orderId');
   let amount = new URL(window.location.href).searchParams.get('amount');
@@ -41,7 +42,7 @@ export const OrderSuccess = () => {
         },
       )
       .then((res) => {
-        if (res.status == 200 && res.data.status === 'DONE') {
+        if (res.status === 200 && res.data.status === 'DONE') {
           setLoading(false);
           // @ts-ignore
           setOrderSuccess((prev) => [
@@ -68,7 +69,10 @@ export const OrderSuccess = () => {
   ) : (
     <div className="w-full h-screen p-6 space-y-4 bg-slate-100 flex items-center justify-center flex-col">
       <h1 className="text-3xl font-bold text-center">결제 성공!</h1>
-      <Link to="/order/list" className="btn btn-primary btn-wide">
+      <Link
+        to={`/${storeId}/${tableId}/order/list`}
+        className="btn btn-primary btn-wide"
+      >
         결제 리스트로 가기
       </Link>
     </div>

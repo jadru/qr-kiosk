@@ -17,7 +17,7 @@ export const NavBar = () => {
             <Link to="/account">계정 관리</Link>
           </li>
           <li>
-            <Link to="/store-management">매장 관리</Link>
+            <Link to="/owner">매장 관리</Link>
           </li>
         </ul>
       </div>

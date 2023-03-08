@@ -11,22 +11,15 @@ import {
   storeManageState,
 } from '@src/states/atom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 export const Order = () => {
+  const { storeId, tableId } = useParams();
+  console.log(storeId, tableId);
   const store = useRecoilValue(storeManageState);
   const setStoreInfo = useSetRecoilState(orderPlaceState);
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const navigate = useNavigate();
-  useEffect(() => {
-    let search = window.location.search;
-    let params = new URLSearchParams(search);
-    let storeId = params.get('storeId');
-    let tableId = params.get('tableId');
-    !storeId || !tableId
-      ? setStoreInfo({ storeId: 'default', tableId: '0' })
-      : setStoreInfo({ storeId, tableId });
-  }, [window.location.search]);
 
   return (
     <>
@@ -41,12 +34,15 @@ export const Order = () => {
         )) || <CuteTheme onOrderButtonClick={setOrderList} />}
       <div className="h-16"></div>
       <div className="btm-nav content-between">
-        <Link to={'/order/list'} className="text-xl btn-accent">
+        <Link
+          to={`/${storeId}/${tableId}/order/list`}
+          className="text-xl btn-accent"
+        >
           이전 주문
         </Link>
         <button
           onClick={() => {
-            navigate('/order/confirm');
+            navigate(`/${storeId}/${tableId}/order/confirm`);
           }}
           className="text-xl btn-primary"
           disabled={
