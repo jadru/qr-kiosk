@@ -27,3 +27,12 @@ export const parseJson = (json: StoreManageTypeBack): StoreManageType => {
     }),
   };
 };
+
+export const generalApiHeaderConfig = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+};
+
+export const generalApihandleError = (error: any) => {
+  console.log(error);
+};

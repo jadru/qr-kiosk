@@ -12,7 +12,7 @@ import {
 } from '@src/states/atom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { OwnerInfoAPI } from '@src/apis/api';
+import { OwnerInfoAPI } from '@src/apis/memberApi';
 
 export const Order = () => {
   const { storeId, tableId } = useParams();

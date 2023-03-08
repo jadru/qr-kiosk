@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from './LoginSchema';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginAPI } from '@src/apis/api';
+import { loginAPI } from '@src/apis/memberApi';
 import { useEffect } from 'react';
 
 type LoginInputType = {
