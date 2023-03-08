@@ -1,12 +1,15 @@
 import { Menu_Item } from '@prisma/client';
 export class MenuItem implements Menu_Item {
-    category_name: string;
+    id: number;
+    menu_id: number;
     item_id: string;
+    category_name: string;
     photo: string;
     price: number;
     name: string;
-    id: number;
-    menu_id: number;
+
+    order_DetailId: number;
+    
     createdTime: Date;
     updatedTime: Date;
 }

@@ -7,57 +7,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Order_Detail {
+  id           Int         @id @default(autoincrement())
+  toss_status  String
+  order_status String
+  total_amount Int
+  order_name   String
+  approveAt    DateTime?
+  requestAt    DateTime?
+  menu_item    Menu_Item[]
+  owner        Owner       @relation(fields: [owner_id], references: [id])
+  owner_id     Int
+}
 
 model Menu_Item {
-  id Int @id  @default(autoincrement())
-  item_id String @unique
-  photo String? 
-  price Int
-  name String
-  menu Menu @relation(fields: [menu_id], references: [id])
-  menu_id Int 
-  createdTime DateTime @default(now())
-  updatedTime DateTime @updatedAt
+  id             Int           @id @default(autoincrement())
+  item_id        String        @unique
+  photo          String?
+  price          Int
+  name           String
+  menu           Menu          @relation(fields: [menu_id], references: [id])
+  menu_id        Int
+  createdTime    DateTime      @default(now())
+  updatedTime    DateTime      @updatedAt
+  Order_Detail   Order_Detail? @relation(fields: [order_DetailId], references: [id])
+  order_DetailId Int?
 }
 
-model Owner{ 
-  id Int @id @default(autoincrement())
-  username String @unique
-  password String
-  email String @unique
-  phone String @unique
-  store_name String
-  store_address String
-  store_phone String
-  theme String?
+model Owner {
+  id                   Int            @id @default(autoincrement())
+  username             String         @unique
+  password             String
+  email                String         @unique
+  phone                String         @unique
+  store_name           String
+  store_address        String
+  store_phone          String
+  theme                String?
   store_operating_time String?
-  menu Menu?
-  name String?
-  createdTime DateTime @default(now())
-  updatedTime DateTime @updatedAt
+  menu                 Menu?
+  name                 String?
+  createdTime          DateTime       @default(now())
+  updatedTime          DateTime       @updatedAt
+  Order_Detail         Order_Detail[]
 }
 
-
-model Menu{
-  id Int @id  @default(autoincrement())
-  category_name String @unique
-  menus Menu_Item[]
-  owner Owner @relation(fields: [id],references: [id])
-  owner_id Int
-  createdTime DateTime @default(now())
-  updatedTime DateTime @updatedAt
-
+model Menu {
+  id            Int         @id @default(autoincrement())
+  category_name String      @unique
+  menus         Menu_Item[]
+  owner         Owner       @relation(fields: [id], references: [id])
+  owner_id      Int
+  createdTime   DateTime    @default(now())
+  updatedTime   DateTime    @updatedAt
 }
-
-
-
-
-
-
 
 model User {
-  id          Int     @id @default(autoincrement())
-  username    String  @unique
+  id          Int      @id @default(autoincrement())
+  username    String   @unique
   name        String
   password    String
   createdTime DateTime @default(now())
