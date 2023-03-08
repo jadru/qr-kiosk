@@ -26,13 +26,13 @@ export const Order = () => {
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
-    // OwnerInfoAPI(setStore, storeId, setLoading);
-    if (!(cookies && cookies.user)) {
-      const userId = createUserApi();
-      userId && setCookie('user', userId, { path: '/', maxAge: 3600 });
-    }
-  }, []);
+  // useLayoutEffect(() => {
+  //   // OwnerInfoAPI(setStore, storeId, setLoading);
+  //   if (!(cookies && cookies.user)) {
+  //     const userId = createUserApi();
+  //     userId && setCookie('user', userId, { path: '/', maxAge: 3600 });
+  //   }
+  // }, []);
 
   return !loading ? (
     <>

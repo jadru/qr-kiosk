@@ -4,7 +4,7 @@ import {
   orderPlaceState,
   storeManageState,
 } from '@src/states/atom';
-import { CountedItem, CountedItemList, Item } from '@src/type/Item';
+import { CountedItem, Item } from '@src/type/Item';
 import { cloneDeep } from 'lodash';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { useEffect, useLayoutEffect, useState } from 'react';
@@ -13,8 +13,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
 import { calculateTotalPriceFromOrderList } from '@src/utils';
+import { orderdetailAPI, tosspaymentAPI } from '@src/apis/paymentApi';
 
 const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
+
+export type OrderType = {
+  orderList: Item[];
+  totalprice: number;
+};
 
 export const OrderList = () => {
   const { storeId, tableId } = useParams();
@@ -37,7 +43,7 @@ export const OrderList = () => {
       }, []),
     );
     setTotalPrice(calculateTotalPriceFromOrderList(orderList));
-    if (calculateTotalPriceFromOrderList(orderList)) {
+    if (calculateTotalPriceFromOrderList(orderList) === 0) {
       navigate(`/${storeId}/${tableId}/order`);
     }
     console.log(countedOrderList);
@@ -47,29 +53,34 @@ export const OrderList = () => {
     console.log(storeId);
   }, []);
 
+  // const tosspayment = async () => {
+  //   const tossPayments = await loadTossPayments(VITE_APP_TOSS_CLIENT_KEY);
+  //   tossPayments
+  //     .requestPayment('카드', {
+  //       amount: totalprice,
+  //       orderId: uuidv4(),
+  //       // @ts-ignore
+  //       orderName: orderList[0].itemname + ' 외 ' + orderList.length + '건',
+  //       successUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order/success`,
+  //       failUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order`,
+  //     })
+  //     .then((res) => {
+  //       navigate(`/${storeId}/${tableId}/success`);
+  //       console.log(res);
+  //     })
+  //     .catch(function (error) {
+  //       if (error.code === 'USER_CANCEL') {
+  //         alert('결제를 취소하셨습니다.');
+  //         navigate(`/${storeId}/${tableId}/order`);
+  //       } else {
+  //         alert('결제에 실패하였습니다.');
+  //         navigate(`/${storeId}/${tableId}/order`);
+  //       }
+  //     });
+  // };
   const tosspayment = async () => {
-    const tossPayments = await loadTossPayments(VITE_APP_TOSS_CLIENT_KEY);
-    tossPayments
-      .requestPayment('카드', {
-        amount: totalprice,
-        orderId: uuidv4(),
-        // @ts-ignore
-        orderName: orderList[0].itemname + ' 외 ' + orderList.length + '건',
-        successUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order/success`,
-        failUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order`,
-      })
-      .then((res) => {
-        navigate(`/${storeId}/${tableId}/success`);
-      })
-      .catch(function (error) {
-        if (error.code === 'USER_CANCEL') {
-          alert('결제를 취소하셨습니다.');
-          navigate(`/${storeId}/${tableId}/order`);
-        } else {
-          alert('결제에 실패하였습니다.');
-          navigate(`/${storeId}/${tableId}/order`);
-        }
-      });
+    await tosspaymentAPI;
+    await orderdetailAPI;
   };
 
   const minusItem = (item: Item) => {

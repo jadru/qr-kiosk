@@ -25,7 +25,7 @@ export const SimpleTheme: React.FC<Props> = ({
               (photoUrl, index) =>
                 photoUrl &&
                 photoUrl !== '' && (
-                  <div className="carousel-item w-2/3" key={photoUrl}>
+                  <div className="carousel-item w-2/3" key={photoUrl + index}>
                     <img src={photoUrl} alt={'photo' + index} />
                   </div>
                 ),
