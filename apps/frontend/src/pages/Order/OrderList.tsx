@@ -13,11 +13,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { calculateTotalPriceFromOrderList } from '@src/utils';
 import { orderdetailAPI, tosspaymentAPI } from '@src/apis/paymentApi';
+import { Cookies } from 'react-cookie';
 
 export const OrderList = () => {
   const { storeId, tableId } = useParams();
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const [store, setStore] = useRecoilState(storeManageState);
+  const cookie = new Cookies();
   const [countedOrderList, setCountedOrderList] = useRecoilState(
     countedOrderListState,
   );
@@ -56,6 +58,7 @@ export const OrderList = () => {
       totalprice,
       countedOrderList,
       orderId,
+      cookie.get('user_id'),
       tableId,
       storeId,
     );

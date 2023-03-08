@@ -49,6 +49,7 @@ export const orderdetailAPI = (
   totalprice: number,
   menuItem: CountedItemList,
   orderId: string,
+  userId: string,
   tableNum?: string,
   storeId?: string,
 ) => {
@@ -56,19 +57,18 @@ export const orderdetailAPI = (
   axios.post(
     API_URL + orderdetail,
     {
-      order_name: orderList[0].name,
+      order_name: orderList[0].name + '외 ' + orderList.length + '건',
       total_amount: totalprice,
       owner_id: Number(storeId),
       table_number: Number(tableNum),
       id: orderId,
-      item_orders: [
-        menuItem.map((item) => {
-          return {
-            menu_item_id: item.item_id,
-            count: item.count,
-          };
-        }),
-      ],
+      user_id: userId,
+      item_orders: menuItem.map((item) => {
+        return {
+          menu_item_id: item.item_id,
+          count: item.count,
+        };
+      }),
     },
     {
       headers: generalApiHeaderConfig,

@@ -1,18 +1,23 @@
 import {
   orderDetailDeleteAPi,
   orderStatusChangeAPi,
+  ownerOrderListApi,
 } from '@src/apis/orderManage';
 import { NormalLayout } from '@src/components';
 import { orderDetailType } from '@src/type';
 import { tokenAccessProtected } from '@src/utils';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Cookies } from 'react-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const Owner = () => {
   const navigate = useNavigate();
+  const cookie = new Cookies();
+  const [orderList, setOrderList] = useState<orderDetailType[]>([]);
   useEffect(() => {
     tokenAccessProtected() && navigate('/login');
-  });
+    ownerOrderListApi(cookie.get('owner_id'), setOrderList);
+  }, []);
 
   const onButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.value !== 'delete'
@@ -30,18 +35,16 @@ export const Owner = () => {
     <NormalLayout>
       <div className="w-full h-full space-y-3">
         <div className="flex flex-row justify-between items-center">
-          <p className="text-3xl font-bold">블루포트 인제대점 {'  '}</p>
           <Link to={`/owner/manage`} className="btn btn-success">
             매장 정보 및 메뉴판 관리
           </Link>
         </div>
-        <div className="grid grid-cols-3 gap-4 bg-slate-50 p-12">
+        <div className=" bg-slate-50 p-12">
           <div className="rounded-2xl py-12 px-12 outline space-y-3">
-            <div className="space-y-2">
-              <p className="text-3xl font-bold mb-3"></p>
-              {temp.map((order) => (
-                <div className=" bg-white outline-1 outline flex flex-row justify-between items-center rounded-xl">
-                  <div className="space-y-none text-xl pl-6">
+            <div className="grid grid-cols-2 gap-4">
+              {orderList.map((order) => (
+                <div className="bg-white outline-1 outline rounded-xl flex flex-row justify-between">
+                  <div className="space-y-none text-xl pl-6 mt-4">
                     <p className="font-bold text-slate-600 text-2xl">
                       {(order.order_status === 'confirm' && '접수') ||
                         (order.order_status === 'order' && '접수 전') ||
@@ -53,7 +56,7 @@ export const Owner = () => {
                     <p>아이스 아메리카노 x 2</p>
                     <p className="font-bold text-sm text-slate-500">
                       <>
-                        주문 id {order.id} <br />
+                        {order.id} <br />
                         {order.approveAt}
                       </>
                     </p>

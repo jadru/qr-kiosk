@@ -20,6 +20,7 @@ import { calculateTotalPriceFromOrderList } from '@src/utils';
 export const Order = () => {
   const [loading, setLoading] = useState(false);
   const { storeId, tableId } = useParams();
+  const [user_id, setUserId] = useState('');
   const [store, setStore] = useRecoilState(storeManageState);
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const navigate = useNavigate();
@@ -28,11 +29,14 @@ export const Order = () => {
 
   useLayoutEffect(() => {
     OwnerInfoAPI(setStore, cookie.get('owner_id'), setLoading);
-    if (!cookie.get('user')) {
-      const userId = createUserApi();
-      userId && cookie.set('user', userId, { path: '/', maxAge: 3600 });
+    if (!cookie.get('user_id')) {
+      createUserApi(setUserId);
     }
   }, []);
+
+  useEffect(() => {
+    user_id !== '' && cookie.set('user_id', user_id, { path: '/' });
+  }, [user_id]);
 
   return !loading ? (
     <>

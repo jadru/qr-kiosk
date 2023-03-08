@@ -5,11 +5,12 @@ import {
 } from '@src/states/atom';
 import axios from 'axios';
 import { cloneDeep } from 'lodash';
+import { API_URL } from '@src/constants';
 import React, { Suspense, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-const { VITE_APP_TOSS_SECRET_KEY } = import.meta.env;
+const { VITE_APP_TOSS_SECRET_KEY, VITE_APP_URL } = import.meta.env;
 
 const headerConfig = {
   'Content-Type': 'application/json',
@@ -25,7 +26,18 @@ export const OrderSuccess = () => {
   const orderList = useRecoilValue(countedOrderListState);
   const setOrderSuccess = useSetRecoilState(successedOrderState);
 
-  useEffect(() => {
+  const confirmOrder = async (orderId: string) => {
+    axios
+      .patch(API_URL + '/order-detail/' + orderId + '/toss-status', {
+        status: 'done',
+      })
+      .then((res) => {
+        setLoading(false);
+        console.log(res);
+      });
+  };
+
+  const confirmPayment = async () => {
     axios
       .post(
         'https://api.tosspayments.com/v1/payments/confirm',
@@ -43,7 +55,7 @@ export const OrderSuccess = () => {
       )
       .then((res) => {
         if (res.status === 200 && res.data.status === 'DONE') {
-          setLoading(false);
+          confirmOrder(res.data.orderId);
           // @ts-ignore
           setOrderSuccess((prev) => [
             ...prev,
@@ -61,7 +73,12 @@ export const OrderSuccess = () => {
         alert(err.response.data.message);
         navigate(`/${storeId}/${tableId}/order/confirm`);
       });
+  };
+
+  useEffect(() => {
+    confirmPayment();
   }, []);
+
   return loading ? (
     <div className="w-full h-screen p-6 space-y-4 bg-slate-100 flex items-center justify-center">
       <p className="text-2xl">결제중...</p>

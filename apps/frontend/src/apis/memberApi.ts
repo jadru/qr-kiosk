@@ -53,13 +53,19 @@ const signupAPI = (data: createOwnerApiType) => {
 };
 
 /** accessToken을 리턴 */
-const createUserApi = (): string | undefined => {
+const createUserApi = (
+  setUserId: React.Dispatch<React.SetStateAction<string>>,
+) => {
   axios
-    .post(API_URL + userCreate, {
-      headers: generalApiHeaderConfig,
-    })
+    .post(
+      API_URL + userCreate,
+      {},
+      {
+        headers: generalApiHeaderConfig,
+      },
+    )
     .then((response) => {
-      return response.data.accessToken;
+      setUserId(response.data.id);
     })
     .catch((error) => {
       generalApihandleError(error);

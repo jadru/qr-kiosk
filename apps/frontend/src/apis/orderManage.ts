@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   generalApihandleError,
   generalApiHeaderConfig,
@@ -16,7 +17,7 @@ export const orderStatusChangeAPi = (
   statusKor: string,
 ): orderStatusType | undefined => {
   axios
-    .patch(VITE_APP_URL + orderdetail + '/' + id + '/order-status', {
+    .patch(API_URL + orderdetail + '/' + id + '/order-status', {
       status,
     })
     .then((response) => {
@@ -72,6 +73,39 @@ export const imageUploadApi = async (images: File[], setImageUrl: string[]) => {
       response.data.data.files.forEach((element: string) => {
         setImageUrl.push(element.replace(/\"/gi, ''));
       });
+    })
+    .catch((error) => {
+      generalApihandleError(error);
+    });
+};
+
+export const userOrderListApi = (
+  userId: string,
+  setOrderList: React.Dispatch<React.SetStateAction<orderDetailType[]>>,
+) => {
+  axios
+    .get(API_URL + orderdetail + '/user/' + userId, {
+      headers: generalApiHeaderConfig,
+    })
+    .then((response) => {
+      setOrderList(response.data);
+    })
+    .catch((error) => {
+      generalApihandleError(error);
+    });
+  return [];
+};
+
+export const ownerOrderListApi = (
+  ownerId: string,
+  setOrderList: React.Dispatch<React.SetStateAction<orderDetailType[]>>,
+) => {
+  axios
+    .get(API_URL + orderdetail + '/owner/' + ownerId, {
+      headers: generalApiHeaderConfig,
+    })
+    .then((response) => {
+      setOrderList(response.data);
     })
     .catch((error) => {
       generalApihandleError(error);
