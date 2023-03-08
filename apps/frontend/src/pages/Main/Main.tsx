@@ -2,7 +2,6 @@ import { NormalLayout } from '@src/components';
 import Lottie from 'react-lottie';
 import QRCodeAnimation from './61155-scan-qr-code.json';
 import { Link } from 'react-router-dom';
-import QRCode from 'react-qr-code';
 
 export const Main = () => {
   return (

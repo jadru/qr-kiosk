@@ -1,7 +1,4 @@
 import React, { useRef, useState } from 'react';
-import QRCode from 'react-qr-code';
-import { useRecoilState } from 'recoil';
-import { storeManageState } from '@src/states/atom';
 import ReactToPrint from 'react-to-print';
 import { QRprint } from '@src/components/QRprint/QRprint';
 
@@ -22,28 +19,6 @@ export const QRcodeDialog = () => {
         >
           ✕
         </label>
-        {/* <h2 className="text-xl font-bold">QR코드 생성기</h2>
-        <div className="form-control mt-4 w-full">
-          <label className="input-group input-group-sm">
-            <span>테이블 ID</span>
-            <input
-              type="text"
-              className="input input-bordered input-md"
-              placeholder="테이블 1"
-              name="tableid"
-              onFocus={handleFocus}
-              onChange={handleOnChange}
-            />
-          </label>
-        </div>
-        <div className="mt-4">
-          <div>
-            <h2 className="text-lg font-bold">QR Kiosk</h2>
-            <h4 className="font-bold">{storeManage.name}</h4>
-            <span>테이블 번호 : {tableId}</span>
-          </div>
-          <QRCode value={tableId} />
-        </div> */}
         <h2 className="text-xl font-bold">QR코드 생성기</h2>
         <div className="form-control mt-4 w-full">
           <label className="input-group input-group-sm">
