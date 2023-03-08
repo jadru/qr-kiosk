@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 export const Owner = () => {
   const onButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    alert(e.currentTarget.value + '되었습니다.');
     console.log(e.currentTarget.id);
   };
   return (
@@ -33,6 +34,7 @@ export const Owner = () => {
                   <button
                     className="btn btn-primary"
                     onClick={onButtonClick}
+                    value="승인"
                     id={'confirm'}
                   >
                     승인
@@ -41,6 +43,7 @@ export const Owner = () => {
                     className="btn btn-success"
                     onClick={onButtonClick}
                     id={'done'}
+                    value="완료"
                   >
                     완료
                   </button>
@@ -48,6 +51,7 @@ export const Owner = () => {
                     className="btn btn-warning"
                     onClick={onButtonClick}
                     id={'cancel'}
+                    value="취소"
                   >
                     취소
                   </button>
@@ -55,6 +59,7 @@ export const Owner = () => {
                     className="btn btn-error"
                     onClick={onButtonClick}
                     id={'delete'}
+                    value="삭제"
                   >
                     삭제
                   </button>
