@@ -20,11 +20,15 @@ export const VintageTheme: React.FC<Props> = ({
       </h1>
       <div className="flex flex-col outline-1 outline">
         <div className="carousel w-fuill">
-          {Menu.information.photos.map((photoUrl, index) => (
-            <div className="carousel-item w-2/3" key={photoUrl}>
-              <img src={photoUrl} alt={'photo' + index} />
-            </div>
-          ))}
+          {Menu.information.photos.map(
+            (photoUrl, index) =>
+              photoUrl &&
+              photoUrl !== '' && (
+                <div className="carousel-item w-2/3" key={photoUrl}>
+                  <img src={photoUrl} alt={'photo' + index} />
+                </div>
+              ),
+          )}
         </div>
         <div className="text-left mt-5 font-vintage-font text-lg w-full p-2">
           <p>{Menu.information.address}</p>
@@ -49,15 +53,15 @@ export const VintageTheme: React.FC<Props> = ({
                       className="flex flex-row outline-dotted h-32 items-center justify-between space-x-6 pr-6"
                       key={menuItem.itemid}
                     >
-                      <img
-                        src={menuItem.image}
-                        alt=""
-                        className="w-24 h-full"
-                      />
-                      <div className="w-1/2">
-                        <p className="text-2xl font-bold">
-                          {menuItem.itemname}
-                        </p>
+                      {menuItem.image && menuItem.image !== '' && (
+                        <img
+                          src={menuItem.image}
+                          alt=""
+                          className="w-24 h-full"
+                        />
+                      )}
+                      <div className="w-1/2 ml-2">
+                        <p className="text-xl font-bold">{menuItem.itemname}</p>
                         <p className="text-lg font-normal">
                           {parseFloat(menuItem.itemprice).toLocaleString('en')}
                           원

@@ -22,11 +22,15 @@ export const ModernTheme: React.FC<Props> = ({
         <p>{Menu.information.phoneNumber}</p>
       </div>
       <div className="carousel rounded-box">
-        {Menu.information.photos.map((photoUrl, index) => (
-          <div className="carousel-item" key={photoUrl}>
-            <img src={photoUrl} alt={'photo' + index} />
-          </div>
-        ))}
+        {Menu.information.photos.map(
+          (photoUrl, index) =>
+            photoUrl &&
+            photoUrl !== '' && (
+              <div className="carousel-item" key={photoUrl}>
+                <img src={photoUrl} alt={'photo' + index} />
+              </div>
+            ),
+        )}
       </div>
       <div className="divider divide-gray-700"></div>
       <div className="grid space-y-4">
@@ -44,15 +48,15 @@ export const ModernTheme: React.FC<Props> = ({
                       className="flex flex-row h-32 items-center justify-between space-x-6 pr-6 bg-white card"
                       key={menuItem.itemid}
                     >
-                      <img
-                        src={menuItem.image}
-                        alt=""
-                        className="w-24 h-full rounded-l-2xl"
-                      />
-                      <div className="w-1/2">
-                        <p className="text-2xl font-bold">
-                          {menuItem.itemname}
-                        </p>
+                      {menuItem.image && menuItem.image !== '' && (
+                        <img
+                          src={menuItem.image}
+                          alt=""
+                          className="w-24 h-full rounded-l-2xl"
+                        />
+                      )}
+                      <div className="w-1/2 ml-2">
+                        <p className="text-xl font-bold">{menuItem.itemname}</p>
                         <p className="text-lg font-normal">
                           {parseFloat(menuItem.itemprice).toLocaleString('en')}
                           원
