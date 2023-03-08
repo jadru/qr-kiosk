@@ -7,13 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Item_Order {
-  id              Int          @id @default(autoincrement())
-  count           Int
-  menu_item       Menu_Item    @relation(fields: [menu_item_id], references: [id])
-  menu_item_id    Int
-  order_detail    Order_Detail @relation(fields: [order_detail_id], references: [id])
-  order_detail_id Int
+model Owner{ 
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+  email String @unique
+  phone String @unique
+  store_name String
+  store_address String
+  store_phone String
+  theme String?
+  store_operating_time String?
+  menu Menu?
+  name String?
+  photo String[]
+  facility String?
+  createdTime DateTime @default(now())
+  updatedTime DateTime @updatedAt
+  Order_Detail         Order_Detail[]
 }
 
 model Order_Detail {
@@ -41,24 +52,6 @@ model Menu_Item {
   createdTime DateTime     @default(now())
   updatedTime DateTime     @updatedAt
   Item_Order  Item_Order[]
-}
-
-model Owner {
-  id                   Int            @id @default(autoincrement())
-  username             String         @unique
-  password             String
-  email                String         @unique
-  phone                String?        @unique
-  store_name           String
-  store_address        String
-  store_phone          String?
-  theme                String?
-  store_operating_time String?
-  menu                 Menu?
-  name                 String?
-  createdTime          DateTime       @default(now())
-  updatedTime          DateTime       @updatedAt
-  Order_Detail         Order_Detail[]
 }
 
 model Menu {

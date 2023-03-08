@@ -11,15 +11,18 @@ import {
     Res,
     HttpStatus,
     HttpCode,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { OwnerService } from './owner.service';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { Request } from 'src/auth/utils/request.types';
 import { MenuService } from '../menu/menu.service';
 import { Logger } from '@nestjs/common';
 import { MenuItemService } from '../menu-item/menu-item.service';
+import { Owner } from '@prisma/client';
 
 @Controller('owner')
 @ApiTags('사장님')
@@ -36,7 +39,9 @@ export class OwnerController {
 
     // @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
-    @Post('create')
+
+    @Post('/create')
+
     @ApiOperation({
         summary: '사장님 생성 API',
         description: '사장님 생성 API',
@@ -46,8 +51,7 @@ export class OwnerController {
         return this.ownerService.create(createOwnerDto);
     }
 
-    @Get('all')
-    @HttpCode(200)
+    @Get('/list')
     @ApiOperation({
         summary: '사장님 전체 조회 API',
         description: '사장님 전체 조회 API',
@@ -56,7 +60,6 @@ export class OwnerController {
         const own = await this.ownerService.findAll();
         const category = await this.menuService.findAll();
         const menus = await this.menuItemService.findAll();
-        Logger.log(menus);
         // return {
         //     information: [own, menu],
         // };
@@ -81,8 +84,8 @@ export class OwnerController {
             };
         });
     }
-
-    @Post('update')
+    // post test cjs : 23.3.8 add post menuList(owner,menu)
+    @Post(':username')
     @ApiOperation({
         summary: '사장님 전체 받기  API',
         description: '사장님 전체 받기 API',
@@ -93,6 +96,8 @@ export class OwnerController {
         Body: {
             name: string;
             information: {
+                id: number;
+                password: string;
                 store_address: string;
                 store_operating_time: string;
                 store_phone: string;
@@ -101,6 +106,8 @@ export class OwnerController {
                 email: string;
                 phone: string;
                 store_name: string;
+                photo: string[];
+                facility: string;
                 theme: 'cute' | 'modern' | 'vintage' | 'simple';
             };
             menu: [
@@ -121,10 +128,17 @@ export class OwnerController {
         },
     ) {
         this.ownerService.update(username, Body.information);
-        this.menuService.removeAll();
-        this.menuItemService.removeAll();
         for (let index = 0; index < Body.menu.length; index++) {
-            //this.menuService.createAt(Body.menu.map((item) => item.category_name),Body.menu.map((item) => item.owner_id));
+            this.menuService.removeAllByOwnerId(Body.menu[index].owner_id);
+        }
+        for (let index = 0; index < Body.menu.length; index++) {
+            for (let i = 0; i < Body.menu[index].menus.length; i++) {
+                this.menuItemService.removeAllByOwnerId(
+                    Body.menu[index].menus[i].menu_id,
+                );
+            }
+        }
+        for (let index = 0; index < Body.menu.length; index++) {
             this.menuService.createAt(
                 Body.menu[index].category_name,
                 Body.menu[index].owner_id,
@@ -137,14 +151,18 @@ export class OwnerController {
         }
         return;
     }
-    //
 
-    @Get()
-    findOne(@Param('owner_id') id: number) {
-        return this.ownerService.findByOwnerId(id);
+    @Get(':owner_id')
+    findOne(@Param('owner_id', ParseIntPipe) owner_id: number): Promise<Owner> {
+        console.log(owner_id);
+        console.log();
+        return this.ownerService.findByOwnerId(owner_id);
     }
-    
-    @Post()
+    @Patch(':username')
+    @ApiParam({
+        name: 'username',
+        description: '사장님 아이디',
+    })    
     @ApiOperation({
         summary: '사장님 정보 최신화',
         description: '사장님 정보 업데이트',
@@ -153,10 +171,10 @@ export class OwnerController {
         @Param('username') username: string,
         @Body() updateOwnerDto: UpdateOwnerDto,
     ) {
+        console.log(username);
         return this.ownerService.update(username, updateOwnerDto);
     }
-
-    @Delete()
+    @Delete(':store_name')
     remove(@Param('store_name') store_name: string) {
         return this.ownerService.remove(store_name);
     }

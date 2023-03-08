@@ -19,4 +19,8 @@ export class CreateOwnerDto {
     store_name: string;
     @ApiProperty()
     theme?: string;
+    @ApiProperty()
+    photo: string[];
+    @ApiProperty()
+    facility?: string;
 }
