@@ -35,7 +35,7 @@ export class MenuService {
     remove(id: number) {
         return `This action removes a #${id} menu`;
     }
-    removeAll() {
-        return this.prisma.menu.deleteMany();
+    removeAllByOwnerId(id: number) {
+        return this.prisma.menu.deleteMany({ where: { owner_id: id } });
     }
 }

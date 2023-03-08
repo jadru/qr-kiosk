@@ -24,6 +24,10 @@ export class OwnerEntity implements Owner {
     
     theme: string;
 
+    photo: string[];
+
+    facility: string;
+    
     createdTime: Date;
 
     updatedTime: Date;

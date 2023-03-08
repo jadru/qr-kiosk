@@ -16,8 +16,9 @@ export class OwnerService {
     }
 
     update(username: string, updateOwnerDto: UpdateOwnerDto) {
+        console.log(username);
         return this.prisma.owner.update({
-            where: { username },
+            where: { username: username },
             data: updateOwnerDto,
         });
     }
@@ -25,6 +26,7 @@ export class OwnerService {
     findByOwnerId(id: number): Promise<Owner> {
         return this.prisma.owner.findFirst({ where: { id }, include: { menu: { include: { menu_items: true }} }});
     }
+    
     remove(username: string) {
         return this.prisma.owner.delete({ where: { username } });
     }
