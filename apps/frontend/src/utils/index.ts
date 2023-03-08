@@ -1,13 +1,29 @@
-// @ts-nocheck
-export const cloneJSON = (obj) => {
-  var clone = {};
-  for (var key in obj) {
-    if (typeof obj[key] == 'object' && obj[key] != null) {
-      clone[key] = cloneJSON(obj[key]);
-    } else {
-      clone[key] = obj[key];
-    }
-  }
+import { StoreManageTypeBack, StoreManageType } from '@src/type';
 
-  return clone;
+export const parseJson = (json: StoreManageTypeBack): StoreManageType => {
+  return {
+    name: json.store_name,
+    information: {
+      address: json.store_address,
+      openTime: json.store_operating_time,
+      phoneNumber: json.store_phone,
+      facilities: json.facilities,
+      website: json.website,
+      photos: json.photos,
+      theme: json.theme,
+    },
+    menu: Object.values(json.menu).map((category) => {
+      return {
+        categoryName: category.category_name,
+        menus: category.menu.map((menuitem) => {
+          return {
+            image: menuitem.photo,
+            itemid: menuitem.itemid,
+            itemname: menuitem.name,
+            itemprice: menuitem.price,
+          };
+        }),
+      };
+    }),
+  };
 };

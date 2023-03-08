@@ -9,6 +9,7 @@ import {
   StoreManageType,
   StoreManageTypeBack,
 } from '@src/type';
+import { parseJson } from '@src/utils';
 
 const login: string = '/auth/login';
 const signup: string = '/user';
@@ -63,33 +64,6 @@ const signupAPI = (data: object, navigate: NavigateFunction) => {
     });
 };
 
-const parseJson = (json: StoreManageTypeBack): StoreManageType => {
-  return {
-    name: json.store_name,
-    information: {
-      address: json.store_address,
-      openTime: json.store_operating_time,
-      phoneNumber: json.store_phone,
-      facilities: json.facilities,
-      website: json.website,
-      photos: json.photos,
-      theme: json.theme,
-    },
-    menu: Object.values(json.menu).map((category) => {
-      return {
-        categoryName: category.category_name,
-        menus: category.menu.map((menuitem) => {
-          return {
-            image: menuitem.photo,
-            itemid: menuitem.itemid,
-            itemname: menuitem.name,
-            itemprice: menuitem.price,
-          };
-        }),
-      };
-    }),
-  };
-};
 const OwnerInfoAPI = (
   setStore: SetterOrUpdater<StoreManageType>,
   owner_id?: string,
