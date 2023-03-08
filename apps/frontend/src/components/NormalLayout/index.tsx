@@ -1,4 +1,7 @@
 import { ContentType } from '@src/type';
+import { useEffect } from 'react';
+import { Cookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 import { NavBar } from './NavBar';
 
 export const NormalLayout = ({ children, className }: ContentType) => {

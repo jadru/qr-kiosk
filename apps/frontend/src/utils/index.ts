@@ -1,4 +1,5 @@
 import { StoreManageTypeBack, StoreManageType } from '@src/type';
+import { Cookies } from 'react-cookie';
 
 export const parseJson = (json: StoreManageTypeBack): StoreManageType => {
   return {
@@ -42,4 +43,14 @@ export const calculateTotalPriceFromOrderList = (
 ): number => {
   // @ts-ignore
   return orderList.reduce((prev, curr) => prev + Number(curr.itemprice), 0);
+};
+
+export const tokenAccessProtected = () => {
+  const cookie = new Cookies();
+  const token = cookie.get('token');
+  if (token && token !== '') {
+    return false;
+  } else {
+    return true;
+  }
 };

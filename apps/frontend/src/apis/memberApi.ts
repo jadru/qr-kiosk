@@ -17,7 +17,7 @@ type loginType = {
 };
 
 /** return accessToken string */
-const loginAPI = (data: loginType) => {
+const loginAPI = (data: loginType, navigate: NavigateFunction) => {
   const cookies = new Cookies();
   axios
     .post(API_URL + login, data, {
@@ -25,13 +25,13 @@ const loginAPI = (data: loginType) => {
       headers: generalApiHeaderConfig,
     })
     .then((response) => {
-      console.log(response.data.accessToken);
       const decodedToken: jwtdecodeType = jwt_decode(response.data.accessToken);
       cookies.set('token', response.data.accessToken, {
         path: '/',
         maxAge: decodedToken.exp - decodedToken.nbf,
       });
       cookies.set('owner_id', decodedToken.owner_id);
+      navigate('/owner');
     })
     .catch((error) => {
       generalApihandleError(error);

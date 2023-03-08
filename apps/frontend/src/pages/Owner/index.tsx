@@ -4,9 +4,16 @@ import {
 } from '@src/apis/orderManage';
 import { NormalLayout } from '@src/components';
 import { orderDetailType } from '@src/type';
-import { Link } from 'react-router-dom';
+import { tokenAccessProtected } from '@src/utils';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Owner = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    tokenAccessProtected() && navigate('/login');
+  });
+
   const onButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.value !== 'delete'
       ? orderStatusChangeAPi(

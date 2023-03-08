@@ -26,16 +26,10 @@ export const Login = () => {
     resolver: yupResolver(LoginSchema),
   });
 
-  useEffect(() => {
-    console.log(isSubmitting);
-  }, [isSubmitting]);
   const navigate = useNavigate();
   const onError = (errors: any, e: any) => console.log(errors, e);
   const onSubmit: SubmitHandler<LoginInputType> = (data) => {
-    const token = loginAPI(data);
-    console.log(token);
-
-    navigate('/owner');
+    loginAPI(data, navigate);
   };
 
   return (
