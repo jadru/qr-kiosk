@@ -2,6 +2,7 @@ import {
   countedOrderListState,
   orderListState,
   orderPlaceState,
+  storeManageState,
 } from '@src/states/atom';
 import { CountedItem, CountedItemList, Item } from '@src/type/Item';
 import { cloneDeep } from 'lodash';
@@ -10,12 +11,14 @@ import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { OwnerInfoAPI } from '@src/apis';
 
 const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
 
 export const OrderList = () => {
   const { storeId, tableId } = useParams();
   const [orderList, setOrderList] = useRecoilState(orderListState);
+  const [store, setStore] = useRecoilState(storeManageState);
   const [countedOrderList, setCountedOrderList] = useRecoilState(
     countedOrderListState,
   );
@@ -46,6 +49,11 @@ export const OrderList = () => {
     }
     console.log(orderList);
   }, [orderList]);
+
+  useEffect(() => {
+    console.log(storeId);
+    OwnerInfoAPI(setStore, storeId);
+  }, []);
 
   const tosspayment = async () => {
     const tossPayments = await loadTossPayments(VITE_APP_TOSS_CLIENT_KEY);

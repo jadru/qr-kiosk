@@ -12,7 +12,6 @@ export const VintageTheme: React.FC<Props> = ({
   onOrderButtonClick,
 }) => {
   const Menu = useRecoilValue(storeManageState);
-  console.log(Menu);
   return (
     <div className="w-full h-full bg-vintage py-10 px-5 bg-scroll overflow-scroll bg-no-repeat bg-cover">
       <h1 className="text-5xl font-bold text-center font-vintage-font py-4">

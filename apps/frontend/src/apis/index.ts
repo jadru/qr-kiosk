@@ -3,9 +3,16 @@ import React from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import { SetterOrUpdater } from 'recoil';
 import axios from 'axios';
+import {
+  MenuListCategoryType,
+  MenuListType,
+  StoreManageType,
+  StoreManageTypeBack,
+} from '@src/type';
 
 const login: string = '/auth/login';
 const signup: string = '/user';
+const ownerifo: string = '/owner/';
 
 type loginType = {
   username: string;
@@ -22,8 +29,8 @@ const headerConfig = {
 };
 const handleError = (error: any) => {
   if (error.response) {
-    console.log(error.message);
   }
+  console.log(error);
 };
 const loginAPI = (data: object, navigate: NavigateFunction) => {
   axios
@@ -55,4 +62,48 @@ const signupAPI = (data: object, navigate: NavigateFunction) => {
       handleError(error);
     });
 };
-export { loginAPI, signupAPI };
+
+const parseJson = (json: StoreManageTypeBack): StoreManageType => {
+  return {
+    name: json.store_name,
+    information: {
+      address: json.store_address,
+      openTime: json.store_operating_time,
+      phoneNumber: json.store_phone,
+      facilities: json.facilities,
+      website: json.website,
+      photos: json.photos,
+      theme: json.theme,
+    },
+    menu: Object.values(json.menu).map((category) => {
+      return {
+        categoryName: category.category_name,
+        menus: category.menu.map((menuitem) => {
+          return {
+            image: menuitem.photo,
+            itemid: menuitem.itemid,
+            itemname: menuitem.name,
+            itemprice: menuitem.price,
+          };
+        }),
+      };
+    }),
+  };
+};
+const OwnerInfoAPI = (
+  setStore: SetterOrUpdater<StoreManageType>,
+  owner_id?: string,
+) => {
+  axios
+    .get(API_URL + ownerifo + owner_id, {
+      headers: headerConfig,
+    })
+    .then((response) => {
+      setStore(parseJson(response.data[0].information));
+      console.log(parseJson(response.data[0].information));
+    })
+    .catch((error) => {
+      handleError(error);
+    });
+};
+export { loginAPI, signupAPI, OwnerInfoAPI };

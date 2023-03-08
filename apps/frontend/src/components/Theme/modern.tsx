@@ -11,7 +11,6 @@ export const ModernTheme: React.FC<Props> = ({
   onOrderButtonClick,
 }) => {
   const Menu = useRecoilValue(storeManageState);
-  console.log(Menu);
   return (
     <div className="w-full h-full bg-white py-10 px-5 bg-scroll overflow-scroll space-y-4">
       <div className="w-full bg-base-100 shadow-2xl rounded-2xl px-6 py-5 space-y-2">
