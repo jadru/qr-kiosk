@@ -19,11 +19,15 @@ export const SimpleTheme: React.FC<Props> = ({
       </h1>
       <div className="flex flex-col">
         <div className="carousel my-4 w-fuill">
-          {Menu.information.photos.map((photoUrl, index) => (
-            <div className="carousel-item w-2/3" key={photoUrl}>
-              <img src={photoUrl} alt={'photo' + index} />
-            </div>
-          ))}
+          {Menu.information.photos.map(
+            (photoUrl, index) =>
+              photoUrl &&
+              photoUrl !== '' && (
+                <div className="carousel-item w-2/3" key={photoUrl}>
+                  <img src={photoUrl} alt={'photo' + index} />
+                </div>
+              ),
+          )}
         </div>
         <div className="text-left mt-5 font-nato-font text-xl w-full">
           <p>{Menu.information.address}</p>
@@ -47,13 +51,15 @@ export const SimpleTheme: React.FC<Props> = ({
                     className="flex flex-row bg-slate-50/75 rounded-2xl h-32 items-center justify-between space-x-6 pr-6"
                     key={menuItem.itemid}
                   >
-                    <img
-                      src={menuItem.image}
-                      alt=""
-                      className="w-24 h-full rounded-l-2xl"
-                    />
-                    <div className="w-1/2">
-                      <p className="text-2xl font-bold">{menuItem.itemname}</p>
+                    {menuItem.image && menuItem.image !== '' && (
+                      <img
+                        src={menuItem.image}
+                        alt=""
+                        className="w-24 h-full rounded-l-2xl"
+                      />
+                    )}
+                    <div className="w-1/2 ml-2">
+                      <p className="text-xl font-bold">{menuItem.itemname}</p>
                       <p className="text-lg font-normal">
                         {parseFloat(menuItem.itemprice).toLocaleString('en')}원
                       </p>

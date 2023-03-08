@@ -24,11 +24,15 @@ export const CuteTheme: React.FC<Props> = ({
         <p>{Menu.information.phoneNumber}</p>
       </div>
       <div className="carousel rounded-box my-4">
-        {Menu.information.photos.map((photoUrl, index) => (
-          <div className="carousel-item" key={photoUrl}>
-            <img src={photoUrl} alt={'photo' + index} />
-          </div>
-        ))}
+        {Menu.information.photos.map(
+          (photoUrl, index) =>
+            photoUrl &&
+            photoUrl !== '' && (
+              <div className="carousel-item" key={photoUrl}>
+                <img src={photoUrl} alt={'photo' + index} />
+              </div>
+            ),
+        )}
       </div>
       <div className="grid">
         {Menu.menu.map((category) => (
@@ -42,13 +46,15 @@ export const CuteTheme: React.FC<Props> = ({
                 className="flex flex-row bg-slate-50/75 rounded-2xl h-32 items-center justify-between space-x-6 pr-6"
                 key={menuItem.itemid}
               >
-                <img
-                  src={menuItem.image}
-                  alt=""
-                  className="w-24 h-full rounded-l-2xl"
-                />
-                <div className="w-1/2">
-                  <p className="text-2xl font-bold">{menuItem.itemname}</p>
+                {menuItem.image && menuItem.image !== '' && (
+                  <img
+                    src={menuItem.image}
+                    alt=""
+                    className="w-24 h-full rounded-l-2xl"
+                  />
+                )}
+                <div className="w-1/2 ml-2">
+                  <p className="text-xl font-bold">{menuItem.itemname}</p>
                   <p className="text-lg font-normal">
                     {parseFloat(menuItem.itemprice).toLocaleString('en')}원
                   </p>
