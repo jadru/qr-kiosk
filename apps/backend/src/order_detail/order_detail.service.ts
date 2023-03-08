@@ -13,18 +13,45 @@ export class OrderDetailService {
   }
 
   findAll() {
-    return `This action returns all orderDetail`;
+    return this.prisma.order_Detail.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} orderDetail`;
+    return this.prisma.order_Detail.findUnique({
+      where: { id },
+    });
+  }
+
+  findByOwner(ownerId: number) {
+    return this.prisma.order_Detail.findMany({
+      where: { owner_id: 1 },
+    });
   }
 
   update(id: number, updateOrderDetailDto: UpdateOrderDetailDto) {
-    return `This action updates a #${id} orderDetail`;
+    return this.prisma.order_Detail.update({
+      where: { id },
+      data: updateOrderDetailDto,
+    });
+  }
+
+  updateOrderStatus(id: number, status: string) {
+    return this.prisma.order_Detail.update({
+      where: { id },
+      data: { order_status: status },
+    })
+  }
+
+  updateTossStatus(id: number, status: string) {
+    return this.prisma.order_Detail.update({
+      where: { id },
+      data: { toss_status: status },
+    })
   }
 
   remove(id: number) {
-    return `This action removes a #${id} orderDetail`;
+    return this.prisma.order_Detail.delete({
+      where: { id },
+    });
   }
 }
