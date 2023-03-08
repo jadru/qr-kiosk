@@ -1,8 +1,11 @@
 import { Owner } from '@prisma/client';
+import { MenuEntity } from 'src/menu/entities/menu.entity';
 
 export class OwnerEntity implements Owner {
     id: number;
+
     username: string;
+
     password: string;
 
     email: string;
@@ -20,6 +23,10 @@ export class OwnerEntity implements Owner {
     store_operating_time: string;
     
     theme: string;
+
     createdTime: Date;
+
     updatedTime: Date;
+
+    menu: MenuEntity | null;
 }

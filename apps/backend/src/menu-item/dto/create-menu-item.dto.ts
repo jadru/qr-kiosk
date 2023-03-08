@@ -1,9 +1,8 @@
+import { UploadedFiles } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateMenuItemDto {
     @ApiProperty()
-    item_id: string;
-    @ApiProperty()
-    photo: string;
+    image_url: string;
     @ApiProperty()
     price: number;
     @ApiProperty()

@@ -3,10 +3,17 @@ import { MenuItemEntity } from "src/menu-item/entities/menu-item.entity";
 import { Menu_Item } from '@prisma/client';
 import { OwnerEntity } from '../../owner/entities/owner.entity';
 import { ItemOrderEntity } from "src/item_order/entities/item_order.entity";
+import { CreateItemOrderDto } from "src/item_order/dto/create-item_order.dto";
 
 export class CreateOrderDetailDto {
     @ApiProperty()
+    id: string;
+    
+    @ApiProperty()
     order_name: string;
+
+    @ApiProperty()
+    table_number: number;
     
     @ApiProperty()
     total_amount: number;
@@ -30,5 +37,5 @@ export class CreateOrderDetailDto {
     user_id: string;
 
     @ApiProperty()
-    item_orders: number[];
+    item_orders: CreateItemOrderDto[];
 }

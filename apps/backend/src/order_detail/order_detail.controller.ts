@@ -30,7 +30,7 @@ export class OrderDetailController {
     summary: '주문 내역 단일 조회 API',
   })
   findOne(@Param('id') id: string) {
-    return this.orderDetailService.findOne(+id);
+    return this.orderDetailService.findOne(id);
   }
 
   @Get('/owner/:owner_id')
@@ -46,7 +46,7 @@ export class OrderDetailController {
     summary: '해당 주문 내역 업데이트 API',
   })
   update(@Param('id') id: string, @Body() updateOrderDetailDto: UpdateOrderDetailDto) {
-    return this.orderDetailService.update(+id, updateOrderDetailDto);
+    return this.orderDetailService.update(id, updateOrderDetailDto);
   }
 
   @Patch('/:id/toss-status')
@@ -54,7 +54,7 @@ export class OrderDetailController {
     summary: '해당 주문 내역 토스 상태 변경  API',
   })
   updateTossStatus(@Param('id') id: string, @Query('status') tossStatus: string) {
-    return this.orderDetailService.updateTossStatus(+id, tossStatus);
+    return this.orderDetailService.updateTossStatus(id, tossStatus);
   }
 
   @Patch('/:id/order-status')
@@ -62,7 +62,7 @@ export class OrderDetailController {
     summary: '해당 주문 내역 주문 상태 변경 API',
   })
   updateOrderStatus(@Param('id') id: string, @Query('status') orderStatus: string) {
-    return this.orderDetailService.updateOrderStatus(+id, orderStatus);
+    return this.orderDetailService.updateOrderStatus(id, orderStatus);
   }
 
   @Delete(':id')
@@ -70,6 +70,6 @@ export class OrderDetailController {
     summary: '해당 주문 내역 삭제 API',
   })
   remove(@Param('id') id: string) {
-    return this.orderDetailService.remove(+id);
+    return this.orderDetailService.remove(id);
   }
 }

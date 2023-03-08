@@ -9,8 +9,5 @@ export class ItemOrderEntity implements Item_Order{
     count: number;
     
     @ApiProperty()
-    menu_item_id: number;
-    
-    @ApiProperty()
-    order_detail_id: number;
+    menu_item_id: number;   
 }

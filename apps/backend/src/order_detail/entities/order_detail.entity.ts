@@ -6,7 +6,10 @@ import { ItemOrderEntity } from '../../item_order/entities/item_order.entity';
 
 export class OrderDetailEntity implements Order_Detail {
     @ApiProperty()
-    id: number;
+    id: string;
+
+    @ApiProperty()
+    table_number: number;
 
     @ApiProperty()
     order_name: string;

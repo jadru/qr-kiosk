@@ -12,12 +12,11 @@ model Item_Order {
   count           Int
   menu_item       Menu_Item    @relation(fields: [menu_item_id], references: [id])
   menu_item_id    Int
-  order_detail    Order_Detail @relation(fields: [order_detail_id], references: [id])
-  order_detail_id Int
 }
 
 model Order_Detail {
-  id           Int          @id @default(autoincrement())
+  id           String          @id
+  table_number Int
   order_name   String
   toss_status  String?
   order_status String?
@@ -28,12 +27,11 @@ model Order_Detail {
   owner_id     Int
   user         User         @relation(fields: [user_id], references: [id])
   user_id      String       @db.Uuid
-  Item_Order   Item_Order[]
 }
 
 model Menu_Item {
   id          Int          @id @default(autoincrement())
-  photo       String?
+  image_url   String?
   price       Int
   name        String
   menu        Menu         @relation(fields: [menu_id], references: [id])
@@ -64,7 +62,7 @@ model Owner {
 model Menu {
   id            Int         @id @default(autoincrement())
   category_name String      @unique
-  menus         Menu_Item[]
+  menu_items         Menu_Item[]
   owner         Owner       @relation(fields: [id], references: [id])
   owner_id      Int
   createdTime   DateTime    @default(now())

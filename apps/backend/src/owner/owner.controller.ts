@@ -109,9 +109,8 @@ export class OwnerController {
                     owner_id: number;
                     menus: [
                         {
-                            item_id: string;
                             name: string;
-                            photo: string;
+                            image_url: string;
                             price: number;
                             menu_id: number;
                         },

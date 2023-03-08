@@ -16,7 +16,7 @@ export class OrderDetailService {
     return this.prisma.order_Detail.findMany();
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.order_Detail.findUnique({
       where: { id },
     });
@@ -28,28 +28,28 @@ export class OrderDetailService {
     });
   }
 
-  update(id: number, updateOrderDetailDto: UpdateOrderDetailDto) {
+  update(id: string, updateOrderDetailDto: UpdateOrderDetailDto) {
     return this.prisma.order_Detail.update({
       where: { id },
       data: updateOrderDetailDto,
     });
   }
 
-  updateOrderStatus(id: number, status: string) {
+  updateOrderStatus(id: string, status: string) {
     return this.prisma.order_Detail.update({
       where: { id },
       data: { order_status: status },
     })
   }
 
-  updateTossStatus(id: number, status: string) {
+  updateTossStatus(id: string, status: string) {
     return this.prisma.order_Detail.update({
       where: { id },
       data: { toss_status: status },
     })
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.order_Detail.delete({
       where: { id },
     });

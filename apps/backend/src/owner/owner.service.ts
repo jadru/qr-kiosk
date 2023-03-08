@@ -14,14 +14,16 @@ export class OwnerService {
     findAll() {
         return this.prisma.owner.findMany();
     }
+
     update(username: string, updateOwnerDto: UpdateOwnerDto) {
         return this.prisma.owner.update({
             where: { username },
             data: updateOwnerDto,
         });
     }
+    
     findByOwnerId(id: number): Promise<Owner> {
-        return this.prisma.owner.findFirst({ where: { id } });
+        return this.prisma.owner.findFirst({ where: { id }, include: { menu: { include: { menu_items: true }} }});
     }
     remove(username: string) {
         return this.prisma.owner.delete({ where: { username } });

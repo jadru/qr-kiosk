@@ -5,8 +5,6 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path';
-import { static } from 'express';
 
 async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -14,7 +12,7 @@ async function bootstrap() {
     });
     const port = process.env.SERVER_PORT;
     const configService = app.get(ConfigService);
-    app.use('/public', static(join(__dirname, '../public')));
+    // app.use('/public', static(join(__dirname, '../public')));
     
     const prisma: PrismaService = app.get(PrismaService);
     prisma.enableShutdownHook(app);

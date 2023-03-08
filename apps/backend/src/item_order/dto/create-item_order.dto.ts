@@ -6,7 +6,4 @@ export class CreateItemOrderDto {
 
     @ApiProperty()
     menu_item_id: number;
-
-    @ApiProperty()
-    order_detail_id: number;
 }

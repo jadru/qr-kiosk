@@ -18,6 +18,10 @@ import { join } from 'path';
         ConfigModule.forRoot({
             isGlobal: true,
         }),
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', '../public'), // added ../ to get one folder back
+            serveRoot: '/public/', //last slash was important
+        }),
         UserModule,
         MenuItemModule,
         MenuModule,

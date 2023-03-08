@@ -7,6 +7,10 @@ export class CreateOwnerDto {
     password: string;
     @ApiProperty()
     email: string;
+    
+    @ApiProperty()
+    name: string;
+
     @ApiProperty({ required: false })
     phone: string | null;
     @ApiProperty({ required: false })

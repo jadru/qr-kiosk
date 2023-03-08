@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Menu } from '@prisma/client';
+import { MenuItemEntity } from '../../menu-item/entities/menu-item.entity';
 
 export class MenuEntity implements Menu {
     @ApiProperty()
@@ -16,4 +17,6 @@ export class MenuEntity implements Menu {
 
     @ApiProperty()
     updatedTime: Date;
+
+    menuItem: MenuItemEntity[];
 }
