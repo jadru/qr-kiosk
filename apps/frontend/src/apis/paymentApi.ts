@@ -1,3 +1,4 @@
+import { CountedItemList } from '@src/type/Item';
 import { API_URL } from '@src/constants';
 import { generalApihandleError, generalApiHeaderConfig } from '@src/utils';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
@@ -6,7 +7,7 @@ import { useRecoilState } from 'recoil';
 import { orderListState } from '@src/states/atom';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate, useParams, NavigateFunction } from 'react-router-dom';
+import { NavigateFunction } from 'react-router-dom';
 import { MenuItemType } from '@src/type';
 
 const orderdetail: string = '/order-detail';
@@ -16,6 +17,7 @@ export const tosspaymentAPI = async (
   orderList: MenuItemType[],
   totalprice: number,
   navigate: NavigateFunction,
+  orderId: string,
   storeId?: string,
   tableId?: string,
 ) => {
@@ -23,7 +25,7 @@ export const tosspaymentAPI = async (
   tosspayments
     .requestPayment('카드', {
       amount: totalprice,
-      orderId: uuidv4(),
+      orderId: orderId,
       orderName: orderList[0].name + '외 ' + orderList.length + '건',
       successUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order/success`,
       failUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order`,
@@ -45,14 +47,28 @@ export const tosspaymentAPI = async (
 export const orderdetailAPI = (
   orderList: MenuItemType[],
   totalprice: number,
+  menuItem: CountedItemList,
+  orderId: string,
+  tableNum?: string,
   storeId?: string,
 ) => {
+  console.log(tableNum, storeId);
   axios.post(
     API_URL + orderdetail,
     {
       order_name: orderList[0].name,
-      total_amout: totalprice,
-      owner_id: storeId,
+      total_amount: totalprice,
+      owner_id: Number(storeId),
+      table_number: Number(tableNum),
+      id: orderId,
+      item_orders: [
+        menuItem.map((item) => {
+          return {
+            menu_item_id: item.item_id,
+            count: item.count,
+          };
+        }),
+      ],
     },
     {
       headers: generalApiHeaderConfig,

@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   CuteTheme,
   ModernTheme,
@@ -13,26 +13,26 @@ import {
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
-import { useCookies } from 'react-cookie';
+import { Cookies, useCookies } from 'react-cookie';
 import { createUserApi } from '@src/apis/memberApi';
 import { calculateTotalPriceFromOrderList } from '@src/utils';
 
 export const Order = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+  const [loading, setLoading] = useState(false);
   const { storeId, tableId } = useParams();
-  const [loading, setLoading] = React.useState(false);
   const [store, setStore] = useRecoilState(storeManageState);
-  const setStoreInfo = useSetRecoilState(orderPlaceState);
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const navigate = useNavigate();
 
-  // useLayoutEffect(() => {
-  //   // OwnerInfoAPI(setStore, storeId, setLoading);
-  //   if (!(cookies && cookies.user)) {
-  //     const userId = createUserApi();
-  //     userId && setCookie('user', userId, { path: '/', maxAge: 3600 });
-  //   }
-  // }, []);
+  const cookie = new Cookies();
+
+  useLayoutEffect(() => {
+    OwnerInfoAPI(setStore, cookie.get('owner_id'), setLoading);
+    if (!cookie.get('user')) {
+      const userId = createUserApi();
+      userId && cookie.set('user', userId, { path: '/', maxAge: 3600 });
+    }
+  }, []);
 
   return !loading ? (
     <>
