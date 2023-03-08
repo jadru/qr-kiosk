@@ -4,9 +4,9 @@ import { MenuController } from './menu.controller';
 import { PrismaClient } from '@prisma/client';
 
 @Module({
-  controllers: [MenuController],
-  providers: [MenuService],
-  imports: [PrismaClient]
+    controllers: [MenuController],
+    providers: [MenuService],
+    imports: [PrismaClient],
+    exports: [MenuService],
 })
-
 export class MenuModule {}

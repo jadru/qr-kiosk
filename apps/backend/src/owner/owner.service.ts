@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
-import { Owner } from '@prisma/client';
+import { Owner, Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
@@ -15,18 +15,30 @@ export class OwnerService {
     findAll() {
         return this.prisma.owner.findMany();
     }
-    findOne(id: number) {
-        return `This action returns a #${id} owner`;
-    }
-
-    update(store_name: string, updateOwnerDto: UpdateOwnerDto) {
+    update(username: string, updateOwnerDto: UpdateOwnerDto) {
         return this.prisma.owner.update({
-            where: { store_name },
+            where: { username },
             data: updateOwnerDto,
         });
     }
+    findOneByStorename(username: string): Promise<Owner> {
+        return this.prisma.owner.findFirst({ where: { username } });
+    }
+    remove(username: string) {
+        return this.prisma.owner.delete({ where: { username } });
+    }
 
-    remove(id: number) {
-        return `This action removes a #${id} owner`;
+    findById(username: string): Promise<Owner> {
+        return this.prisma.owner.findFirst({ where: { username } });
+    }
+
+    findByIdandPass(data: {
+        username: string;
+        password: string;
+    }): Promise<Owner> {
+        const { username, password } = data;
+        return this.prisma.owner.findFirst({
+            where: { username, password },
+        });
     }
 }

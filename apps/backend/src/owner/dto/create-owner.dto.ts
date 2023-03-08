@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 export class CreateOwnerDto {
     @ApiProperty()
     username: string;
@@ -16,4 +17,6 @@ export class CreateOwnerDto {
     store_operating_time: string;
     @ApiProperty()
     store_name: string;
+    @ApiProperty()
+    theme?: string;
 }

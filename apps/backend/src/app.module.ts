@@ -5,6 +5,8 @@ import { AppService } from './app.service';
 import { OwnerModule } from './owner/owner.module';
 import { MenuModule } from './menu/menu.module';
 import { MenuItemModule } from './menu-item/menu-item.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
     imports: [
@@ -15,6 +17,7 @@ import { MenuItemModule } from './menu-item/menu-item.module';
         MenuItemModule,
         MenuModule,
         OwnerModule,
+        AuthModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -7,7 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
+    const app = await NestFactory.create(AppModule, { cors: true });
     const port = process.env.SERVER_PORT;
     const configService = app.get(ConfigService);
 
@@ -15,11 +15,11 @@ async function bootstrap() {
     prisma.enableShutdownHook(app);
 
     const documentOption = new DocumentBuilder()
-    .setTitle('QR Kiosk API')
-    .setDescription('QR Kiosk API backend api')
-    .setVersion('1.0')
-    .addTag('QR Kiosk API')
-    .build();
+        .setTitle('QR Kiosk API')
+        .setDescription('QR Kiosk API backend api')
+        .setVersion('1.0')
+        .addTag('QR Kiosk API')
+        .build();
 
     const document = SwaggerModule.createDocument(app, documentOption);
     SwaggerModule.setup('api-docs', app, document);

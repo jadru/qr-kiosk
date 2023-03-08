@@ -7,44 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+model Menu_Item {
+  id Int @id  @default(autoincrement())
+  item_id String @unique
+  photo String? 
+  price Int
+  name String
+  menu Menu @relation(fields: [menu_id], references: [id])
+  menu_id Int 
+  createdTime DateTime @default(now())
+  updatedTime DateTime @updatedAt
+}
+
 model Owner{ 
-  owner_id Int @id
-  username String
+  id Int @id @default(autoincrement())
+  username String @unique
   password String
   email String @unique
   phone String @unique
   store_name String
   store_address String
   store_phone String
+  theme String?
   store_operating_time String?
   menu Menu?
+  name String?
   createdTime DateTime @default(now())
   updatedTime DateTime @updatedAt
 }
+
 
 model Menu{
   id Int @id  @default(autoincrement())
-  category_name String?
+  category_name String @unique
   menus Menu_Item[]
-  owner Owner @relation(fields: [owner_id],references: [owner_id])
-  owner_id Int @unique
+  owner Owner @relation(fields: [id],references: [id])
+  owner_id Int
   createdTime DateTime @default(now())
   updatedTime DateTime @updatedAt
 
 }
 
-model Menu_Item {
-  id Int @id
-  item_id String
-  photo String? 
-  price Int
-  name String
-  menu Menu @relation(fields: [menu_id], references: [id])
-  menu_id Int @unique
-    createdTime DateTime @default(now())
-  updatedTime DateTime @updatedAt
 
-}
+
+
+
+
 
 model User {
   id          Int     @id @default(autoincrement())

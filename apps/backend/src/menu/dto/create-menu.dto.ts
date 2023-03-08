@@ -1,7 +1,7 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateMenuDto {
-   @ApiProperty()
+    @ApiProperty()
     category_name: string;
 
     @ApiProperty()

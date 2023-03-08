@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { Menu } from "@prisma/client";
+import { ApiProperty } from '@nestjs/swagger';
+import { Menu } from '@prisma/client';
 
 export class MenuEntity implements Menu {
     @ApiProperty()
