@@ -16,7 +16,10 @@ export const OwnerInfoAPI = (
   setLoading?: React.Dispatch<React.SetStateAction<boolean>>,
 ) => {
   axios
-    .get(API_URL + ownerifo + '/' + owner_id, {
+    .get(API_URL + ownerifo, {
+      params: {
+        owner_id: owner_id,
+      },
       headers: generalApiHeaderConfig,
     })
     .then((response) => {

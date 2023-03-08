@@ -11,7 +11,7 @@ import { useEffect, useLayoutEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { OwnerInfoAPI } from '@src/apis/memberApi';
+import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
 
 const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
 

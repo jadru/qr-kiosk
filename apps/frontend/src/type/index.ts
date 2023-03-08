@@ -12,6 +12,14 @@ type MenuItemType = {
   itemprice: string;
 };
 
+type CountedMenuItemListType = {
+  image: string;
+  itemid: string;
+  itemname: string;
+  itemprice: string;
+  count: number;
+}[];
+
 type MenuListType = {
   categoryName: string;
   menus: MenuItemType[];
@@ -73,9 +81,20 @@ type StoreManageTypeBack = {
           updatedTime: string;
         },
       ];
-    },
-  }
-  ];
+    };
+  };
+};
+
+type createOwnerApiType = {
+  username: string;
+  password: string;
+  email: string;
+  phone: string;
+  store_phone: string;
+  store_address: string;
+  store_operating_time: string;
+  store_name: string;
+  theme: string;
 };
 
 export type {
@@ -85,4 +104,6 @@ export type {
   StoreManageType,
   StoreManageTypeBack,
   MenuItemType,
+  CountedMenuItemListType,
+  createOwnerApiType,
 };

@@ -12,18 +12,18 @@ import {
 } from '@src/states/atom';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { OwnerInfoAPI } from '@src/apis/memberApi';
+import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
 
 export const Order = () => {
   const { storeId, tableId } = useParams();
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = React.useState(false);
   const [store, setStore] = useRecoilState(storeManageState);
   const setStoreInfo = useSetRecoilState(orderPlaceState);
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const navigate = useNavigate();
 
   useLayoutEffect(() => {
-    OwnerInfoAPI(setStore, storeId, setLoading);
+    // OwnerInfoAPI(setStore, storeId, setLoading);
   }, []);
 
   useEffect(() => {

@@ -3,6 +3,7 @@ import React from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import axios from 'axios';
 import { generalApihandleError, generalApiHeaderConfig } from '@src/utils';
+import { createOwnerApiType } from '@src/type';
 
 const login: string = '/auth/login';
 const signup: string = '/user';
@@ -33,7 +34,8 @@ const loginAPI = (data: object, navigate: NavigateFunction) => {
       generalApihandleError(error);
     });
 };
-const signupAPI = (data: object, navigate: NavigateFunction) => {
+
+const signupAPI = (data: createOwnerApiType, navigate: NavigateFunction) => {
   axios
     .post(API_URL + signup, data, {
       data: data,
@@ -41,6 +43,7 @@ const signupAPI = (data: object, navigate: NavigateFunction) => {
     })
     .then((response) => {
       if (response.status === 200) {
+        alert('회원가입 완료');
         navigate('/login');
       }
     })
