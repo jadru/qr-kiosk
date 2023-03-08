@@ -8,34 +8,34 @@ datasource db {
 }
 
 model Item_Order {
-  id              Int          @id @default(autoincrement())
-  count           Int
-  menu_item       Menu_Item    @relation(fields: [menu_item_id], references: [id])
-  menu_item_id    Int
+  id           Int       @id @default(autoincrement())
+  count        Int
+  menu_item    Menu_Item @relation(fields: [menu_item_id], references: [id])
+  menu_item_id Int
 }
 
-model Owner{ 
-  id Int @id @default(autoincrement())
-  username String @unique
-  password String
-  email String @unique
-  phone String @unique
-  store_name String
-  store_address String
-  store_phone String
-  theme String?
+model Owner {
+  id                   Int            @id @default(autoincrement())
+  username             String         @unique
+  password             String
+  email                String         @unique
+  phone                String         @unique
+  store_name           String
+  store_address        String
+  store_phone          String
+  theme                String?
   store_operating_time String?
-  menu Menu?
-  name String?
-  photo String[]
-  facility String?
-  createdTime DateTime @default(now())
-  updatedTime DateTime @updatedAt
+  menu                 Menu?
+  name                 String?
+  photo                String[]
+  facility             String?
+  createdTime          DateTime       @default(now())
+  updatedTime          DateTime       @updatedAt
   Order_Detail         Order_Detail[]
 }
 
 model Order_Detail {
-  id           String          @id
+  id           String    @id
   table_number Int
   order_name   String
   toss_status  String?
@@ -43,10 +43,10 @@ model Order_Detail {
   total_amount Int
   approveAt    DateTime?
   requestAt    DateTime?
-  owner        Owner        @relation(fields: [owner_id], references: [id])
+  owner        Owner     @relation(fields: [owner_id], references: [id])
   owner_id     Int
-  user         User         @relation(fields: [user_id], references: [id])
-  user_id      String       @db.Uuid
+  user         User      @relation(fields: [user_id], references: [id])
+  user_id      String    @db.Uuid
 }
 
 model Menu_Item {
@@ -64,7 +64,7 @@ model Menu_Item {
 model Menu {
   id            Int         @id @default(autoincrement())
   category_name String      @unique
-  menu_items         Menu_Item[]
+  menu_items    Menu_Item[]
   owner         Owner       @relation(fields: [id], references: [id])
   owner_id      Int
   createdTime   DateTime    @default(now())

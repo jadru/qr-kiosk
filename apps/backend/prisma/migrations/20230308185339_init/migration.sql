@@ -8,6 +8,27 @@ CREATE TABLE "Item_Order" (
 );
 
 -- CreateTable
+CREATE TABLE "Owner" (
+    "id" SERIAL NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "store_name" TEXT NOT NULL,
+    "store_address" TEXT NOT NULL,
+    "store_phone" TEXT NOT NULL,
+    "theme" TEXT,
+    "store_operating_time" TEXT,
+    "name" TEXT,
+    "photo" TEXT[],
+    "facility" TEXT,
+    "createdTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedTime" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Owner_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Order_Detail" (
     "id" TEXT NOT NULL,
     "table_number" INTEGER NOT NULL,
@@ -26,7 +47,7 @@ CREATE TABLE "Order_Detail" (
 -- CreateTable
 CREATE TABLE "Menu_Item" (
     "id" SERIAL NOT NULL,
-    "photo" TEXT,
+    "image_url" TEXT,
     "price" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "menu_id" INTEGER NOT NULL,
@@ -34,25 +55,6 @@ CREATE TABLE "Menu_Item" (
     "updatedTime" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Menu_Item_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Owner" (
-    "id" SERIAL NOT NULL,
-    "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "phone" TEXT,
-    "store_name" TEXT NOT NULL,
-    "store_address" TEXT NOT NULL,
-    "store_phone" TEXT,
-    "theme" TEXT,
-    "store_operating_time" TEXT,
-    "name" TEXT,
-    "createdTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedTime" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "Owner_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable

@@ -8,7 +8,7 @@ export class MenuItemEntity implements Menu_Item {
     
     category_name: string;
     
-    photo: string;
+    image_url: string;
     
     price: number;
 
