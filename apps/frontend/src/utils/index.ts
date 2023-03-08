@@ -36,3 +36,10 @@ export const generalApiHeaderConfig = {
 export const generalApihandleError = (error: any) => {
   console.log(error);
 };
+
+export const calculateTotalPriceFromOrderList = (
+  orderList: never[],
+): number => {
+  // @ts-ignore
+  return orderList.reduce((prev, curr) => prev + Number(curr.itemprice), 0);
+};

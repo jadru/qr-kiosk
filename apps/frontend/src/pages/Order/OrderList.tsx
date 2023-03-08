@@ -12,6 +12,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
+import { calculateTotalPriceFromOrderList } from '@src/utils';
 
 const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
 
@@ -35,24 +36,15 @@ export const OrderList = () => {
         return acc;
       }, []),
     );
-    setTotalPrice(
-      orderList
-        // @ts-ignore
-        .reduce((prev, curr) => prev + Number(curr.itemprice), 0),
-    );
-    if (
-      orderList
-        // @ts-ignore
-        .reduce((prev, curr) => prev + Number(curr.itemprice), 0) === 0
-    ) {
+    setTotalPrice(calculateTotalPriceFromOrderList(orderList));
+    if (calculateTotalPriceFromOrderList(orderList)) {
       navigate(`/${storeId}/${tableId}/order`);
     }
-    console.log(orderList);
+    console.log(countedOrderList);
   }, [orderList]);
 
   useLayoutEffect(() => {
     console.log(storeId);
-    OwnerInfoAPI(setStore, storeId);
   }, []);
 
   const tosspayment = async () => {

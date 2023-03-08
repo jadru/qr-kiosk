@@ -15,6 +15,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
 import { useCookies } from 'react-cookie';
 import { createUserApi } from '@src/apis/memberApi';
+import { calculateTotalPriceFromOrderList } from '@src/utils';
 
 export const Order = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['user']);
@@ -57,18 +58,11 @@ export const Order = () => {
             navigate(`/${storeId}/${tableId}/order/confirm`);
           }}
           className="text-xl btn-primary"
-          disabled={
-            orderList
-              // @ts-ignore
-              .reduce((prev, curr) => prev + Number(curr.itemprice), 0) === 0
-          }
+          disabled={calculateTotalPriceFromOrderList(orderList) === 0}
         >
           {orderList.length}개 {' : '}
-          {orderList
-            // @ts-ignore
-            .reduce((prev, curr) => prev + Number(curr.itemprice), 0)
-            .toLocaleString('en')}
-          원 장바구니
+          {calculateTotalPriceFromOrderList(orderList).toLocaleString('en')}원
+          장바구니
         </button>
       </div>
     </>

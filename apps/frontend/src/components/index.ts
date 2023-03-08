@@ -1,3 +1,4 @@
+import { Loading } from './Loading';
 import { VintageTheme } from './Theme/vintage';
 import { ModernTheme } from './Theme/modern';
 import { SimpleTheme } from './Theme/simple';
@@ -14,4 +15,5 @@ export {
   SimpleTheme,
   ModernTheme,
   VintageTheme,
+  Loading,
 };

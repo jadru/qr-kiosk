@@ -49,6 +49,7 @@ export const StoreManagement: React.FC = () => {
   const [enablePrevent, disablePrevent] = usePreventLeave();
   const [storeMange, setStoreManage] = useRecoilState(storeManageState);
   const [menuData, setMenuData] = useRecoilState(menuDataState);
+  const [saving, setSaving] = useState<boolean>(false);
   const [newMenu, setNewMenu] = useState<Item>(templateOfNewMenu);
   const [mobile, setMobile] = useState<boolean>(false);
   const [theme, setTheme] = useState<string>('simple');
@@ -134,12 +135,9 @@ export const StoreManagement: React.FC = () => {
         <div className="divider divider-horizontal"></div>
         <div className="divider divider-horizontal"></div>
         <div className="w-2/4 flex flex-col self-center items-center space-y-4 z-50">
-          <label htmlFor="my-modal-6" className="btn btn-md mt-4 mx-2">
-            저장
-          </label>
           <input type="checkbox" id="my-modal-6" className="modal-toggle" />
-          <QRcodeDialog />
-          <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-3">
+          <QRcodeDialog saving={saving} />
+          <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-5">
             <label className="label cursor-pointer">
               <span className="label-text mr-4">
                 {mobile ? '모바일 폰' : '데스크탑'}
@@ -150,6 +148,27 @@ export const StoreManagement: React.FC = () => {
                 checked={mobile}
                 onChange={onMobileToggleChange}
               />
+            </label>
+            <label
+              htmlFor="my-modal-6"
+              className="btn btn-md btn-outline"
+              onClick={() => setSaving(true)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#000000"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="mr-2"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              저장
             </label>
           </div>
           <div
