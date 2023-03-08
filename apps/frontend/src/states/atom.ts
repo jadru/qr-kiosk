@@ -1,26 +1,17 @@
-import { StoreManageType } from '@src/type';
+import { StoreManageType, MenuListType } from '@src/type';
 import { atom } from 'recoil';
 
-const loginAtom = atom({
-  key: 'loginAtom',
-  default: { username: 'unknown', password: 'unknown' },
-});
-
-const tokenAtom = atom({
-  key: 'tokenAtom',
-  default: 'a',
-});
-const menuDataState = atom({
+const menuDataState = atom<MenuListType>({
   key: 'menuData',
   default: [
     {
       categoryName: 'Category 1',
       menus: [
         {
-          image: '/example.jpg',
-          itemid: 'example1',
-          itemname: 'Example Menu 1',
-          itemprice: '3000',
+          image_url: '/example.jpg',
+          item_id: 0,
+          name: 'Example Menu 1',
+          price: 3000,
         },
       ],
     },
@@ -45,10 +36,10 @@ const storeManageState = atom<StoreManageType>({
         categoryName: 'Category 1',
         menus: [
           {
-            image: '/example.jpg',
-            itemid: 'example1',
-            itemname: 'Example Menu 1',
-            itemprice: '3000',
+            image_url: '/example.jpg',
+            item_id: 0,
+            name: 'Example Menu 1',
+            price: 3000,
           },
         ],
       },
@@ -86,19 +77,11 @@ const countedOrderListState = atom({
   default: [],
 });
 
-const loginState = atom({
-  key: 'loginState',
-  default: undefined,
-});
-
 export {
-  loginAtom,
-  tokenAtom,
   menuDataState,
   storeManageState,
   orderListState,
   orderPlaceState,
   successedOrderState,
   countedOrderListState,
-  loginState,
 };

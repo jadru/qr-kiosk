@@ -51,28 +51,28 @@ export const SimpleTheme: React.FC<Props> = ({
                 {category.menus.map((menuItem) => (
                   <div
                     className="flex flex-row bg-slate-50/75 rounded-2xl h-32 items-center justify-between space-x-6 pr-6"
-                    key={menuItem.itemid}
+                    key={menuItem.item_id}
                   >
-                    {menuItem.image && menuItem.image !== '' && (
+                    {menuItem.image_url && menuItem.image_url !== '' && (
                       <img
-                        src={menuItem.image}
+                        src={menuItem.image_url}
                         alt=""
                         className="w-24 h-full rounded-l-2xl"
                       />
                     )}
                     <div className="w-1/2 ml-2">
-                      <p className="text-xl font-bold">{menuItem.itemname}</p>
+                      <p className="text-xl font-bold">{menuItem.name}</p>
                       <p className="text-lg font-normal">
-                        {parseFloat(menuItem.itemprice).toLocaleString('en')}원
+                        {menuItem.price.toLocaleString('en')}원
                       </p>
                     </div>
 
                     <button
                       className="btn btn-outline"
-                      id={menuItem.itemid}
+                      id={String(menuItem.item_id)}
                       disabled={preview}
-                      value={menuItem.itemprice}
-                      name={menuItem.itemname}
+                      value={menuItem.price}
+                      name={menuItem.name}
                       onClick={() =>
                         onOrderButtonClick((prev: any) => {
                           return [...prev, menuItem];

@@ -8,7 +8,7 @@ import { cloneDeep } from 'lodash';
 
 interface Props {
   items: MenuListType;
-  setItems: any;
+  setItems: SetterOrUpdater<MenuListType>;
   index: number;
 }
 
@@ -25,9 +25,9 @@ const MenuList: React.FC<Props> = ({ items, setItems, index }: Props) => {
     setItems(temp);
   };
 
-  const handleDeleteItem = (id: string) => {
+  const handleDeleteItem = (id: number) => {
     let temp = cloneDeep(items);
-    temp[index].menus = temp[index].menus.filter((item) => item.itemid !== id);
+    temp[index].menus = temp[index].menus.filter((item) => item.item_id !== id);
     setItems(temp);
   };
 
@@ -74,7 +74,7 @@ const MenuList: React.FC<Props> = ({ items, setItems, index }: Props) => {
                 ) : (
                   items[index].menus?.map((item, idx) => (
                     <MenuItem
-                      key={item.itemid}
+                      key={item.item_id}
                       index={idx}
                       onDelete={handleDeleteItem}
                       item={item}

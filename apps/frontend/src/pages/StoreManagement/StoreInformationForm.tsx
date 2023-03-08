@@ -1,3 +1,4 @@
+import { imageUploadApi } from '@src/apis/orderManage';
 import { StoreManageType } from '@src/type';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -34,16 +35,19 @@ export const StoreInformationForm: React.FC<Props> = ({
     setStoreManage(temp);
   };
 
-  const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const temp = cloneDeep(storeManage);
-    let images = [];
+  const onImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
+      let imageBinary = [];
+      const imageUrls: string[] = [];
+      let temp = cloneDeep(storeManage);
       for (let i = 0; i < e.target.files.length; i++) {
-        images.push(URL.createObjectURL(e.target.files[i]));
+        imageBinary.push(e.target.files[i]);
       }
+      await imageUploadApi(imageBinary, imageUrls);
+
+      temp.information = { ...temp.information, photos: [...imageUrls] };
+      await setStoreManage(temp);
     }
-    temp.information = { ...temp.information, photos: [...images] };
-    setStoreManage(temp);
   };
 
   const handleFocus = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -171,12 +175,12 @@ export const StoreInformationForm: React.FC<Props> = ({
       </div>
       <div className="form-control">
         <label className="label">
-          <span className="label-text">이미지 변경</span>
+          <span className="label-text">매장 이미지</span>
         </label>
         <input
           type="file"
           className="file-input w-full"
-          aria-label="이미지 변경"
+          aria-label="이미지 업로드 / 변경"
           multiple
           onChange={onImageChange}
         />

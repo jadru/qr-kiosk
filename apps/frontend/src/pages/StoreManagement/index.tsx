@@ -17,42 +17,40 @@ import cloneDeep from 'lodash/cloneDeep';
 import { v4 as uuidv4 } from 'uuid';
 import { StoreInformationForm } from './StoreInformationForm';
 import { QRcodeDialog } from './QRcodeDialog';
-
-const usePreventLeave = () => {
-  function listener(e: any) {
-    e.preventDefault();
-    e.returnValue = '';
-  }
-
-  function enablePrevent() {
-    window.addEventListener('beforeunload', listener);
-  }
-
-  function disablePrevent() {
-    window.removeEventListener('beforeunload', listener);
-  }
-
-  return [enablePrevent, disablePrevent];
-};
+import { imageUploadApi } from '@src/apis/orderManage';
+import { tokenAccessProtected } from '@src/utils';
+import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
+import { Cookies } from 'react-cookie';
+import { MenuItemType } from '@src/type';
 
 let templateOfNewMenu = () => {
-  let itemid = uuidv4();
   return {
-    itemname: '새 메뉴',
-    itemprice: '1000',
-    image: '',
-    itemid,
+    name: '새 메뉴',
+    price: 1000,
+    image_url: '',
+    item_id: Math.random() * 100,
   };
 };
 
 export const StoreManagement: React.FC = () => {
-  const [enablePrevent, disablePrevent] = usePreventLeave();
+  const [loading, setLoading] = useState<boolean>(true);
   const [storeMange, setStoreManage] = useRecoilState(storeManageState);
   const [menuData, setMenuData] = useRecoilState(menuDataState);
   const [saving, setSaving] = useState<boolean>(false);
-  const [newMenu, setNewMenu] = useState<Item>(templateOfNewMenu);
+  const [newMenu, setNewMenu] = useState<MenuItemType>(templateOfNewMenu);
   const [mobile, setMobile] = useState<boolean>(false);
   const [theme, setTheme] = useState<string>('simple');
+
+  const navigate = useNavigate();
+  const cookie = new Cookies();
+
+  useEffect(() => {
+    tokenAccessProtected() && navigate('/login');
+  });
+
+  useEffect(() => {
+    OwnerInfoAPI(setStoreManage, cookie.get('owner_id'), setLoading);
+  }, []);
 
   useEffect(() => {
     // @ts-ignore
@@ -62,19 +60,23 @@ export const StoreManagement: React.FC = () => {
     setTheme(storeMange.information.theme);
   }, [menuData]);
 
+  useEffect(() => {
+    console.log(storeMange);
+  }, [storeMange]);
+
   const onMobileToggleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setMobile((prev) => !prev);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let imageUrl = '';
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files !== null) {
-      imageUrl = URL.createObjectURL(e.target.files[0]);
+      const imageUrls: string[] = [];
+      await imageUploadApi([e.target.files[0]], imageUrls);
+      await setNewMenu((prev) => {
+        return { ...prev, image: imageUrls };
+      });
     } else {
       throw new Error('No Image File');
     }
-    setNewMenu((prev) => {
-      return { ...prev, image: imageUrl };
-    });
   };
 
   const handleSubmit = () => {
@@ -82,7 +84,6 @@ export const StoreManagement: React.FC = () => {
     tempData[0].menus.push({ ...newMenu });
     setMenuData(tempData);
     setNewMenu(templateOfNewMenu);
-    enablePrevent();
   };
 
   const onDragEnd = (result: DropResult) => {
@@ -95,7 +96,7 @@ export const StoreManagement: React.FC = () => {
     )
       return;
 
-    let add: Item;
+    let add: MenuItemType;
 
     const temp = cloneDeep(menuData);
 
@@ -113,7 +114,6 @@ export const StoreManagement: React.FC = () => {
     });
 
     setMenuData(temp);
-    enablePrevent();
   };
 
   const dumyCategoryData = {
@@ -122,117 +122,123 @@ export const StoreManagement: React.FC = () => {
   };
 
   return (
-    <NormalLayout>
-      <div className="flex w-full h-full space-x-3">
-        <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
-          <StoreInformationForm
-            setTheme={setTheme}
-            theme={theme}
-            storeManage={storeMange}
-            setStoreManage={setStoreManage}
-          />
-        </div>
-        <div className="divider divider-horizontal"></div>
-        <div className="divider divider-horizontal"></div>
-        <div className="w-2/4 flex flex-col self-center items-center space-y-4 z-50">
-          <input type="checkbox" id="my-modal-6" className="modal-toggle" />
-          <QRcodeDialog saving={saving} />
-          <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-5">
-            <label className="label cursor-pointer">
-              <span className="label-text mr-4">
-                {mobile ? '모바일 폰' : '데스크탑'}
-              </span>
-              <input
-                type="checkbox"
-                className="toggle"
-                checked={mobile}
-                onChange={onMobileToggleChange}
-              />
-            </label>
-            <label
-              htmlFor="my-modal-6"
-              className="btn btn-md btn-outline"
-              onClick={() => setSaving(true)}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#000000"
-                stroke-width="3"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="mr-2"
-              >
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              저장
-            </label>
+    storeMange && (
+      <NormalLayout>
+        <div className="flex w-full h-full space-x-3">
+          <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
+            <StoreInformationForm
+              setTheme={setTheme}
+              theme={theme}
+              storeManage={storeMange}
+              setStoreManage={setStoreManage}
+            />
           </div>
-          <div
-            className={`${
-              mobile
-                ? 'mockup-phone shadow-2xl'
-                : 'w-full h-[85vh] bg-slate-100 scroll-mb-10'
-            }`}
-          >
-            <div className={mobile ? 'camera' : ''}></div>
-            <div className={mobile ? 'display' : ''}>
-              <div
-                className={`${mobile ? 'artboard artboard-demo phone-1' : ''}`}
+          <div className="divider divider-horizontal"></div>
+          <div className="divider divider-horizontal"></div>
+          <div className="w-2/4 flex flex-col self-center items-center space-y-4 z-50">
+            <input type="checkbox" id="my-modal-6" className="modal-toggle" />
+            <QRcodeDialog saving={saving} />
+            <div className="form-control glass p-3 rounded-2xl sticky top-12 flex flex-row space-x-5">
+              <label className="label cursor-pointer">
+                <span className="label-text mr-4">
+                  {mobile ? '모바일 폰' : '데스크탑'}
+                </span>
+                <input
+                  type="checkbox"
+                  className="toggle"
+                  checked={mobile}
+                  onChange={onMobileToggleChange}
+                />
+              </label>
+              <label
+                htmlFor="my-modal-6"
+                className="btn btn-md btn-outline"
+                onClick={() => setSaving(true)}
               >
-                {(theme === 'simple' && <SimpleTheme preview={true} />) ||
-                  (theme === 'modern' && <ModernTheme preview={true} />) ||
-                  (theme === 'vintage' && <VintageTheme preview={true} />) || (
-                    <CuteTheme preview={true} />
-                  )}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#000000"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="mr-2"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                저장
+              </label>
+            </div>
+            <div
+              className={`${
+                mobile
+                  ? 'mockup-phone shadow-2xl'
+                  : 'w-full h-[85vh] bg-slate-100 scroll-mb-10'
+              }`}
+            >
+              <div className={mobile ? 'camera' : ''}></div>
+              <div className={mobile ? 'display' : ''}>
+                <div
+                  className={`${
+                    mobile ? 'artboard artboard-demo phone-1' : ''
+                  }`}
+                >
+                  {(theme === 'simple' && <SimpleTheme preview={true} />) ||
+                    (theme === 'modern' && <ModernTheme preview={true} />) ||
+                    (theme === 'vintage' && (
+                      <VintageTheme preview={true} />
+                    )) || <CuteTheme preview={true} />}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="divider divider-horizontal"></div>
-        <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
-          <div>
-            <label htmlFor="my-modal-3" className="btn btn-md mt-4 mx-2">
-              메뉴 추가
-            </label>
-            <button
-              onClick={() => setMenuData((prev) => [...prev, dumyCategoryData])}
-              className="btn btn-md mt-4"
-            >
-              카테고리 추가
-            </button>
-            <input type="checkbox" id="my-modal-3" className="modal-toggle" />
-            <StoreDialog
-              setNewMenuItem={setNewMenu}
-              newMenuItem={newMenu}
-              handleSubmit={handleSubmit}
-              handleImageUpload={handleImageUpload}
-            />
+          <div className="divider divider-horizontal"></div>
+          <div className="grid h-20 flex-grow place-items-center w-1/4 space-y-2">
+            <div>
+              <label htmlFor="my-modal-3" className="btn btn-md mt-4 mx-2">
+                메뉴 추가
+              </label>
+              <button
+                onClick={() =>
+                  setMenuData((prev) => [...prev, dumyCategoryData])
+                }
+                className="btn btn-md mt-4"
+              >
+                카테고리 추가
+              </button>
+              <input type="checkbox" id="my-modal-3" className="modal-toggle" />
+              <StoreDialog
+                setNewMenuItem={setNewMenu}
+                newMenuItem={newMenu}
+                handleSubmit={handleSubmit}
+                handleImageUpload={handleImageUpload}
+              />
+            </div>
+            <div className="card bg-slate-100 mt-5 space-y-0 py-3">
+              <DragDropContext onDragEnd={onDragEnd}>
+                {Array.apply(null, Array(menuData.length)).map(
+                  (_value, index) => (
+                    <>
+                      <MenuList
+                        key={menuData[index].categoryName + index}
+                        items={menuData}
+                        setItems={setMenuData}
+                        index={index}
+                      />
+                      {index !== menuData.length - 1 && (
+                        <div className="divider"></div>
+                      )}
+                    </>
+                  ),
+                )}
+              </DragDropContext>
+            </div>
           </div>
-          <div className="card bg-slate-100 mt-5 space-y-0 py-3">
-            <DragDropContext onDragEnd={onDragEnd}>
-              {Array.apply(null, Array(menuData.length)).map(
-                (_value, index) => (
-                  <>
-                    <MenuList
-                      key={menuData[index].categoryName + index}
-                      items={menuData}
-                      setItems={setMenuData}
-                      index={index}
-                    />
-                    {index !== menuData.length - 1 && (
-                      <div className="divider"></div>
-                    )}
-                  </>
-                ),
-              )}
-            </DragDropContext>
-          </div>
         </div>
-      </div>
-    </NormalLayout>
+      </NormalLayout>
+    )
   );
 };

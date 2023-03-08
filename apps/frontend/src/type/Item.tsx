@@ -1,14 +1,14 @@
 export interface Item {
   image: any;
-  itemid: string;
-  itemname: string;
-  itemprice: string;
+  item_id: string;
+  name: string;
+  price: string;
 }
 export interface CountedItem {
   image: any;
-  itemid: string;
-  itemname: string;
-  itemprice: string;
+  item_id: string;
+  name: string;
+  price: string;
   count?: number;
 }
 

@@ -55,3 +55,25 @@ export const orderDetailDeleteAPi = (id: string) => {
       generalApihandleError(error);
     });
 };
+
+export const imageUploadApi = async (images: File[], setImageUrl: string[]) => {
+  const formData = new FormData();
+  images.forEach((element) => {
+    formData.append('images', element);
+  });
+  await axios
+    .post(API_URL + '/uploads', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    .then((response) => {
+      console.log(response.data.data.files);
+      response.data.data.files.forEach((element: string) => {
+        setImageUrl.push(element.replace(/\"/gi, ''));
+      });
+    })
+    .catch((error) => {
+      generalApihandleError(error);
+    });
+};

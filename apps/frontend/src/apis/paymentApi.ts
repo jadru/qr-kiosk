@@ -25,7 +25,7 @@ export const tosspaymentAPI = async ({ order }: OrderProps) => {
     .requestPayment('카드', {
       amount: totalprice,
       orderId: uuidv4(),
-      orderName: orderList[0].itemname + '외 ' + orderList.length + '건',
+      orderName: orderList[0].name + '외 ' + orderList.length + '건',
       successUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order/success`,
       failUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order`,
     })
@@ -48,7 +48,7 @@ export const orderdetailAPI = ({ order }: OrderProps) => {
   axios.post(
     API_URL + orderdetail,
     {
-      order_name: orderList[0].itemname,
+      order_name: orderList[0].name,
       total_amout: totalprice,
       owner_id: storeId,
     },

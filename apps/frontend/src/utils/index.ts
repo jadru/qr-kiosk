@@ -13,15 +13,15 @@ export const parseJson = (json: StoreManageTypeBack): StoreManageType => {
       photos: json.photos,
       theme: json.theme,
     },
-    menu: Object.values(json.menu).map((category) => {
+    menu: json.menu.map((category) => {
       return {
         categoryName: category.category_name,
-        menus: category.menu.map((menuitem) => {
+        menus: category.menu_items.map((menuitem) => {
           return {
-            image: menuitem.photo,
-            itemid: menuitem.itemid,
-            itemname: menuitem.name,
-            itemprice: menuitem.price,
+            image_url: menuitem.image_url,
+            item_id: menuitem.id,
+            name: menuitem.name,
+            price: menuitem.price,
           };
         }),
       };
@@ -42,7 +42,7 @@ export const calculateTotalPriceFromOrderList = (
   orderList: never[],
 ): number => {
   // @ts-ignore
-  return orderList.reduce((prev, curr) => prev + Number(curr.itemprice), 0);
+  return orderList.reduce((prev, curr) => prev + Number(curr.price), 0);
 };
 
 export const tokenAccessProtected = () => {

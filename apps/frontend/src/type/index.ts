@@ -6,17 +6,17 @@ type ContentType = {
 };
 
 type MenuItemType = {
-  image: string;
-  itemid: string;
-  itemname: string;
-  itemprice: string;
+  item_id: number;
+  image_url: string;
+  name: string;
+  price: number;
 };
 
 type CountedMenuItemListType = {
   image: string;
-  itemid: string;
-  itemname: string;
-  itemprice: string;
+  item_id: string;
+  name: string;
+  price: string;
   count: number;
 }[];
 
@@ -62,27 +62,25 @@ type StoreManageTypeBack = {
   photos: string[];
   theme: 'cute' | 'modern' | 'vintage' | 'simple';
   menu: {
-    0: {
-      push: any;
-      id: number;
-      category_name: string;
-      owner_id: number;
-      createTime: string;
-      updateTime: string;
-      menu: [
-        {
-          id: number;
-          itemid: string;
-          photo: string;
-          price: string;
-          name: string;
-          menu_id: number;
-          createdTime: string;
-          updatedTime: string;
-        },
-      ];
-    };
-  };
+    push: any;
+    id: number;
+    category_name: string;
+    owner_id: number;
+    createTime: string;
+    updateTime: string;
+    menu_items: [
+      {
+        id: number;
+        item_id: string;
+        image_url: string;
+        price: number;
+        name: string;
+        menu_id: number;
+        createdTime: string;
+        updatedTime: string;
+      },
+    ];
+  }[];
 };
 
 type createOwnerApiType = {

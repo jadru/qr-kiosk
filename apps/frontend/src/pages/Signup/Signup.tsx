@@ -23,9 +23,10 @@ export const Signup = () => {
   }, [isSubmitting]);
   const navigate = useNavigate();
   const onError = (errors: any, e: any) => console.log(errors, e);
-  const onSubmit: SubmitHandler<createOwnerApiType> = (data) => {
+  const onSubmit: SubmitHandler<createOwnerApiType> = async (data) => {
     delete data['passwordCheck'];
-    signupAPI(data, navigate);
+    await signupAPI(data);
+    await navigate('/login');
   };
   return (
     <NormalLayout>
