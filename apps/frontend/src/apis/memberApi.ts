@@ -1,9 +1,11 @@
+import jwt_decode from 'jwt-decode';
 import { API_URL } from '@src/constants';
 import React from 'react';
 import { NavigateFunction } from 'react-router-dom';
 import axios from 'axios';
 import { generalApihandleError, generalApiHeaderConfig } from '@src/utils';
-import { createOwnerApiType } from '@src/type';
+import { createOwnerApiType, jwtdecodeType } from '@src/type';
+import { Cookies } from 'react-cookie';
 
 const login: string = '/auth/login';
 const signup: string = '/owner/create';
@@ -14,29 +16,29 @@ type loginType = {
   password: string;
 };
 
-type signupType = {
-  username: string;
-  password: string;
-  name: string;
-};
-
-const loginAPI = (data: object, navigate: NavigateFunction) => {
+/** return accessToken string */
+const loginAPI = (data: loginType) => {
+  const cookies = new Cookies();
   axios
     .post(API_URL + login, data, {
       data: data,
       headers: generalApiHeaderConfig,
     })
     .then((response) => {
-      console.log(response.data.accessToken); // accessToken
-      navigate('/owner/manage');
-      window.alert('로그인 성공');
+      console.log(response.data.accessToken);
+      const decodedToken: jwtdecodeType = jwt_decode(response.data.accessToken);
+      cookies.set('token', response.data.accessToken, {
+        path: '/',
+        maxAge: decodedToken.exp - decodedToken.nbf,
+      });
+      cookies.set('owner_id', decodedToken.owner_id);
     })
     .catch((error) => {
       generalApihandleError(error);
     });
 };
 
-const signupAPI = (data: createOwnerApiType, navigate: NavigateFunction) => {
+const signupAPI = (data: createOwnerApiType) => {
   axios
     .post(API_URL + signup, data, {
       data: { ...data },
@@ -44,13 +46,13 @@ const signupAPI = (data: createOwnerApiType, navigate: NavigateFunction) => {
     })
     .then((response) => {
       alert('회원가입 완료');
-      navigate('/login');
     })
     .catch((error) => {
       generalApihandleError(error);
     });
 };
 
+/** accessToken을 리턴 */
 const createUserApi = (): string | undefined => {
   axios
     .post(API_URL + userCreate, {

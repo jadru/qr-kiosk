@@ -55,30 +55,6 @@ const storeManageState = atom<StoreManageType>({
     ],
   },
 });
-// name: '가게명', // string
-// information: {
-//   address: '주소광역시 무슨구 어떤동 어떤로 70', // string
-//   openTime: '연중무휴', // string
-//   phoneNumber: '010-3333-4444', // string
-//   facilities: '남여 화장실, 장애인 이용 가능', // string
-//   website: 'www.instagram.com/helloworld', // string
-//   photos: ['/example.jpg', '/example.jpg', 'example.jpg'], // 사진 url 여러개
-//   theme: 'simple', // antic, modren, vintage, simple
-// },
-// menu: [
-//   {
-//     categoryName: 'Category 1',
-//     menus: [
-//       {
-//         image: '/example.jpg',
-//         itemid: 'example1',
-//         itemname: 'Example Menu 1',
-//         itemprice: '3000',
-//       },
-//     ],
-//   },
-// ],
-// },
 
 const orderListState = atom({
   key: 'orderList',
@@ -110,6 +86,11 @@ const countedOrderListState = atom({
   default: [],
 });
 
+const loginState = atom({
+  key: 'loginState',
+  default: undefined,
+});
+
 export {
   loginAtom,
   tokenAtom,
@@ -119,4 +100,5 @@ export {
   orderPlaceState,
   successedOrderState,
   countedOrderListState,
+  loginState,
 };

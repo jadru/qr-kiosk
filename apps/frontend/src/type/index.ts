@@ -97,6 +97,35 @@ type createOwnerApiType = {
   theme: 'cute' | 'modern' | 'vintage' | 'simple';
 };
 
+type orderStatusType = 'order' | 'confirm' | 'cancel' | 'done';
+
+type orderDetailType = {
+  order_name: string;
+  total_amount: number;
+  toss_status?: string;
+  order_status?: orderStatusType;
+  approveAt?: Date | string;
+  requestAt?: Date | string;
+  owner_id: number;
+  id: number;
+  table_number: number;
+  user_id: string;
+  item_orders: {
+    count: number;
+    menu_item_id: number;
+  }[];
+};
+
+type jwtdecodeType = {
+  owner_id: number;
+  username: string;
+  exp: number;
+  iat: number;
+  nbf: number;
+  iss: string;
+  sub: string;
+};
+
 export type {
   ContentType,
   MenuListType,
@@ -106,4 +135,7 @@ export type {
   MenuItemType,
   CountedMenuItemListType,
   createOwnerApiType,
+  orderStatusType,
+  orderDetailType,
+  jwtdecodeType,
 };

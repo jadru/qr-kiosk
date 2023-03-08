@@ -5,6 +5,9 @@ import { LoginSchema } from './LoginSchema';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginAPI } from '@src/apis/memberApi';
 import { useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
+import { useCookies } from 'react-cookie';
+import { jwtdecodeType } from '@src/type';
 
 type LoginInputType = {
   username: string;
@@ -22,16 +25,19 @@ export const Login = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(LoginSchema),
   });
+
   useEffect(() => {
     console.log(isSubmitting);
   }, [isSubmitting]);
   const navigate = useNavigate();
   const onError = (errors: any, e: any) => console.log(errors, e);
   const onSubmit: SubmitHandler<LoginInputType> = (data) => {
-    console.log('check');
-    loginAPI(data, navigate);
+    const token = loginAPI(data);
+    console.log(token);
+
+    navigate('/owner');
   };
-  // console.log(watch('example'));
+
   return (
     <NormalLayout>
       <div className="flex self-center items-center flex-col space-y-3">
