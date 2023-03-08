@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Order_Detail, Menu_Item } from '@prisma/client';
 import { OwnerEntity } from '../../owner/entities/owner.entity';
 import { MenuItemEntity } from '../../menu-item/entities/menu-item.entity';
+import { ItemOrderEntity } from '../../item_order/entities/item_order.entity';
 
 export class OrderDetailEntity implements Order_Detail {
     @ApiProperty()
@@ -30,4 +31,9 @@ export class OrderDetailEntity implements Order_Detail {
 
     @ApiProperty()
     owner_id: number;
+
+    @ApiProperty()
+    user_id: string;
+
+    item_orders: ItemOrderEntity[];
 }
