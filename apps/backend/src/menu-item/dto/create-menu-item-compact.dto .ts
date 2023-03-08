@@ -8,6 +8,6 @@ export class CreateMenuItemCompactDto {
     price: number;
     @ApiProperty()
     name: string;
-
-    menu_id: number | null;
+    
+    menu_id: number;
 }

@@ -26,7 +26,7 @@ export class MenuController {
         return this.menuService.create(createMenuDto);
     }
 
-    @Get(':owner_id/list')
+    @Get('/list')
     @ApiOperation({
         summary: '메뉴 전체 조회 API',
         description: '메뉴 전체 조회한다.',

@@ -10,9 +10,9 @@ datasource db {
 model Item_Order {
   id             Int           @id @default(autoincrement())
   count          Int
-  menu_item      Menu_Item     @relation(fields: [menu_item_id], references: [id])
+  menu_item      Menu_Item     @relation(fields: [menu_item_id], references: [id], onDelete: Cascade)
   menu_item_id   Int
-  Order_Detail   Order_Detail? @relation(fields: [order_DetailId], references: [id])
+  Order_Detail   Order_Detail? @relation(fields: [order_DetailId], references: [id], onDelete: Cascade)
   order_DetailId String?
 }
 
@@ -25,11 +25,11 @@ model Owner {
   store_name           String
   store_address        String
   store_phone          String
-  theme                String?
-  store_operating_time String?
-  name                 String?
+  theme                String?      @default("simple")
+  store_operating_time String?      @default("시간")
+  name                 String?      @default("이름")
   photo                String[]
-  facility             String?
+  facility             String?      @default("facility")
   createdTime          DateTime       @default(now())
   updatedTime          DateTime       @updatedAt
   menu                 Menu[]
@@ -40,24 +40,24 @@ model Order_Detail {
   id           String       @id
   table_number Int
   order_name   String
-  toss_status  String?
-  order_status String?
+  toss_status  String?    @default("결제대기중")
+  order_status String?    @default("주문대기중")
   total_amount Int
-  approveAt    DateTime?
-  requestAt    DateTime?
-  owner        Owner        @relation(fields: [owner_id], references: [id])
+  approveAt    DateTime?  @default(now())
+  requestAt    DateTime?  @default(now())
+  owner        Owner        @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   owner_id     Int
-  user         User         @relation(fields: [user_id], references: [id])
+  user         User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id      String       @db.Uuid
   item_orders  Item_Order[]
 }
 
 model Menu_Item {
   id          Int          @id @default(autoincrement())
-  image_url   String?
+  image_url   String?      @default("path")
   price       Int
   name        String
-  menu        Menu         @relation(fields: [menu_id], references: [id])
+  menu        Menu         @relation(fields: [menu_id], references: [id], onDelete: Cascade)
   menu_id     Int
   createdTime DateTime     @default(now())
   updatedTime DateTime     @updatedAt
@@ -68,7 +68,7 @@ model Menu {
   id            Int         @id @default(autoincrement())
   category_name String      @unique
   menu_items    Menu_Item[]
-  owner         Owner       @relation(fields: [owner_id], references: [id])
+  owner         Owner       @relation(fields: [owner_id], references: [id], onDelete: Cascade)
   owner_id      Int
   createdTime   DateTime    @default(now())
   updatedTime   DateTime    @updatedAt

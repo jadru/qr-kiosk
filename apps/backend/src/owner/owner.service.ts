@@ -17,7 +17,9 @@ export class OwnerService {
     }
 
     findAllWithMenus() {
-        return this.prisma.owner.findMany({include: { menu: { include: { menu_items: true }} }});
+        return this.prisma.owner.findMany({
+            include: { menu: { include: { menu_items: true } } },
+        });
     }
 
     update(id: number, updateOwnerDto: UpdateOwnerDto) {
@@ -27,24 +29,30 @@ export class OwnerService {
         });
     }
 
+    async updateAll(id: number, updateOwnerDto: UpdateOwnerAllDto) {
+        await this.prisma.menu.deleteMany({
+            where: { owner_id: id },
+        });
 
-    updateAll(id: number, updateOwnerDto: UpdateOwnerAllDto) {
-        return this.prisma.owner.update({
+        return await this.prisma.owner.update({
             where: { id },
             data: {
                 ...updateOwnerDto,
                 menu: {
-                    updateMany: {
-                        where: { id: { in: updateOwnerDto.menu.map((menu) => menu.id) } },
+                    createMany: {
                         data: updateOwnerDto.menu
-                    }
-                }
+                    },
+                },
             },
+            include: { menu: { include: { menu_items: true } } },
         });
     }
-    
+
     findByOwnerId(id: number): Promise<Owner> {
-        return this.prisma.owner.findFirst({ where: { id }, include: { menu: { include: { menu_items: true }} }});
+        return this.prisma.owner.findFirst({
+            where: { id },
+            include: { menu: { include: { menu_items: true } } },
+        });
     }
 
     remove(username: string) {

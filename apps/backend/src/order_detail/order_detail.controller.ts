@@ -33,7 +33,7 @@ export class OrderDetailController {
     return this.orderDetailService.findOne(id);
   }
 
-  @Get('/owner/:user_id')
+  @Get('/user/:user_id')
   @ApiOperation({
     summary: '해당 사용자의 주문 내역 조회 API',
   })

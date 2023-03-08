@@ -28,16 +28,22 @@ export class MenuItemController {
         return this.menuItemService.create(createMenuItemDto);
     }
 
-
-    @Post(':category_name')
-    @ApiOperation({ summary: '해당 카테고리에 여러 메뉴 아이템 생성 API' })
+    @Post(':owner_id/:category_name')
+    @ApiOperation({
+        summary: '해당 카테고리에 여러 메뉴 아이템 생성 API',
+        description: '해당 카테고리가 없다면 새롭게 생성합니다',
+    })
     createItemsAtCategory(
+        @Param('owner_id') owner_id: string,
         @Param('category_name') category_name: string,
-        @Body() createMenuItemDtos: CreateMenuItemsDto
+        @Body() createMenuItemsDto: CreateMenuItemsDto,
     ) {
-        return this.menuItemService.createAtCategory(category_name, createMenuItemDtos);
+        return this.menuItemService.createAtCategory(
+            +owner_id,
+            category_name,
+            createMenuItemsDto,
+        );
     }
-
 
     @Get()
     findAll() {
@@ -58,10 +64,7 @@ export class MenuItemController {
     }
 
     @Patch(':id/image')
-    updateImage(
-        @Param('id') id: string,
-        @Body() image_url: string,
-    ) {
+    updateImage(@Param('id') id: string, @Body() image_url: string) {
         return this.menuItemService.updateImage(+id, image_url);
     }
 

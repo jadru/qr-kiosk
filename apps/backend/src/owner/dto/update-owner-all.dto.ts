@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateMenuAllDto } from 'src/menu/dto/create-menu-all.dto';
+import { CreateMenuNoOwnerDto } from 'src/menu/dto/create-menu-no-owner.dto';
 import { MenuEntity } from 'src/menu/entities/menu.entity';
+import { CreateMenuDto } from '../../menu/dto/create-menu.dto';
 export class UpdateOwnerAllDto {
     @ApiProperty()
     password: string;
@@ -23,7 +25,7 @@ export class UpdateOwnerAllDto {
     @ApiProperty()
     facility?: string;
 
-    @ApiProperty({ type: [MenuEntity] })
-    menu: MenuEntity[];
+    @ApiProperty({ type: [CreateMenuNoOwnerDto] })
+    menu: CreateMenuNoOwnerDto[];
 
 }

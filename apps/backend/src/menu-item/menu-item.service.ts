@@ -14,6 +14,7 @@ export class MenuItemService {
     }
 
     async createAtCategory(
+        owner_id: number,
         category_name: string,
         createMenuItemsDto: CreateMenuItemsDto,
     ) {
@@ -21,11 +22,15 @@ export class MenuItemService {
             where: { category_name },
         });
 
-        if (!findMenu)
-            throw new HttpException('해당 카테고리가 없습니다.', 404);
+        if (!findMenu) {
+            this.prisma.menu.create({
+                data: { category_name, owner_id },
+            });
+        }
             
         createMenuItemsDto.menu_items.forEach((item) => {
             item.menu_id = findMenu.id;
+            item.price = Number(item.price);
         });
 
         return this.prisma.menu_Item.createMany({

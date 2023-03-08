@@ -9,6 +9,7 @@ export class OrderDetailService {
     constructor(private prisma: PrismaService) {}
 
     create(createOrderDetailDto: CreateOrderDetailDto) {
+        
         return this.prisma.order_Detail.create({
             data: {
                 ...createOrderDetailDto,

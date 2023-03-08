@@ -18,6 +18,5 @@ export class MenuEntity implements Menu {
     @ApiProperty({ readOnly: true})
     updatedTime: Date;
 
-    @ApiProperty({ type: [MenuItemEntity] })
     menu_items: MenuItemEntity[];
 }
