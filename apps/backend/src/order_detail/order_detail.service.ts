@@ -22,9 +22,9 @@ export class OrderDetailService {
     });
   }
 
-  findByOwner(ownerId: number) {
+  findByOwner(id: number) {
     return this.prisma.order_Detail.findMany({
-      where: { owner_id: 1 },
+      where: { owner_id: id },
     });
   }
 
