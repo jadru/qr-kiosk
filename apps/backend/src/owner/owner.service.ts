@@ -11,7 +11,6 @@ export class OwnerService {
     create(createOwnerDto: CreateOwnerDto): Promise<Owner> {
         return this.prisma.owner.create({ data: createOwnerDto });
     }
-
     findAll() {
         return this.prisma.owner.findMany();
     }
@@ -21,8 +20,8 @@ export class OwnerService {
             data: updateOwnerDto,
         });
     }
-    findOneByStorename(username: string): Promise<Owner> {
-        return this.prisma.owner.findFirst({ where: { username } });
+    findByOwnerId(id: number): Promise<Owner> {
+        return this.prisma.owner.findFirst({ where: { id } });
     }
     remove(username: string) {
         return this.prisma.owner.delete({ where: { username } });
