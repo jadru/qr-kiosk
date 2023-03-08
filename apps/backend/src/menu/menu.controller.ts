@@ -40,17 +40,17 @@ export class MenuController {
         return this.menuService.findOne(+id);
     }
 
-    // @Get()
-    // @ApiOperation({
-    //     summary: '메뉴 추가 API',
-    //     description: '메뉴 추가',
-    // })
-    // update(
-    //     @Param('owner_id') owner_id: number,
-    //     @Body() updateMenuDto: UpdateMenuDto,
-    // ) {
-    //     return this.menuService.update(owner_id, updateMenuDto);
-    // }
+    @Patch(':owner_id')
+    @ApiOperation({
+        summary: '해당 사장님 메뉴 수정 API',
+        description: '메뉴 추가',
+    })
+    update(
+        @Param('owner_id') owner_id: number,
+        @Body() updateMenuDto: UpdateMenuDto,
+    ) {
+        return this.menuService.update(owner_id, updateMenuDto);
+    }
 
     @Delete(':id')
     remove(@Param('id') id: string) {

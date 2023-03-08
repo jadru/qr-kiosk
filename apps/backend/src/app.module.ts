@@ -28,7 +28,6 @@ import { join } from 'path';
         OwnerModule,
         AuthModule,
         OrderDetailModule,
-        ItemOrderModule,
         UploadModule,
     ],
     controllers: [AppController],

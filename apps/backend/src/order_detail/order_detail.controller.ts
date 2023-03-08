@@ -33,12 +33,28 @@ export class OrderDetailController {
     return this.orderDetailService.findOne(id);
   }
 
+  @Get('/owner/:user_id')
+  @ApiOperation({
+    summary: '해당 사용자의 주문 내역 조회 API',
+  })
+  findManyByUser(@Param('user_id') user_id: string) {
+    return this.orderDetailService.findByUser(user_id);
+  }
+
   @Get('/owner/:owner_id')
   @ApiOperation({
     summary: '해당 사장님의 주문 내역 조회 API',
   })
   findManyByOwner(@Param('owner_id') owner_id: string) {
     return this.orderDetailService.findByOwner(+owner_id);
+  }
+
+  @Get('/owner/:owner_id/table_order')
+  @ApiOperation({
+    summary: '해당 사장님의 주문 내역을 테이블 별로 묶어서 조회합니다 API',
+  })
+  findManyTablesByOwner(@Param('owner_id') owner_id: string) {
+    return this.orderDetailService.findManyTablesByOwner(+owner_id);
   }
 
   @Patch(':id')

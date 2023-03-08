@@ -12,11 +12,12 @@ export class MenuEntity implements Menu {
     @ApiProperty()
     owner_id: number;
 
-    @ApiProperty()
+    @ApiProperty({ readOnly: true})
     createdTime: Date;
 
-    @ApiProperty()
+    @ApiProperty({ readOnly: true})
     updatedTime: Date;
 
-    menuItem: MenuItemEntity[];
+    @ApiProperty({ type: [MenuItemEntity] })
+    menu_items: MenuItemEntity[];
 }
