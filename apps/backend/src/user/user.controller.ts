@@ -24,10 +24,6 @@ export class UserController {
     @ApiOperation({ summary: '유저 생성 API', description: '유저를 생성한다.' })
     async create(@Body() createUserDto: CreateUserDto) {
         try {
-            createUserDto.password = await bcrypt.hash(
-                createUserDto.password,
-                10,
-            );
             return this.userService.create(createUserDto);
         } catch (error) {
             throw new HttpException(
@@ -46,24 +42,24 @@ export class UserController {
         return this.userService.findAll();
     }
 
-    @Get(':username')
+    @Get(':id')
     @ApiOperation({ summary: '유저 조회 API', description: '유저 조회한다.' })
-    findOne(@Param('username') username: string) {
-        return this.userService.findOneByUsername(username);
+    findOne(@Param('id') id: string) {
+        return this.userService.findOne(id);
     }
 
-    @Patch(':username')
+    @Patch(':id')
     @ApiOperation({ summary: '유저 수정 API', description: '유저 수정.' })
     update(
-        @Param('username') username: string,
+        @Param('id') id: string,
         @Body() updateUserDto: UpdateUserDto,
     ) {
-        return this.userService.update(username, updateUserDto);
+        return this.userService.update(id, updateUserDto);
     }
 
-    @Delete(':username')
+    @Delete(':id')
     @ApiOperation({ summary: '유저 삭제 API', description: '유저 삭제.' })
-    remove(@Param('username') username: string) {
-        return this.userService.remove(username);
+    remove(@Param('id') id: string) {
+        return this.userService.remove(id);
     }
 }

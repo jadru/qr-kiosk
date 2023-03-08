@@ -7,6 +7,11 @@ import { MenuModule } from './menu/menu.module';
 import { MenuItemModule } from './menu-item/menu-item.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { OrderDetailModule } from './order_detail/order_detail.module';
+import { ItemOrderModule } from './item_order/item_order.module';
+import { UploadModule } from './image/upload.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
     imports: [
@@ -18,6 +23,9 @@ import { AuthModule } from './auth/auth.module';
         MenuModule,
         OwnerModule,
         AuthModule,
+        OrderDetailModule,
+        ItemOrderModule,
+        UploadModule,
     ],
     controllers: [AppController],
     providers: [AppService],

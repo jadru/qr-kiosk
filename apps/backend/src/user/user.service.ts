@@ -16,18 +16,18 @@ export class UserService {
         return this.prisma.user.findMany();
     }
 
-    findOneByUsername(username: string) {
-        return this.prisma.user.findFirst({ where: { username } });
+    findOne(id: string) {
+        return this.prisma.user.findFirst({ where: { id } });
     }
 
-    update(username: string, updateUserDto: UpdateUserDto) {
+    update(id: string, updateUserDto: UpdateUserDto) {
         return this.prisma.user.update({
-            where: { username },
+            where: { id },
             data: updateUserDto,
         });
     }
 
-    remove(username: string) {
-        return this.prisma.user.delete({ where: { username } });
+    remove(id: string) {
+        return this.prisma.user.delete({ where: { id } });
     }
 }

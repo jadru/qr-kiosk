@@ -25,6 +25,7 @@ import { MenuItemService } from '../menu-item/menu-item.service';
 import { Owner } from '@prisma/client';
 
 @Controller('owner')
+@ApiTags('사장님')
 export class OwnerController {
     constructor(
         private readonly ownerService: OwnerService,
@@ -38,7 +39,9 @@ export class OwnerController {
 
     // @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
+
     @Post('/create')
+
     @ApiOperation({
         summary: '사장님 생성 API',
         description: '사장님 생성 API',
@@ -47,6 +50,7 @@ export class OwnerController {
         console.log(owner);
         return this.ownerService.create(createOwnerDto);
     }
+
     @Get('/list')
     @ApiOperation({
         summary: '사장님 전체 조회 API',
@@ -158,7 +162,7 @@ export class OwnerController {
     @ApiParam({
         name: 'username',
         description: '사장님 아이디',
-    })
+    })    
     @ApiOperation({
         summary: '사장님 정보 최신화',
         description: '사장님 정보 업데이트',
@@ -170,7 +174,6 @@ export class OwnerController {
         console.log(username);
         return this.ownerService.update(username, updateOwnerDto);
     }
-
     @Delete(':store_name')
     remove(@Param('store_name') store_name: string) {
         return this.ownerService.remove(store_name);
