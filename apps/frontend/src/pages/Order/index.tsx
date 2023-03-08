@@ -13,8 +13,11 @@ import {
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { OwnerInfoAPI } from '@src/apis/storeOwnerApi';
+import { useCookies } from 'react-cookie';
+import { createUserApi } from '@src/apis/memberApi';
 
 export const Order = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
   const { storeId, tableId } = useParams();
   const [loading, setLoading] = React.useState(false);
   const [store, setStore] = useRecoilState(storeManageState);
@@ -24,11 +27,11 @@ export const Order = () => {
 
   useLayoutEffect(() => {
     // OwnerInfoAPI(setStore, storeId, setLoading);
+    if (!(cookies && cookies.user)) {
+      const userId = createUserApi();
+      userId && setCookie('user', userId, { path: '/', maxAge: 3600 });
+    }
   }, []);
-
-  useEffect(() => {
-    console.log(store);
-  }, [store]);
 
   return !loading ? (
     <>

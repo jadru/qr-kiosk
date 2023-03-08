@@ -67,9 +67,6 @@ export const Login = () => {
               />
               <ErrorMessage>{errors.password?.message}</ErrorMessage>
               <div className="flex flex-row justify-between">
-                <Link to="/findpwid" className="link link-hover">
-                  아이디 / 비밀번호 찾기
-                </Link>
                 <Link to="/signup" className="link link-hover">
                   회원가입
                 </Link>

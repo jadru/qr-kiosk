@@ -7,6 +7,7 @@ import { createOwnerApiType } from '@src/type';
 
 const login: string = '/auth/login';
 const signup: string = '/owner/create';
+const userCreate: string = '/user';
 
 type loginType = {
   username: string;
@@ -50,4 +51,19 @@ const signupAPI = (data: createOwnerApiType, navigate: NavigateFunction) => {
     });
 };
 
-export { loginAPI, signupAPI };
+const createUserApi = (): string | undefined => {
+  axios
+    .post(API_URL + userCreate, {
+      headers: generalApiHeaderConfig,
+    })
+    .then((response) => {
+      return response.data.accessToken;
+    })
+    .catch((error) => {
+      generalApihandleError(error);
+      return undefined;
+    });
+  return undefined;
+};
+
+export { loginAPI, signupAPI, createUserApi };
