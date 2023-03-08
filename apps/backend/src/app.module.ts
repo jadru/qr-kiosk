@@ -7,10 +7,11 @@ import { MenuModule } from './menu/menu.module';
 import { MenuItemModule } from './menu-item/menu-item.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { OrderDetailModule } from './order_detail/order_detail.module';
 
 @Module({
     imports: [
-        ConfigModule.forRoot({
+    ConfigModule.forRoot({
             isGlobal: true,
         }),
         UserModule,
@@ -18,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
         MenuModule,
         OwnerModule,
         AuthModule,
+        OrderDetailModule,
     ],
     controllers: [AppController],
     providers: [AppService],

@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderDetailDto } from './dto/create-order_detail.dto';
 import { UpdateOrderDetailDto } from './dto/update-order_detail.dto';
+import { PrismaService } from 'prisma/prisma.service';
+import { Menu } from '@prisma/client';
 
 @Injectable()
 export class OrderDetailService {
+  constructor(private prisma: PrismaService) {}
+
   create(createOrderDetailDto: CreateOrderDetailDto) {
-    return 'This action adds a new orderDetail';
+    return this.prisma.order_Detail.create({ data: createOrderDetailDto });
   }
 
   findAll() {

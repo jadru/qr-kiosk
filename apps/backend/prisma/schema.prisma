@@ -9,20 +9,18 @@ datasource db {
 
 model Order_Detail {
   id           Int         @id @default(autoincrement())
+  order_name   String
   toss_status  String
   order_status String
   total_amount Int
-  order_name   String
   approveAt    DateTime?
   requestAt    DateTime?
-  menu_item    Menu_Item[]
   owner        Owner       @relation(fields: [owner_id], references: [id])
   owner_id     Int
 }
 
 model Menu_Item {
   id             Int           @id @default(autoincrement())
-  item_id        String        @unique
   photo          String?
   price          Int
   name           String
@@ -30,8 +28,6 @@ model Menu_Item {
   menu_id        Int
   createdTime    DateTime      @default(now())
   updatedTime    DateTime      @updatedAt
-  Order_Detail   Order_Detail? @relation(fields: [order_DetailId], references: [id])
-  order_DetailId Int?
 }
 
 model Owner {

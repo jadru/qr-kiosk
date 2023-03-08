@@ -15,14 +15,14 @@ import {
 import { OwnerService } from './owner.service';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request } from 'src/auth/utils/request.types';
 import { MenuService } from '../menu/menu.service';
 import { Logger } from '@nestjs/common';
 import { MenuItemService } from '../menu-item/menu-item.service';
 
 @Controller('owner')
+@ApiTags('사장님')
 export class OwnerController {
     constructor(
         private readonly ownerService: OwnerService,
@@ -36,7 +36,7 @@ export class OwnerController {
 
     // @UseGuards(JwtAuthGuard)
     @ApiBearerAuth()
-    @Post()
+    @Post('create')
     @ApiOperation({
         summary: '사장님 생성 API',
         description: '사장님 생성 API',
@@ -45,7 +45,8 @@ export class OwnerController {
         console.log(owner);
         return this.ownerService.create(createOwnerDto);
     }
-    @Get(':list')
+
+    @Get('all')
     @HttpCode(200)
     @ApiOperation({
         summary: '사장님 전체 조회 API',
@@ -80,8 +81,8 @@ export class OwnerController {
             };
         });
     }
-    // post test cjs : 23.3.8 add post menuList(owner,menu)
-    @Post(':list')
+
+    @Post('update')
     @ApiOperation({
         summary: '사장님 전체 받기  API',
         description: '사장님 전체 받기 API',
@@ -138,11 +139,12 @@ export class OwnerController {
     }
     //
 
-    @Get(':id')
+    @Get()
     findOne(@Param('owner_id') id: number) {
         return this.ownerService.findByOwnerId(id);
     }
-    @Get()
+    
+    @Post()
     @ApiOperation({
         summary: '사장님 정보 최신화',
         description: '사장님 정보 업데이트',
@@ -154,7 +156,7 @@ export class OwnerController {
         return this.ownerService.update(username, updateOwnerDto);
     }
 
-    @Delete(':id')
+    @Delete()
     remove(@Param('store_name') store_name: string) {
         return this.ownerService.remove(store_name);
     }

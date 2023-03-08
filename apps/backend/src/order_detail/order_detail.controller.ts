@@ -2,12 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { OrderDetailService } from './order_detail.service';
 import { CreateOrderDetailDto } from './dto/create-order_detail.dto';
 import { UpdateOrderDetailDto } from './dto/update-order_detail.dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('order-detail')
+@ApiTags('주문 내역')
 export class OrderDetailController {
   constructor(private readonly orderDetailService: OrderDetailService) {}
 
   @Post()
+  @ApiOperation({
+    summary: '주문 내역 생성 API',
+  })
   create(@Body() createOrderDetailDto: CreateOrderDetailDto) {
     return this.orderDetailService.create(createOrderDetailDto);
   }
