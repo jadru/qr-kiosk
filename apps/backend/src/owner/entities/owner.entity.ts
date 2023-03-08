@@ -12,6 +12,8 @@ export class OwnerEntity implements Owner {
     store_address: string;
     store_operating_time: string;
     theme: string;
+    photo: string[];
+    facility: string;
     createdTime: Date;
     updatedTime: Date;
 }
