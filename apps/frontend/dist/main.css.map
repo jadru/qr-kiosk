@@ -1,1 +1,0 @@
-{"version":3,"file":"main.css","mappings":"AAAA;;AAAA","sources":["webpack://qrkiosk-frontend/./src/style/global.css"],"sourcesContent":["@import 'tailwindcss/base';\n@import 'tailwindcss/components';\n@import 'tailwindcss/utilities';\n\nhtml, main, body {\n    padding: 0;\n    margin: 0;\n}"],"names":[],"sourceRoot":""}

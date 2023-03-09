@@ -1,0 +1,19 @@
+.idea
+.vscode
+.git
+.gitignore
+.dockerignore
+Dockerfile
+!package.json
+!yarn.lock
+
+.yarn/*
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# if you are NOT using Zero-installs, then:
+# comment the following lines
+!.yarn/cache
