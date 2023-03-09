@@ -41,8 +41,8 @@ model Order_Detail {
   id           String       @id
   table_number Int
   order_name   String
-  toss_status  String?    @default("결제대기중")
-  order_status String?    @default("주문대기중")
+  toss_status  String?    @default("ready")
+  order_status String?    @default("ready")
   total_amount Int
   approveAt    DateTime?  @default(now())
   requestAt    DateTime?  @default(now())
