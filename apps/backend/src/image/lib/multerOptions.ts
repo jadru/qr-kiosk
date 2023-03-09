@@ -2,6 +2,7 @@ import { HttpException } from '@nestjs/common';
 import { existsSync, mkdirSync } from 'fs';
 import { diskStorage } from 'multer';
 import uuidRandom from './uuidRandom';
+import { ConfigService } from '@nestjs/config';
 
 export const multerOptions = {
     fileFilter: (request, file, callback) => {
@@ -35,7 +36,8 @@ export const multerOptions = {
 };
 
 export const createImageURL = (file): string => {
+    const serverAddress: string = "http://203.241.228.50:8000";
     // 파일이 저장되는 경로: /public 폴더
     // 위의 조건에 따라 파일의 경로를 생성해줍니다.
-    return `/public/${file.filename}`;
+    return `${serverAddress}/public/${file.filename}`;
 };
