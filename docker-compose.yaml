@@ -41,6 +41,8 @@ services:
       - "3000:3000"
     environment:
       - TZ=Asia/Seoul
+      - VITE_APP_URL=http://203.241.228.50:3000 
+      - VITE_APP_API_URL=http://203.241.228.50:8000
     env_file:
       - ./apps/frontend/.env
 

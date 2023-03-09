@@ -123,7 +123,7 @@ export const OrderList = () => {
         )}
       </div>
       <p className="text-center text-2xl mt-6">
-        {storeValue.tableId}번 테이블로 주문합니다
+        {tableId}번 테이블로 주문합니다
       </p>
       <div className="btm-nav content-between">
         <Link

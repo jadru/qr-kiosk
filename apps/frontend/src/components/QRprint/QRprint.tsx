@@ -4,7 +4,7 @@ import { storeManageState } from '@src/states/atom';
 import QRCode from 'react-qr-code';
 import { Cookies } from 'react-cookie';
 
-const { VITE_API_URL } = import.meta.env;
+const { VITE_APP_URL } = import.meta.env;
 interface Props {
   setTableId: React.Dispatch<React.SetStateAction<string>>;
   tableId: string;
@@ -24,7 +24,7 @@ export const QRprint = forwardRef<HTMLInputElement, Props>(
             <h4 className="font-bold">{storeManage.name}</h4>
             <span>테이블 번호 : {tableId}</span>
           </div>
-          <QRCode value={VITE_API_URL + '/' + owner_id + '/' + tableId} />
+          <QRCode value={VITE_APP_URL + '/' + owner_id + '/' + tableId} />
         </div>
       </div>
     );
