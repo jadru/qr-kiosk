@@ -1,8 +1,9 @@
+import { MenuItemType } from '@src/type';
 import { Item } from '@src/type/Item';
 
 interface Props {
-  newMenuItem: Item;
-  setNewMenuItem: React.Dispatch<React.SetStateAction<Item>>;
+  newMenuItem: MenuItemType;
+  setNewMenuItem: React.Dispatch<React.SetStateAction<MenuItemType>>;
   handleSubmit: () => void;
   handleImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -41,27 +42,15 @@ export const StoreDialog: React.FC<Props> = ({
             name="imageInputDialog"
             onChange={handleImageUpload}
           />
-          <div className="form-control mt-4 w-full">
-            <label className="input-group input-group-sm">
-              <span>메뉴 ID</span>
-              <input
-                type="text"
-                placeholder="pizza 1"
-                className="input input-bordered input-md"
-                name="itemid"
-                onFocus={handleFocus}
-                onChange={handleOnChange}
-              />
-            </label>
-          </div>
           <div className="form-control mt-4  w-full">
             <label className="input-group input-group-sm">
               <span>메뉴 이름</span>
               <input
                 type="text"
                 placeholder="새 메뉴"
+                value={newMenuItem.name}
                 className="input input-bordered input-md"
-                name="itemname"
+                name="name"
                 onFocus={handleFocus}
                 onChange={handleOnChange}
               />
@@ -73,8 +62,9 @@ export const StoreDialog: React.FC<Props> = ({
               <input
                 type="number"
                 placeholder="1,000"
+                value={newMenuItem.price}
                 className="input input-bordered input-md"
-                name="itemprice"
+                name="price"
                 onFocus={handleFocus}
                 onChange={handleOnChange}
               />

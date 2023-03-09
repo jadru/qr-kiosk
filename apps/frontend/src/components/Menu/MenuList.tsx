@@ -2,32 +2,34 @@ import { Item } from '../../type/Item';
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import MenuItem from './MenuItem';
-import { MenuListType } from '@src/type';
+import { MenuListType, StoreManageType } from '@src/type';
 import { SetterOrUpdater } from 'recoil';
 import { cloneDeep } from 'lodash';
 
 interface Props {
-  items: MenuListType;
-  setItems: any;
+  items: StoreManageType;
+  setItems: SetterOrUpdater<StoreManageType>;
   index: number;
 }
 
 const MenuList: React.FC<Props> = ({ items, setItems, index }: Props) => {
   const categoryNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let temp = cloneDeep(items);
-    temp[index].categoryName = e.target.value;
+    temp.menu[index].categoryName = e.target.value;
     setItems(temp);
   };
 
   const categoryItemDelete = () => {
     let temp = cloneDeep(items);
-    temp.splice(index, 1);
+    temp.menu.splice(index, 1);
     setItems(temp);
   };
 
-  const handleDeleteItem = (id: string) => {
+  const handleDeleteItem = (id: number) => {
     let temp = cloneDeep(items);
-    temp[index].menus = temp[index].menus.filter((item) => item.itemid !== id);
+    temp.menu[index].menus = temp.menu[index].menus.filter(
+      (item) => item.item_id !== id,
+    );
     setItems(temp);
   };
 
@@ -39,7 +41,7 @@ const MenuList: React.FC<Props> = ({ items, setItems, index }: Props) => {
             type="text"
             placeholder="Type here"
             className="input input-ghost w-full max-w-xs"
-            defaultValue={items[index].categoryName}
+            defaultValue={items.menu[index].categoryName}
             onBlur={categoryNameChange}
           />
           <button
@@ -67,14 +69,14 @@ const MenuList: React.FC<Props> = ({ items, setItems, index }: Props) => {
           {(provided) => (
             <div ref={provided.innerRef} {...provided.droppableProps}>
               <ul className="px-2 py-3 space-y-2">
-                {items[index].menus?.length === 0 ? (
+                {items.menu[index].menus?.length === 0 ? (
                   <p className="text-info-content text-center py-4">
                     메뉴가 없습니다
                   </p>
                 ) : (
-                  items[index].menus?.map((item, idx) => (
+                  items.menu[index].menus?.map((item, idx) => (
                     <MenuItem
-                      key={item.itemid}
+                      key={item.item_id}
                       index={idx}
                       onDelete={handleDeleteItem}
                       item={item}

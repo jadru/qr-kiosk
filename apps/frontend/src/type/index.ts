@@ -6,11 +6,19 @@ type ContentType = {
 };
 
 type MenuItemType = {
-  image: string;
-  itemid: string;
-  itemname: string;
-  itemprice: string;
+  item_id: number;
+  image_url: string;
+  name: string;
+  price: number;
 };
+
+type CountedMenuItemListType = {
+  image: string;
+  item_id: string;
+  name: string;
+  price: number;
+  count: number;
+}[];
 
 type MenuListType = {
   categoryName: string;
@@ -30,52 +38,88 @@ type StoreManageType = {
     phoneNumber: string;
     facilities: string;
     website: string;
-    photos: string[];
+    photo: string[];
     theme: 'cute' | 'modern' | 'vintage' | 'simple';
   };
   menu: MenuListType;
 };
 
 type StoreManageTypeBack = {
-  id: number;
-  username: string;
-  password: string;
-  email: string;
-  phone: string;
+  id?: number;
+  username?: string;
+  password?: string;
+  email?: string;
+  phone?: string;
   store_name: string;
   store_address: string;
   store_phone: string;
   store_operating_time: string;
-  name: string;
-  createdTime: string;
-  updatedTime: string;
-  facilities: string;
+  name?: string;
+  createdTime?: string;
+  updatedTime?: string;
+  facility: string;
   website: string;
-  photos: string[];
+  photo: string[];
   theme: 'cute' | 'modern' | 'vintage' | 'simple';
   menu: {
-    0: {
-      push: any;
-      id: number;
-      category_name: string;
-      owner_id: number;
-      createTime: string;
-      updateTime: string;
-      menu: [
-        {
-          id: number;
-          itemid: string;
-          photo: string;
-          price: string;
-          name: string;
-          menu_id: number;
-          createdTime: string;
-          updatedTime: string;
-        },
-      ];
-    },
-  }
-  ];
+    id?: number;
+    category_name: string;
+    owner_id?: number;
+    createTime?: string;
+    updateTime?: string;
+    menu_items?: [
+      {
+        id: number;
+        image_url: string;
+        price: number;
+        name: string;
+        menu_id: number;
+        createdTime: string;
+        updatedTime: string;
+      },
+    ];
+  }[];
+};
+
+type createOwnerApiType = {
+  username: string;
+  password: string;
+  passwordCheck?: string;
+  email: string;
+  store_phone: string;
+  store_address: string;
+  store_operating_time: string;
+  store_name: string;
+  theme: 'cute' | 'modern' | 'vintage' | 'simple';
+};
+
+type orderStatusType = 'order' | 'confirm' | 'cancel' | 'done';
+
+type orderDetailType = {
+  order_name: string;
+  total_amount: number;
+  toss_status?: string;
+  order_status?: orderStatusType;
+  approveAt?: Date | string;
+  requestAt?: Date | string;
+  owner_id: number;
+  id: number;
+  table_number: number;
+  user_id: string;
+  item_orders: {
+    count: number;
+    menu_item_id: number;
+  }[];
+};
+
+type jwtdecodeType = {
+  owner_id: number;
+  username: string;
+  exp: number;
+  iat: number;
+  nbf: number;
+  iss: string;
+  sub: string;
 };
 
 export type {
@@ -85,4 +129,9 @@ export type {
   StoreManageType,
   StoreManageTypeBack,
   MenuItemType,
+  CountedMenuItemListType,
+  createOwnerApiType,
+  orderStatusType,
+  orderDetailType,
+  jwtdecodeType,
 };

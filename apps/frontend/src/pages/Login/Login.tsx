@@ -3,8 +3,11 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginSchema } from './LoginSchema';
 import { Link, useNavigate } from 'react-router-dom';
-import { loginAPI } from '@src/apis/api';
+import { loginAPI } from '@src/apis/memberApi';
 import { useEffect } from 'react';
+import jwt_decode from 'jwt-decode';
+import { useCookies } from 'react-cookie';
+import { jwtdecodeType } from '@src/type';
 
 type LoginInputType = {
   username: string;
@@ -22,16 +25,13 @@ export const Login = () => {
     reValidateMode: 'onChange',
     resolver: yupResolver(LoginSchema),
   });
-  useEffect(() => {
-    console.log(isSubmitting);
-  }, [isSubmitting]);
+
   const navigate = useNavigate();
   const onError = (errors: any, e: any) => console.log(errors, e);
   const onSubmit: SubmitHandler<LoginInputType> = (data) => {
-    console.log('check');
     loginAPI(data, navigate);
   };
-  // console.log(watch('example'));
+
   return (
     <NormalLayout>
       <div className="flex self-center items-center flex-col space-y-3">
@@ -67,9 +67,6 @@ export const Login = () => {
               />
               <ErrorMessage>{errors.password?.message}</ErrorMessage>
               <div className="flex flex-row justify-between">
-                <Link to="/findpwid" className="link link-hover">
-                  아이디 / 비밀번호 찾기
-                </Link>
                 <Link to="/signup" className="link link-hover">
                   회원가입
                 </Link>

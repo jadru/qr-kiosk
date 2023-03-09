@@ -4,21 +4,22 @@ import {
   orderPlaceState,
   storeManageState,
 } from '@src/states/atom';
-import { CountedItem, CountedItemList, Item } from '@src/type/Item';
+import { CountedItem, Item } from '@src/type/Item';
 import { cloneDeep } from 'lodash';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { OwnerInfoAPI } from '@src/apis/api';
-
-const { VITE_APP_TOSS_CLIENT_KEY, VITE_APP_URL } = import.meta.env;
+import { calculateTotalPriceFromOrderList } from '@src/utils';
+import { orderdetailAPI, tosspaymentAPI } from '@src/apis/paymentApi';
+import { Cookies } from 'react-cookie';
 
 export const OrderList = () => {
   const { storeId, tableId } = useParams();
   const [orderList, setOrderList] = useRecoilState(orderListState);
   const [store, setStore] = useRecoilState(storeManageState);
+  const cookie = new Cookies();
   const [countedOrderList, setCountedOrderList] = useRecoilState(
     countedOrderListState,
   );
@@ -29,61 +30,44 @@ export const OrderList = () => {
   useEffect(() => {
     setCountedOrderList(
       orderList.reduce((acc: any, cur: any) => {
-        const found = acc.find((a: any) => a.itemid === cur.itemid);
+        const found = acc.find((a: any) => a.item_id === cur.item_id);
         if (found) found.count += 1;
         else acc.push({ ...cur, count: 1 });
         return acc;
       }, []),
     );
-    setTotalPrice(
-      orderList
-        // @ts-ignore
-        .reduce((prev, curr) => prev + Number(curr.itemprice), 0),
-    );
-    if (
-      orderList
-        // @ts-ignore
-        .reduce((prev, curr) => prev + Number(curr.itemprice), 0) === 0
-    ) {
+    setTotalPrice(calculateTotalPriceFromOrderList(orderList));
+    if (calculateTotalPriceFromOrderList(orderList) === 0) {
       navigate(`/${storeId}/${tableId}/order`);
     }
-    console.log(orderList);
+    console.log(countedOrderList);
   }, [orderList]);
 
-  useLayoutEffect(() => {
-    console.log(storeId);
-    OwnerInfoAPI(setStore, storeId);
-  }, []);
-
   const tosspayment = async () => {
-    const tossPayments = await loadTossPayments(VITE_APP_TOSS_CLIENT_KEY);
-    tossPayments
-      .requestPayment('카드', {
-        amount: totalprice,
-        orderId: uuidv4(),
-        // @ts-ignore
-        orderName: orderList[0].itemname + ' 외 ' + orderList.length + '건',
-        successUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order/success`,
-        failUrl: `${VITE_APP_URL}/${storeId}/${tableId}/order`,
-      })
-      .then((res) => {
-        navigate(`/${storeId}/${tableId}/success`);
-      })
-      .catch(function (error) {
-        if (error.code === 'USER_CANCEL') {
-          alert('결제를 취소하셨습니다.');
-          navigate(`/${storeId}/${tableId}/order`);
-        } else {
-          alert('결제에 실패하였습니다.');
-          navigate(`/${storeId}/${tableId}/order`);
-        }
-      });
+    const orderId = uuidv4();
+    await tosspaymentAPI(
+      orderList,
+      totalprice,
+      navigate,
+      orderId,
+      storeId,
+      tableId,
+    );
+    orderdetailAPI(
+      orderList,
+      totalprice,
+      countedOrderList,
+      orderId,
+      cookie.get('user_id'),
+      tableId,
+      storeId,
+    );
   };
 
   const minusItem = (item: Item) => {
     const tempOrderList: Item[] = cloneDeep(orderList);
     const index = tempOrderList.findIndex(
-      (value) => value.itemid === item.itemid,
+      (value) => value.item_id === item.item_id,
     );
     tempOrderList.splice(index, 1);
     // @ts-ignore
@@ -105,17 +89,17 @@ export const OrderList = () => {
             value.count && (
               <div
                 className="rounded-2xl bg-white flex justify-between items-center"
-                key={value.itemid}
+                key={value.item_id}
               >
-                <p className="text-xl font-normal ml-6">{value.itemname}</p>
+                <p className="text-xl font-normal ml-6">{value.name}</p>
                 <div className="flex flex-row items-center space-x-4">
                   <div>
                     <p className="text-xl font-semibold">
                       {value.count}개 X{' '}
-                      {parseFloat(value.itemprice).toLocaleString('en')}원 ={' '}
-                      {(
-                        parseFloat(value.itemprice) * value.count
-                      ).toLocaleString('en')}
+                      {parseFloat(value.price).toLocaleString('en')}원 ={' '}
+                      {(parseFloat(value.price) * value.count).toLocaleString(
+                        'en',
+                      )}
                       원
                     </p>
                   </div>
