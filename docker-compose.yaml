@@ -38,7 +38,7 @@ services:
     volumes:
       - ".:/app"
     ports:
-      - "3001:3000"
+      - "3000:3000"
     environment:
       - TZ=Asia/Seoul
     env_file:

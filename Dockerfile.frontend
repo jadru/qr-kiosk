@@ -1,16 +1,16 @@
-FROM node:18-alpine
+FROM node:18-slim As production
 
 RUN npm -g install serve
 RUN mkdir /app
 WORKDIR /app
 
-COPY package.json yarn.lock ./
+COPY --chown=node:node ./apps/frontend/package*.json yarn.lock ./
 
-RUN yarn install
+RUN yarn set version berry && yarn
 
-COPY . /app
+COPY --chown=node:node . .
 
-RUN yarn build
+RUN yarn build:front
 
 EXPOSE 3000
 
