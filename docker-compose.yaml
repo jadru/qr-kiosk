@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   postgres:
     container_name: ${POSTGRES_HOST:-postgres}
@@ -31,20 +31,18 @@ services:
     env_file:
       - ./apps/backend/.env
   frontend:
-    container_name: ${SERVER_HOST:-qr-backend}
+    container_name: ${SERVER_HOST:-qr-frontend}
     build:
-      dockerfile: Dockerfile.backend
-      context: ./
-      target: development
+      context: .
+      dockerfile: Dockerfile.frontend
     volumes:
-      - ./:/usr/src/app
-    command: yarn start:dev
-    depends_on:
-      - postgres
+      - ".:/app"
     ports:
-      - ${SERVER_PORT:-8000}:3000
+      - "3001:3000"
+    environment:
+      - TZ=Asia/Seoul
     env_file:
-      - .env
+      - ./apps/frontend/.env
 
 volumes:
   psql-data:
