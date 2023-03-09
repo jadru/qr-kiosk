@@ -30,7 +30,21 @@ services:
       - ${SERVER_PORT:-8000}:8000
     env_file:
       - ./apps/backend/.env
-  # frontend: #TODO : frontend dockerfile
+  frontend:
+    container_name: ${SERVER_HOST:-qr-backend}
+    build:
+      dockerfile: Dockerfile.backend
+      context: ./
+      target: development
+    volumes:
+      - ./:/usr/src/app
+    command: yarn start:dev
+    depends_on:
+      - postgres
+    ports:
+      - ${SERVER_PORT:-8000}:3000
+    env_file:
+      - .env
 
 volumes:
   psql-data:
