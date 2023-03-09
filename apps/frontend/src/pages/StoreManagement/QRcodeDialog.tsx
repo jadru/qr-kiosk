@@ -9,7 +9,7 @@ interface Props {
 
 export const QRcodeDialog: React.FC<Props> = ({ saving }) => {
   const ref = useRef<HTMLInputElement>(null);
-  const [tableId, setTableId] = useState('');
+  const [tableId, setTableId] = useState('0');
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTableId(e.target.value);
   };

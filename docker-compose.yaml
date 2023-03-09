@@ -17,6 +17,7 @@ services:
       - ./apps/backend/.env
   backend:
     container_name: ${SERVER_HOST:-qr-backend}
+    platform: linux/amd64
     build:
       dockerfile: Dockerfile.backend
       context: ./
@@ -32,6 +33,7 @@ services:
       - ./apps/backend/.env
   frontend:
     container_name: ${SERVER_HOST:-qr-frontend}
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile.frontend
@@ -41,7 +43,7 @@ services:
       - "3000:3000"
     environment:
       - TZ=Asia/Seoul
-      - VITE_APP_URL=http://203.241.228.50:3000 
+      - VITE_APP_URL=http://203.241.228.50:3000
       - VITE_APP_API_URL=http://203.241.228.50:8000
     env_file:
       - ./apps/frontend/.env
