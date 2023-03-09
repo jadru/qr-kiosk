@@ -22,7 +22,7 @@ model Owner {
   username             String         @unique
   password             String
   email                String         @unique
-  phone                String         @unique
+  phone                String?
   store_name           String
   store_address        String
   store_phone          String
