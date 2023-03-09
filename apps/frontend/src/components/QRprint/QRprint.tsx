@@ -24,7 +24,9 @@ export const QRprint = forwardRef<HTMLInputElement, Props>(
             <h4 className="font-bold">{storeManage.name}</h4>
             <span>테이블 번호 : {tableId}</span>
           </div>
-          <QRCode value={VITE_APP_URL + '/' + owner_id + '/' + tableId} />
+          <QRCode
+            value={VITE_APP_URL + '/' + owner_id + '/' + tableId + '/order'}
+          />
         </div>
       </div>
     );

@@ -28,7 +28,7 @@ export const Order = () => {
   const cookie = new Cookies();
 
   useLayoutEffect(() => {
-    OwnerInfoAPI(setStore, cookie.get('owner_id'), setLoading);
+    OwnerInfoAPI(setStore, storeId, setLoading);
     if (!cookie.get('user_id')) {
       createUserApi(setUserId);
     }
