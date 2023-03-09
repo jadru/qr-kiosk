@@ -33,7 +33,7 @@ export const LastOrder = () => {
     userOrderListApi(cookie.get('user_id'), setOrderList);
   }, []);
   return (
-    <div className="w-full h-screen bg-slate-100 p-6 space-y-4 mbr-16">
+    <div className="w-full h-screen p-6 space-y-4">
       <div className="flex flex-col space-y-2">
         <h1 className="text-center text-2xl font-medium mb-6">주문 목록</h1>
         <div className="space-y-2">
@@ -61,6 +61,7 @@ export const LastOrder = () => {
           주문하기
         </Link>
       </div>
+      <div className="h-16"></div>
     </div>
   );
 };

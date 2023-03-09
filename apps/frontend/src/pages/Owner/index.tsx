@@ -29,7 +29,6 @@ export const Owner = () => {
       : orderDetailDeleteAPi(e.currentTarget.id);
     console.log(e.currentTarget.id);
   };
-  const temp: orderDetailType[] = [];
 
   return (
     <NormalLayout>

@@ -9,8 +9,6 @@ import { orderDetailType, orderStatusType } from '@src/type';
 
 const orderdetail = '/order-detail';
 
-const { VITE_APP_URL } = import.meta.env;
-
 export const orderStatusChangeAPi = (
   id: string,
   status: string,
