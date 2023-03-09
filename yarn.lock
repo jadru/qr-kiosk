@@ -1613,6 +1613,7 @@ __metadata:
     react-to-print: ^2.14.12
     react-toastify: ^9.0.8
     recoil: ^0.7.6
+    resolve: ^1.22.1
     serve: ^14.1.2
     tailwindcss: ^3.1.8
     typescript: ^4.6.4
