@@ -7,11 +7,11 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "eslint.nodePath": ".yarn/sdks",
   "prettier.prettierPath": ".yarn/sdks/prettier/index.js",
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "css.customData": [".vscode/css_custom_data.json"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
-  },
+  }
 }

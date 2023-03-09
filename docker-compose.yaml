@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   postgres:
     container_name: ${POSTGRES_HOST:-postgres}
@@ -30,7 +30,19 @@ services:
       - ${SERVER_PORT:-8000}:8000
     env_file:
       - ./apps/backend/.env
-  # frontend: #TODO : frontend dockerfile
+  frontend:
+    container_name: ${SERVER_HOST:-qr-frontend}
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    volumes:
+      - ".:/app"
+    ports:
+      - "3001:3000"
+    environment:
+      - TZ=Asia/Seoul
+    env_file:
+      - ./apps/frontend/.env
 
 volumes:
   psql-data:

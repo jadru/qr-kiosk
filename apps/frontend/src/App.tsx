@@ -1,18 +1,58 @@
-import React, { useState } from "react";
+import React from 'react';
+import {
+  Login,
+  Main,
+  Order,
+  OrderList,
+  StoreManagement,
+  OrderSuccess,
+  Signup,
+  LastOrder,
+  Owner,
+} from './pages';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ErrorScreen } from './components';
 
-const App = () => {
-  const [value, setValue] = useState(99);
-  setInterval(() => {
-    value >= 0 && setValue(value - 1);
-  }, 1000);
-  return (
-    <div className="p-16">
-      <p className="text-xl">Nuclear lunched detected</p>
-      <span className="font-mono yar-6xl text-4xl text-center">
-        {/* @ts-ignore */}
-        <span style={{ "--value": value, textAlign: "center" }}></span>
-      </span>
-    </div>
-  );
-};
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Main />,
+    errorElement: <ErrorScreen />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/owner',
+    element: <Owner />,
+  },
+  {
+    path: '/owner/manage',
+    element: <StoreManagement />,
+  },
+  {
+    path: '/:storeId/:tableId/order',
+    element: <Order />,
+  },
+  {
+    path: '/:storeId/:tableId/order/confirm',
+    element: <OrderList />,
+  },
+  {
+    path: '/:storeId/:tableId/order/success',
+    element: <OrderSuccess />,
+  },
+  {
+    path: '/:storeId/:tableId/order/list',
+    element: <LastOrder />,
+  },
+  {
+    path: '/signup',
+    element: <Signup />,
+  },
+]);
+
+const App = () => <RouterProvider router={router} />;
+
 export default App;
