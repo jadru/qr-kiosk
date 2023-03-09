@@ -52,9 +52,7 @@ export const Owner = () => {
                         (order.order_status === 'done' && '완료') ||
                         order.order_status}
                     </p>
-                    <p>아이스 아메리카노 x 2</p>
-                    <p>아이스 카페라떼 x 5</p>
-                    <p>아이스 아메리카노 x 2</p>
+                    <p>{order.order_name}</p>
                     <p className="font-bold text-sm text-slate-500">
                       <>
                         {order.id} <br />
