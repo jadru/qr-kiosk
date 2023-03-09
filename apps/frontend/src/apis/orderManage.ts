@@ -15,9 +15,13 @@ export const orderStatusChangeAPi = (
   statusKor: string,
 ): orderStatusType | undefined => {
   axios
-    .patch(API_URL + orderdetail + '/' + id + '/order-status', {
-      status,
-    })
+    .patch(
+      API_URL + orderdetail + '/' + id + '/order-status',
+      {},
+      {
+        params: { status },
+      },
+    )
     .then((response) => {
       alert(statusKor + '되었습니다.');
       return console.log(response.data.orderStatus);

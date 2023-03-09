@@ -20,7 +20,7 @@ export const Owner = () => {
   }, []);
 
   const onButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.value !== 'delete'
+    e.currentTarget.name !== 'delete'
       ? orderStatusChangeAPi(
           e.currentTarget.id,
           e.currentTarget.name,
@@ -45,10 +45,12 @@ export const Owner = () => {
                 <div className="bg-white outline-1 outline rounded-xl flex flex-row justify-between">
                   <div className="space-y-none text-xl pl-6 mt-4">
                     <p className="font-bold text-slate-600 text-2xl">
-                      {(order.order_status === 'confirm' && '접수') ||
+                      {(order.order_status === 'ready' && '대기중') ||
+                        (order.order_status === 'confirm' && '접수') ||
                         (order.order_status === 'order' && '접수 전') ||
                         (order.order_status === 'cancel' && '취소') ||
-                        (order.order_status === 'done' && '완료')}
+                        (order.order_status === 'done' && '완료') ||
+                        order.order_status}
                     </p>
                     <p>아이스 아메리카노 x 2</p>
                     <p>아이스 카페라떼 x 5</p>

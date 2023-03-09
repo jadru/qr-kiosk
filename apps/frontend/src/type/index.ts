@@ -93,7 +93,7 @@ type createOwnerApiType = {
   theme: 'cute' | 'modern' | 'vintage' | 'simple';
 };
 
-type orderStatusType = 'order' | 'confirm' | 'cancel' | 'done';
+type orderStatusType = 'order' | 'confirm' | 'cancel' | 'done' | 'ready';
 
 type orderDetailType = {
   order_name: string;

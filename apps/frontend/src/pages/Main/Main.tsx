@@ -32,7 +32,6 @@ export const Main = () => {
             <Link to={'/login'}>
               <button className="btn btn-primary">시작하기</button>
             </Link>
-            <Link to="/default/2/order">오더</Link>
           </div>
         </div>
       </div>
