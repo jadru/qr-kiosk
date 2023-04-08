@@ -7,7 +7,6 @@
 - Nest.js
 - Typescript
 - PostgreSQL
-- TYPEORM
 - Prisma
 ### Frontend
 - React.js
